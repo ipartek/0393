@@ -26,10 +26,7 @@ public class ServletControlador1 extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		
-		// obtener datos del cliente a traves de la request
-		
-		
-		
+		response.setContentType("text/html");		
 		
 		// dar una respuesta a traves de la response		
 		PrintWriter out = response.getWriter();		

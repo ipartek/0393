@@ -32,11 +32,32 @@ public class UserAgentController extends HttpServlet {
 
 	private void doProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		//TODO mirar user-agent de la cabecera
+		String userAgent = request.getHeader("user-agent").toLowerCase();
+		
+		if ( userAgent.contains("mobile") ) {
+			request.setAttribute("movil", true );	
+		}else {
+			request.setAttribute("movil", false );
+		}
+				
+		String navegador = "";
 		
 		
-		request.setAttribute("navegador", "lorem ipsum");
-		request.setAttribute("movil", false );
+		if ( userAgent.contains("trident") ) {
+			navegador = "internet explorer";
+		}else if (userAgent.contains("opr")) {
+			navegador = "opera";
+		}else if (userAgent.contains("chrome")) {
+			navegador = "chrome";
+		}else if (userAgent.contains("firefox")) {
+			navegador = "firefox";
+		}else {
+			navegador = "otro";
+		}
+		
+		
+		request.setAttribute("navegador", navegador);
+		
 		
 		request.getRequestDispatcher("ejemplos/basico2.jsp").forward(request, response);
 		
