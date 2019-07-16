@@ -1,0 +1,14 @@
+<perros>
+	<perro>
+		<nombre>Bubba</nombre>
+		<raza>boxer</raza>
+		<edad>2</edad>
+		<vacunado>true</vacunado>
+	</perro>
+	<perro>
+		<nombre>Pulgas</nombre>
+		<raza>cruce</raza>
+		<edad>5</edad>
+		<vacunado>false</vacunado>
+	</perro>
+</perros>	

@@ -1,0 +1,13 @@
+
+:root {
+	--primary: red !important;
+}	
+
+main.container{
+	margin-top: 4rem;
+}	
+
+p{
+	text-align: justify;
+	
+}

@@ -1,0 +1,414 @@
+/*
+
+	Nuestra Hoja de Estilos Principal
+	@author Ander
+	@version beta_1_0
+	@fecha 2019 06 27
+	
+	
+	0. Reset      - restear estilos del user-agent
+	1. Animaciones o @KeyFrames
+	2. Etiquetas  - dar estilos base a todos los tags
+	3. Clases comunes
+	4. Layouts  - secciones de la web ( cabecera, menus, pies, etc..)
+	5. Media Querys para RWD
+	
+
+*/
+
+
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+
+/* clearfix
+*************************************************************************/
+.clearfix {
+  overflow: auto;
+}
+
+
+
+/* 2. Etiquetas
+*************************************************************************/
+
+body{	
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    text-align: left;
+    background-color: #fff;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	text-transform: capitalize;
+    color: #2f363c;
+    /* margin-top: 24px; */ 
+    margin-bottom: 16px;
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+h1 {
+	font-size: 2em;
+}
+
+
+a, a:visited{
+	color: #0358d8;
+	text-decoration: none;	
+}
+
+a:hover {
+    color: #d86c5c; 
+}
+
+
+p a{
+	text-decoration: underline;
+}
+
+p{
+	text-align: left;
+	margin-bottom: 1em;
+}
+
+
+img{
+	width: 100%;
+	height: auto;
+	 -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+}
+
+ol, ul{
+	list-style-type: none;
+}
+
+
+label{
+	color: #003580;
+	margin-right: 15px;	
+}
+
+label:after{
+	content: ":";
+}
+
+label.obligatorio:before {
+	content: "(*) ";
+}	
+
+input[type="text"], input[type="number"], input[type="email"]{
+
+	border: none;
+	border-bottom:2px solid #003580;
+	padding: 5px 10px;
+
+}
+
+input[type="text"]:focus, input[type="number"]:focus, input[type="email"]:focus{
+	font-size: 1.6em;
+	color: #003580;
+}
+
+
+input[type="text"]:invalid, input[type="number"]:invalid, input[type="email"]:invalid{	
+	color: #f96500;
+	border-bottom:2px solid #f96500;
+}
+
+input[type="text"]:valid, input[type="number"]:valid, input[type="email"]:valid{	
+	color: #0358d8;
+}
+
+
+
+input[type="submit"], input[type="reset"]{
+	background-color: #003580;
+	color: #FFF;
+	border-radius: 10px;
+	padding: 5px 15px;
+	border: none;
+	margin-top: 20px; 
+}
+
+input[type="submit"]:hover{
+	background-color: #0358d8;
+}
+
+input[type="reset"]{
+	background-color: #f9ae00;
+}
+
+input[type="reset"]:hover{
+	background-color: #f96500;
+}
+
+
+
+
+
+/* 3 clases Comunes
+********************************************************************/
+
+.active{
+	background: #003580;
+    border-radius: 2px;
+    color: #FFF !important;
+    padding: 3px 8px;
+}   
+
+#button-top{
+	position: fixed;
+    bottom: 3em;
+    right: 3em;
+    z-index: 99;
+    background-color: white;
+    border-radius: 50%;    
+}
+
+#button-top i{
+    text-shadow: 3px 6px 8px #7d7a7a;
+}    
+
+@keyframes pulse {
+  0% { 
+	  transform: scale(1);
+	  color: #f98585;
+  }
+  50% { 
+	  transform: scale(1.25);
+	  color: #f94242;
+  }
+  100% { 
+	  transform: scale(1.5);
+	  color: #f59707; 
+  }
+}
+
+
+.card {
+	width: 400px;
+	position: relative;
+	overflow: hidden;
+}
+
+.card:hover .card-content{
+	bottom: 0;
+	animation-duration: 1s;
+}
+
+
+.card .card-content{
+	background-color: rgba(0,0,0,0.7);
+	padding: 10px;
+	color: #FFF;
+	position: absolute;
+	bottom: -165px;
+}
+
+.card .card-content h2{
+	color: #FFF;
+	font-weight: 600;
+	font-size: 1.6em;
+}
+
+.card .card-content .fa-heart{
+	float: right;
+	color: #f98585;	
+}
+
+.card .card-content .fa-heart:hover{
+	animation: pulse .85s infinite alternate;
+	color: red;
+}	
+
+
+
+
+/*  4. layouts 
+*******************************************************************/
+
+.content{
+	max-width: 1024px;
+	margin: auto;    /* centrado en horizontal */
+}
+
+main.content{
+	margin-top: 115px;
+	margin-bottom: 80px;
+}
+
+header#principal{	
+	background-color: #003580;
+	color: #FFF;
+	padding: 10px 0 0 0;	
+	position: fixed;
+	top: 0;
+	width: 100%;	
+	z-index: 999;
+}
+
+header#principal a{
+	color:#FFF;
+}
+
+header#principal #wrapper-menu a{
+	color:#003580;
+}
+
+
+#wrapper-menu{
+	background: #f7f7f7;
+	width: 100%;
+}
+
+#menu{
+	padding: 5px;
+	background: #f7f7f7;
+    border-bottom: 1px solid #dee0e2;
+}
+
+#menu ul{
+	display: flex;
+	flex-direction: row;
+}
+
+
+#menu ul li{
+	margin-right: 15px;
+}
+
+#menu ul li:last-child{
+	margin-right: 0;
+}	
+
+
+.postit{
+	position: sticky;
+	top: 100px;
+	background-color: #DDD;
+}
+
+
+footer#main{
+	background-color: #DDD;
+	padding: 20px;
+	margin-top: 30px;
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	box-sizing: border-box; /* @see: https://developer.mozilla.org/es/docs/Web/CSS/box-sizing */
+}
+
+.text-danger{
+	color: red;
+}
+
+.navbar {
+  width: 100%;
+  background-color: #555;
+  overflow: auto;
+}
+
+.navbar a {
+  float: left;
+  padding: 12px;
+  color: white;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.navbar a:hover {
+  background-color: #000;
+}
+
+/* 5. Media Querys para RWD
+****************************************************/
+
+/* MOBILE L */
+@media (max-width: 425px), ( orientation: landscape and max-width: 1024px)     {
+
+
+	#menu ul{
+		justify-content: space-around;
+	}
+
+	footer#main{
+		position: relative;
+	}
+
+	#button-top {    
+    	bottom: 0.5em;
+		right: 0.5em;
+	}
+	
+	main.content{
+		padding: 0.5em;
+	}
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
