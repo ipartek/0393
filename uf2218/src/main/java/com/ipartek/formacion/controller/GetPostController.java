@@ -19,15 +19,18 @@ public class GetPostController extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
-		response.getWriter().append("Peticion GET");
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String nombre = request.getParameter("nombre");
+		response.getWriter().append("<h1>Peticion GET</h1>").append("Ongi Etorri " + nombre);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().append("Peticion POST");
+		String nombre = request.getParameter("nombre");
+		response.getWriter().append("<h1>Peticion POST</h1>").append("Ongi Etorri " + nombre);
+
 	}
 
 }
