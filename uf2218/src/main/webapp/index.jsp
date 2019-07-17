@@ -8,6 +8,7 @@
 	  <li class="list-group-item"><a href="ejemplos/basico2.jsp">Ejemplo Servlet Basico con JSP</a></li>
 	  <li class="list-group-item"><a href="ejemplos/basico3.jsp">Ejemplo Servlet Response Content Type</a></li>
 	  <li class="list-group-item"><a href="ejemplos/basico4.jsp">GET y POST</a></li>
+	  <li class="list-group-item"><a href="nombres">Listado Nombres</a></li>
 	  <li class="list-group-item">JSP</li>
 	  <li class="list-group-item">JSTL - JAva Server Tag Libreries</li>
 	  <li class="list-group-item">Session</li>
