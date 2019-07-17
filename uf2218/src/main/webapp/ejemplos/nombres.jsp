@@ -5,8 +5,13 @@
 
 	<h1>Listado Nombres</h1>
 	
-	<div class="row">
-	 ${mensaje}
+	<div class="row">	
+	 	<div class="alert alert-warning alert-dismissible fade show" role="alert">
+		  <p>${mensaje}</p>
+		  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		    <span aria-hidden="true">&times;</span>
+		  </button>
+		</div>
 	</div>	
 	
 	<div class="row">	
@@ -44,7 +49,17 @@
 		</div>
 				
 		<div class="col-4">
-			**FORMLARIO CREAR**			
+			<form method="post" action="nombres" class="">			  	
+			  <label class="sr-only" for="nombre">Nombre</label>
+			  <input type="text"
+			  		 name="nombre"
+			  		 id="nombre"			  		 
+			  		 required
+			  		 class="form-control mb-2 mr-sm-2"  
+			  		 placeholder="Nuevo Nombre">			  		 
+			  <button type="submit" class="btn btn-block btn-primary mb-2">Dar De Alta</button>
+			  
+			</form>	
 		</div>	
 	</div>
 	<!-- .row -->

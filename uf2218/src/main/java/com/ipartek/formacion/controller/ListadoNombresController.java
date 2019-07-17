@@ -37,10 +37,24 @@ public class ListadoNombresController extends HttpServlet {
 		
 		String buscar = request.getParameter("buscar");
 		
+		if ( buscar != null && !buscar.trim().isEmpty() ) {
+			
+			ArrayList<String> listaFiltrada = new ArrayList<String>();
+			for (String nombre : lista) {			
+				if ( nombre.toLowerCase().contains(buscar.toLowerCase())) {
+					listaFiltrada.add(nombre);
+				}
+			}	
+			
+			request.setAttribute("nombres", listaFiltrada );
+		}else {
+			request.setAttribute("nombres", lista);	
+		}
 		
-		request.setAttribute("mensaje", "TODO_mensaje");
+		
+		request.setAttribute("mensaje", "");
 		request.setAttribute("buscar", buscar);
-		request.setAttribute("nombres", lista);
+		
 		
 		request.getRequestDispatcher("ejemplos/nombres.jsp").forward(request, response);
 		
@@ -50,8 +64,27 @@ public class ListadoNombresController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		
+		
+		String nombreNuevo = request.getParameter("nombre");
+		String mensaje = "Nombre no valido";
+		
+		if ( nombreNuevo != null ) {
+		
+			nombreNuevo = nombreNuevo.trim();
+			
+			if ( "".equalsIgnoreCase(nombreNuevo)) {
+				mensaje = "Por favor Escribe un nombre valido";
+			}else {
+				lista.add(nombreNuevo);			
+				mensaje = "Nombre creado con exito";	
+			}				
+		
+		}	
+		
+		request.setAttribute("mensaje", mensaje);
+		request.setAttribute("nombres", lista);
+		request.getRequestDispatcher("ejemplos/nombres.jsp").forward(request, response);
 	}
 
 }
