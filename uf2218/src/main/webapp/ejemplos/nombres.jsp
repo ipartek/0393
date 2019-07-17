@@ -5,14 +5,16 @@
 
 	<h1>Listado Nombres</h1>
 	
+	<% if ( request.getAttribute("mensaje") != null ){ %>
 	<div class="row">	
-	 	<div class="alert alert-warning alert-dismissible fade show" role="alert">
-		  <p>${mensaje}</p>
+	 	<div class="alert alert-${mensaje.tipo} alert-dismissible fade show" role="alert">
+		  <p>${mensaje.texto}</p>
 		  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
 		    <span aria-hidden="true">&times;</span>
 		  </button>
 		</div>
 	</div>	
+	<%} %>
 	
 	<div class="row">	
 		<div class="col-8">		
@@ -29,7 +31,7 @@
 			  <button type="submit" class="btn btn-primary mb-2">Buscar</button>
 			  
 			</form>
-		
+			
 			<% if ( request.getAttribute("buscar") != null ){ %>
 				<p class="text-muted">Resultados para la busqueda de <b>${buscar}</b></p>
 			<% } %>	
