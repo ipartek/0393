@@ -374,6 +374,7 @@
 	
 	<p>Array colores es null? ${colores == null}</p>
 	<p>Array tamaño = ${colores.size()}</p>
+	
 
 </div>
 

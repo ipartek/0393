@@ -46,7 +46,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.6</version>
+			<version>5.1.46</version>
 			<!-- Si no existe scope al crear el proyecto se incluye la libreria -->
 		</dependency>
 

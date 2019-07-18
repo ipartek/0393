@@ -17,9 +17,7 @@
 
 <base href="${pageContext.request.contextPath}/"></base>
 <!-- Nuestro CSS -->
-<!--  
-<link rel="stylesheet" type="text/css" href="css/estilos.css">
--->
+<link rel="stylesheet" type="text/css" href="resources/css/estilos.css">
 <title>JEE</title>
 </head>
 <body>

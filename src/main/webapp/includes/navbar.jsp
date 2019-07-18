@@ -1,4 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<div class="container">
 	<a class="navbar-brand" href="#">UF2218</a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse"
 		data-target="#navbarSupportedContent"
@@ -8,6 +9,7 @@
 	</button>
 
 	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+	
 		<ul class="navbar-nav mr-auto">
 			<li class="nav-item active"><a class="nav-link" href="index.jsp">Inicio
 					<span class="sr-only">(current)</span>
@@ -18,13 +20,14 @@
 				role="button" data-toggle="dropdown" aria-haspopup="true"
 				aria-expanded="false"> Youtube </a>
 				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-					<a class="dropdown-item" href="youtube/index.jsp">Listado</a> <a
+					<a class="dropdown-item" href="videos">Listado</a> <a
 						class="dropdown-item" href="youtube/formulario.jsp">Formulario</a>
 					<a class="dropdown-item" href="youtube/detalle.jsp">Detalle</a>
 				</div></li>
 
 		</ul>
-	</div>
+	</div> 
+	</div> <!-- end container -->
 </nav>
 <!-- end navbar -->
 <main class="container mb-5">
