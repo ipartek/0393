@@ -16,7 +16,7 @@
 		<h2>&lt;c:foreach&gt;</h2>
 		<p>Sirve para iterar sobre una coleccion sin tener que usar <code>&lt;% ...  %&gt;</code> scriplets</p>
 		<p>usando EL con el <code>&dollar;{colores}</code> => ${colores}</p>
-		
+	
 		<ol>
 			<c:forEach items="${colores}" var="color">
 				<li>${color}</li>
