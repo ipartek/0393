@@ -13,8 +13,9 @@
 			Servlet GET y POST</a></li>
 	<li class="list-group-item"><a href="nombres">Ejemplo
 			Nombres</a></li>
-	<li class="list-group-item">JSP</li>
-	<li class="list-group-item">JSTL - Java Server TAG Libraries</li>
+	<li class="list-group-item"><a href="ejemplos/ejemplo-jsp.jsp">JSP</a></li>
+	<li class="list-group-item"><a href="jstl">JSTL - Java Server TAG Libraries</a></li>
+	<li class="list-group-item"><a href="ejemplos/el.jsp">EL - Expression Language</a></li>
 	<li class="list-group-item">Session</li>
 	<li class="list-group-item">Cookies</li>
 	<li class="list-group-item">Filtros</li>
