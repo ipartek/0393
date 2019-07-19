@@ -25,6 +25,9 @@ public class VideoController extends HttpServlet {
 	public static String view  = VIEW_INDEX;
 		
 	public static final String OP_LISTAR = "0";
+	public static final String OP_GUARDAR = "23";
+	public static final String OP_NUEVO = "4";
+	public static final String OP_ELIMINAR = "hfd3";
 	public static final String OP_DETALLE = "13";
 	
 	private static VideoDAO videoDAO;
@@ -52,10 +55,7 @@ public class VideoController extends HttpServlet {
 	}
 	
 	protected void doProcess (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		Object o = null;
-		o.toString();
-		
+				
 		String op = request.getParameter("op");
 		if ( op == null ) {
 			op = OP_LISTAR;	
@@ -66,7 +66,19 @@ public class VideoController extends HttpServlet {
 			detalle(request, response);
 			break;
 
-		// TODO resto de metodos	
+		case OP_GUARDAR:
+			guardar(request, response);
+			break;
+			
+		case OP_ELIMINAR:
+			eliminar(request, response);
+			break;
+			
+		case OP_NUEVO:
+			nuevo(request, response);
+			break;		
+			
+			// TODO resto de metodos	
 			
 		default:
 			listar(request, response);
@@ -75,6 +87,44 @@ public class VideoController extends HttpServlet {
 		
 		
 		request.getRequestDispatcher(view).forward(request, response);
+	}
+
+	private void nuevo(HttpServletRequest request, HttpServletResponse response) {
+		
+		request.setAttribute("video", new Video() );
+		view = VIEW_FORM;
+	}
+
+	private void eliminar(HttpServletRequest request, HttpServletResponse response) {
+		
+		// TODO Eliminar con DAO
+		String sid = request.getParameter("id");
+		
+		listar(request, response);
+		
+		
+		
+	}
+
+	private void guardar(HttpServletRequest request, HttpServletResponse response) {
+		
+		String sid = request.getParameter("id");
+		String nombre = request.getParameter("nombre");
+		String codigo = request.getParameter("codigo");
+		
+		//TODO llamar al DAO
+		//   si id == -1 => INSERT
+		//   si id > 0   => UPDATE
+		
+		Video v = new Video();
+		v.setId(Integer.parseInt(sid));
+		v.setNombre(nombre);
+		v.setCodigo(codigo);
+		
+		request.setAttribute("video", v );
+		view = VIEW_FORM;	
+		
+		
 	}
 
 	private void listar(HttpServletRequest request, HttpServletResponse response) {
