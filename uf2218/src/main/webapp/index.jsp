@@ -1,6 +1,5 @@
 <%@include file="includes/header.jsp"%>
 <%@include file="includes/navbar.jsp"%>
-<%@page errorPage="error.jsp" %>    
     
    	<h1>Hello Java Web App 3.1</h1>
    	
