@@ -53,6 +53,9 @@ public class VideoController extends HttpServlet {
 	
 	protected void doProcess (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		Object o = null;
+		o.toString();
+		
 		String op = request.getParameter("op");
 		if ( op == null ) {
 			op = OP_LISTAR;	
