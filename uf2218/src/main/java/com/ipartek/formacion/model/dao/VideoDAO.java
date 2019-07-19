@@ -3,6 +3,7 @@ package com.ipartek.formacion.model.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.ipartek.formacion.model.ConnectionManager;
@@ -23,6 +24,7 @@ public class VideoDAO {
 		return INSTANCE;
 	}
 
+		
 	public ArrayList<Video> getAll() {
 		
 		ArrayList<Video> lista = new ArrayList<Video>();
@@ -33,11 +35,13 @@ public class VideoDAO {
 				ResultSet rs = pst.executeQuery()) {
 
 			while (rs.next()) {
+				/*
 				Video v = new Video();
 				v.setId( rs.getInt("id") );
 				v.setNombre( rs.getString("nombre"));
 				v.setCodigo( rs.getString("codigo"));
-				lista.add(v);
+				*/
+				lista.add( mapper(rs) );
 			}
 		} catch (Exception e) {
 
@@ -45,24 +49,36 @@ public class VideoDAO {
 		}
 		return lista;
 	}
-/*
-	@Override
-	public Rol getById(int id) {
-		Rol rol = new Rol();
-		String sql = "SELECT `id`, `nombre` FROM `rol` WHERE `id` = ?;";
 
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+	
+	public Video getById(int id) {
+		Video video = new Video();
+		String sql = "SELECT id, nombre, codigo  FROM video WHERE id = ? ;";
+
+		try (Connection con = ConnectionManager.getConnection(); 
+				PreparedStatement pst = con.prepareStatement(sql)) {
+			
+			//sustituyo la 1º ? por la variable id
 			pst.setInt(1, id);
+			
 			try (ResultSet rs = pst.executeQuery()) {
 				if (rs.next()) {
-					rol = mapper(rs);
+					/*
+					Video v = new Video();
+					v.setId( rs.getInt("id") );
+					v.setNombre( rs.getString("nombre"));
+					v.setCodigo( rs.getString("codigo"));
+					*/
+					video = mapper(rs);					
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return rol;
+		return video;
 	}
+	
+	/*
 
 	public ArrayList<Rol> getByName(String search) {
 
@@ -195,15 +211,18 @@ public class VideoDAO {
 		return resultado;
 	}
 
-	@Override
-	public Rol mapper(ResultSet rs) throws SQLException {
-		Rol rol = new Rol();
-		rol.setId(rs.getInt("id"));
-		rol.setNombre(rs.getString("nombre"));
-		return rol;
+*/
+
+	
+	public Video mapper(ResultSet rs) throws SQLException {
+		Video v = new Video();
+		v.setId( rs.getInt("id") );
+		v.setNombre( rs.getString("nombre"));
+		v.setCodigo( rs.getString("codigo"));
+		return v;
 	}
 
-*/
+
 	
 	
 }
