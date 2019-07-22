@@ -11,6 +11,15 @@
 	      </li>
 	       <li class="nav-item active">
 	        <a class="nav-link" href="videos">Videos</a>
+	      </li>	 	      
+	       <li class="nav-item active">
+	       	<c:if test="${usuario == null}">
+	        	<a class="nav-link" href="login.jsp">Login</a>
+	        </c:if>
+	        <c:if test="${usuario != null}">
+	        	<span>${usuario}</span>
+	        	<a class="nav-link" href="logout">Logout</a>
+	        </c:if>		       
 	      </li>	 	            
 	    </ul>	   
 	  </div>
