@@ -78,9 +78,7 @@ public class VideoController extends HttpServlet {
 		case OP_NUEVO:
 			nuevo(request, response);
 			break;		
-			
-			// TODO resto de metodos	
-			
+		
 		default:
 			listar(request, response);
 			break;
@@ -98,8 +96,15 @@ public class VideoController extends HttpServlet {
 
 	private void eliminar(HttpServletRequest request, HttpServletResponse response) {
 		
-		// TODO Eliminar con DAO
+		
 		String sid = request.getParameter("id");
+		int id = Integer.parseInt(sid);
+		
+		if ( videoDAO.delete(id) ) {
+			request.setAttribute("mensaje", new Alert("success","Registro Eliminado"));
+		}else {
+			request.setAttribute("mensaje", new Alert("danger","ERROR, no se pudo eliminar"));
+		}
 		
 		listar(request, response);
 		
@@ -112,11 +117,7 @@ public class VideoController extends HttpServlet {
 		String sid = request.getParameter("id");
 		String nombre = request.getParameter("nombre");
 		String codigo = request.getParameter("codigo");
-		
-		//TODO llamar al DAO
-		//   si id == -1 => INSERT
-		//   si id > 0   => UPDATE
-		
+				
 		Video v = new Video();
 		v.setId(Integer.parseInt(sid));
 		v.setNombre(nombre);
@@ -124,7 +125,11 @@ public class VideoController extends HttpServlet {
 		
 		try {
 			
-			videoDAO.crear(v);
+			if ( v.getId() == -1 ) {			
+				videoDAO.crear(v);
+			}else {
+				videoDAO.modificar(v);
+			}
 			request.setAttribute("mensaje", new Alert("success","Registro creado con exito"));
 			
 		}catch (Exception e) {

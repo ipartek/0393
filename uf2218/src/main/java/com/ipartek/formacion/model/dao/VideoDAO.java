@@ -116,34 +116,36 @@ public class VideoDAO {
 		return resultado;
 	}
 
-	private boolean modificar(Rol pojo) throws MysqlDataTruncation, MySQLIntegrityConstraintViolationException {
+*/
+
+	public boolean modificar(Video pojo) throws Exception {
 		boolean resultado = false;
 
-		String sql = "UPDATE `nidea`.`rol` SET `nombre`= ? WHERE  `id`= ?;";
+		String sql = "UPDATE video SET nombre = ?, codigo = ? WHERE  id = ?;";
 
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+		try (Connection con = ConnectionManager.getConnection(); 
+				PreparedStatement pst = con.prepareStatement(sql)) {
 
 			pst.setString(1, pojo.getNombre());
-			pst.setInt(2, pojo.getId());
+			pst.setString(2, pojo.getCodigo());
+			pst.setInt(3, pojo.getId());
 
-			resultado = doSave(pst, pojo);
-
-		} catch (MySQLIntegrityConstraintViolationException e) {
-			System.out.println("Rol duplicado");
-			throw e;
-		} catch (MysqlDataTruncation e) {
-			System.out.println("Nombre muy largo");
-			throw e;
+			int affectedRows = pst.executeUpdate();
+			if ( affectedRows == 1 ) {
+				resultado = true;
+			}
+		
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return resultado;
 	}
-*/
+
+
 
 	public boolean crear(Video pojo) throws Exception {
 		boolean resultado = false;
-		String sql = "INSERT INTO videos (nombre, codigo) VALUES (?,?);";
+		String sql = "INSERT INTO video (nombre, codigo) VALUES (?,?);";
 
 		try (Connection con = ConnectionManager.getConnection(); 
 			 PreparedStatement pst = con.prepareStatement(sql)) {
@@ -192,13 +194,14 @@ public class VideoDAO {
 
 		return resultado;
 	}
-
-	@Override
+*/
+	
 	public boolean delete(int id) {
 		boolean resultado = false;
-		String sql = "DELETE FROM `rol` WHERE  `id`= ?;";
+		String sql = "DELETE FROM video WHERE id = ?;";
 
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+		try (Connection con = ConnectionManager.getConnection(); 
+			 PreparedStatement pst = con.prepareStatement(sql);) {
 
 			pst.setInt(1, id);
 
@@ -214,7 +217,7 @@ public class VideoDAO {
 		return resultado;
 	}
 
-*/
+
 
 	
 	public Video mapper(ResultSet rs) throws SQLException {
