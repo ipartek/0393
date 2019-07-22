@@ -3,6 +3,7 @@ package com.ipartek.formacion.model.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.ipartek.formacion.model.ConnectionManager;
@@ -33,11 +34,13 @@ public class YoutubeDAO {
 				ResultSet rs = pst.executeQuery()) {
 
 			while (rs.next()) {
+				/*
 				Youtube v = new Youtube();
 				v.setId( rs.getInt("id") );
 				v.setNombre( rs.getString("nombre"));
 				v.setCodigo( rs.getString("codigo"));
-				lista.add(v);
+				*/
+				lista.add(mapper(rs));
 			}
 		} catch (Exception e) {
 
@@ -45,23 +48,32 @@ public class YoutubeDAO {
 		}
 		return lista;
 	}
-/*
-	@Override
-	public Rol getById(int id) {
-		Rol rol = new Rol();
-		String sql = "SELECT `id`, `nombre` FROM `rol` WHERE `id` = ?;";
+
+	public Youtube getById(int id) {
+		Youtube video = new Youtube();
+		String sql = "SELECT id, nombre, codigo FROM video WHERE id = ?;";
 		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+			//sustituyo la 1º ? por la variable id
 			pst.setInt(1, id);
+			
 			try (ResultSet rs = pst.executeQuery()) {
 				if (rs.next()) {
-					rol = mapper(rs);
+					/*
+					Youtube v = new Youtube();
+					v.setId( rs.getInt("id") );
+					v.setNombre( rs.getString("nombre"));
+					v.setCodigo( rs.getString("codigo"));
+					*/
+					video = mapper(rs);
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return rol;
+		return video;
 	}
+	
+/*	
 	public ArrayList<Rol> getByName(String search) {
 		ArrayList<Rol> lista = new ArrayList<Rol>();
 		String sql = "SELECT id, nombre FROM rol WHERE nombre LIKE ? ORDER BY id DESC LIMIT 500;";
@@ -91,41 +103,48 @@ public class YoutubeDAO {
 		}
 		return resultado;
 	}
-	private boolean modificar(Rol pojo) throws MysqlDataTruncation, MySQLIntegrityConstraintViolationException {
+	*/
+	public boolean modificar(Youtube pojo) throws Exception {
 		boolean resultado = false;
-		String sql = "UPDATE `nidea`.`rol` SET `nombre`= ? WHERE  `id`= ?;";
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+
+		String sql = "UPDATE video SET nombre = ?, codigo = ? WHERE  id = ?;";
+
+		try (Connection con = ConnectionManager.getConnection(); 
+				PreparedStatement pst = con.prepareStatement(sql)) {
+
 			pst.setString(1, pojo.getNombre());
-			pst.setInt(2, pojo.getId());
-			resultado = doSave(pst, pojo);
-		} catch (MySQLIntegrityConstraintViolationException e) {
-			System.out.println("Rol duplicado");
-			throw e;
-		} catch (MysqlDataTruncation e) {
-			System.out.println("Nombre muy largo");
-			throw e;
+			pst.setString(2, pojo.getCodigo());
+			pst.setInt(3, pojo.getId());
+
+			int affectedRows = pst.executeUpdate();
+			if ( affectedRows == 1 ) {
+				resultado = true;
+			}
+		
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return resultado;
 	}
-	private boolean crear(Rol pojo) throws MySQLIntegrityConstraintViolationException, MysqlDataTruncation {
+	
+	public boolean crear(Youtube pojo) throws Exception {
 		boolean resultado = false;
-		String sql = "INSERT INTO `nidea`.`rol` (`nombre`) VALUES (?);";
+		String sql = "INSERT INTO video (nombre, codigo) VALUES (?,?);";
 		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
 			pst.setString(1, pojo.getNombre());
-			resultado = doSave(pst, pojo);
-		} catch (MySQLIntegrityConstraintViolationException e) {
-			System.out.println("Rol duplicado");
-			throw e;
-		} catch (MysqlDataTruncation e) {
-			System.out.println("Nombre muy largo");
-			throw e;
+			pst.setString(2, pojo.getCodigo());
+			
+			int affectedRows =	pst.executeUpdate();
+			if (affectedRows ==1) {
+				resultado = true;
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return resultado;
 	}
+	/*
 	private boolean doSave(PreparedStatement pst, Rol pojo)
 			throws MySQLIntegrityConstraintViolationException, MysqlDataTruncation {
 		boolean resultado = false;
@@ -151,28 +170,35 @@ public class YoutubeDAO {
 		return resultado;
 	}
 	@Override
-	public boolean delete(int id) {
+	*/
+	public boolean eliminar(int id) {
 		boolean resultado = false;
-		String sql = "DELETE FROM `rol` WHERE  `id`= ?;";
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+		String sql = "DELETE FROM video WHERE id = ?;";
+
+		try (Connection con = ConnectionManager.getConnection(); 
+			 PreparedStatement pst = con.prepareStatement(sql);) {
+
 			pst.setInt(1, id);
+
 			int affetedRows = pst.executeUpdate();
 			if (affetedRows == 1) {
 				resultado = true;
 			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 		return resultado;
 	}
-	@Override
-	public Rol mapper(ResultSet rs) throws SQLException {
-		Rol rol = new Rol();
-		rol.setId(rs.getInt("id"));
-		rol.setNombre(rs.getString("nombre"));
-		return rol;
-	}
-*/
+	
 
+	public Youtube mapper(ResultSet rs) throws SQLException {
+		Youtube video = new Youtube();
+		video.setId(rs.getInt("id"));
+		video.setNombre(rs.getString("nombre"));
+		video.setCodigo(rs.getString("codigo"));
+		return video;
+	}
 
 }

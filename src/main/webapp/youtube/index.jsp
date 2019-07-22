@@ -1,3 +1,4 @@
+<%@page import="com.ipartek.formacion.controller.YoutubeController"%>
 <%@page import="com.ipartek.formacion.model.pojo.Youtube"%>
 <%@page import="java.util.ArrayList"%>
 <%@include file="../includes/header.jsp"%>
@@ -6,12 +7,24 @@
 <div class="row">
     <div class="col-10">
       <h1>Youtube</h1>
+      
+      <c:if test="${mensaje != null}">
+			<div class="alert alert-${mensaje.tipo} alert-dismissible fade show"
+				role="alert">
+				<p>${mensaje.texto}</p>
+				<button type="button" class="close" data-dismiss="alert"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+		</c:if>
+      
     </div>
     <div class="col">
-     <a class="btn btn-primary mt-2" href="#" role="button"><i class="fas fa-plus"></i> Añadir</a>
+     <a class="btn btn-primary mt-2" href="videos?op=<%=YoutubeController.OP_FORM%>" role="button" title="anadir"><i class="fas fa-plus"></i> Añadir</a>
+
     </div>
 </div>
-
 
 <%
 		ArrayList<Youtube> videos = (ArrayList<Youtube>) request.getAttribute("videos");
@@ -46,11 +59,11 @@
 			</div>
 		</td>
 		<td class="align-middle">
-			<a href=""><span class=""><%=video.getNombre()%></span></a>
+			<a href="videos?op=<%=YoutubeController.OP_DETALLE%>&id=<%=video.getId()%>"><span class=""><%=video.getNombre()%></span></a>
 		</td>	
 		<td class="align-middle">
-		<a class="btn btn-success" href="#" role="button" title="editar"><i class="fas fa-edit"></i> Editar</a>
-		<a class="btn btn-danger" href="#" role="button" title="borrar"><i class="fas fa-trash-alt"></i> Borrar</a>
+		<a class="btn btn-success" href="videos?op=<%=YoutubeController.OP_FORM%>&id=<%=video.getId()%>" role="button" title="editar"><i class="fas fa-edit"></i> Editar</a>
+		<a class="btn btn-danger" href="videos?op=<%=YoutubeController.OP_BORRAR%>&id=<%=video.getId()%>" role="button" title="eliminar"><i class="fas fa-trash-alt"></i> Borrar</a>
 		</td>
 	</tr>	
 		<%
