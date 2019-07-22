@@ -50,7 +50,7 @@
 				<div class="col-sm-4">
 					<input type="text" value="${video.nombre}"
 						class="form-control form-control-lg" name="nombre" id="nombre"
-						placeholder="Introduce el título del video">
+						placeholder="Mínimo 3 maximo 150">
 				</div>
 			</div>
 			<div class="form-group row">
@@ -60,7 +60,7 @@
 					<input type="text" value="${video.codigo}"
 						class=" form-control
 						form-control-lg" name="codigo" id="codigo"
-						placeholder="Introduce el código del video">
+						placeholder="Exactamente 11">
 				</div>
 			</div>
 			

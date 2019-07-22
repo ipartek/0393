@@ -1,6 +1,7 @@
 package com.ipartek.formacion.controller;
 
 import java.io.IOException;
+import java.util.Set;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -8,6 +9,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 
 import com.ipartek.formacion.controller.pojo.Alert;
 import com.ipartek.formacion.model.dao.YoutubeDAO;
@@ -38,17 +43,19 @@ public class YoutubeController extends HttpServlet {
 	
 	public static final String OP_FORM = "1";
 	public static final String OP_EDITAR = "2";
-
-	
 	
 	private static YoutubeDAO youtubeDAO;
 	private static String op;
 	
+	ValidatorFactory factory;
+	Validator validator;
 	
 	@Override
 	public void init(ServletConfig config) throws ServletException {	
 		super.init(config);
 		youtubeDAO = YoutubeDAO.getInstance(); 
+		factory = Validation.buildDefaultValidatorFactory();
+		validator = factory.getValidator();
 	}
 	
 	/**
@@ -154,26 +161,38 @@ public class YoutubeController extends HttpServlet {
 		v.setNombre(nombre);
 		v.setCodigo(codigo);
 		
-		//llama al DAO
-		//   si id == -1 => INSERT
-		//   si id > 0   => UPDATE
-		
-		try {
+		Set<ConstraintViolation<Youtube>> violations = validator.validate(v);
+		if (violations.isEmpty()){ //no hay violations de las validaciones, esta todo bien
+			//llama al DAO
+			//   si id == -1 => INSERT
+			//   si id > 0   => UPDATE
 			
-			if ( v.getId() == -1 ) {			
-				youtubeDAO.crear(v);
-			}else {
-				youtubeDAO.modificar(v);
-			}
-			request.setAttribute("mensaje", new Alert("success","Registro creado con exito"));
+			try {
+				if ( v.getId() == -1 ) {			
+					youtubeDAO.crear(v);
+					listar(request, response);
+				}else {
+					youtubeDAO.modificar(v);
+					listar(request, response);
+				}
+				request.setAttribute("mensaje", new Alert("success","Registro creado con exito"));
+				
+			}catch (Exception e) {
+				e.printStackTrace();
+				request.setAttribute("mensaje", new Alert("danger","Tenemos un problema " + e.getMessage() ));
+			}	
 			
-		}catch (Exception e) {
-			e.printStackTrace();
-			request.setAttribute("mensaje", new Alert("danger","Tenemos un problema " + e.getMessage() ));
-		}	
+			request.setAttribute("video", v );
+			
+		}else { //hay violaciones de las validaciones
+			request.setAttribute("mensaje", new Alert("warning", "Datos incorrectos"));
+		}
 		
-		request.setAttribute("video", v );
-		listar(request, response);
+		String mensaje ="";
+		 for (ConstraintViolation<Youtube> violation : violations) {
+			//+= es para que guarde varios mensajes y no los pise
+			mensaje+= violation.getPropertyPath()+":"+ violation.getMessage()+"<br>"; 
+		 }		
+		 request.setAttribute("mensaje", new Alert("warning",mensaje));
 	}	
-		
 }
