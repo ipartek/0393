@@ -28,9 +28,9 @@ public class YoutubeController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	
-	public static final String VIEW_INDEX = "youtube/index.jsp";
-	public static final String VIEW_FORM  = "youtube/formulario.jsp";
-	public static final String VIEW_DETALLE  = "youtube/detalle.jsp";
+	public static final String VIEW_INDEX = "backoffice/youtube/index.jsp";
+	public static final String VIEW_FORM  = "backoffice/youtube/formulario.jsp";
+	public static final String VIEW_DETALLE  = "backoffice/youtube/detalle.jsp";
 	public static String view  = VIEW_INDEX;
 		
 	
@@ -133,7 +133,11 @@ public class YoutubeController extends HttpServlet {
 			request.setAttribute("op", op);
 		}
 		
-		view = VIEW_FORM;
+		if(op.equals(OP_DETALLE)) {
+			view= VIEW_DETALLE;
+		}else {
+			view = VIEW_FORM;
+		}	
 	}	
 	
 

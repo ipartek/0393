@@ -14,17 +14,27 @@
 			<li class="nav-item active"><a class="nav-link" href="index.jsp">Inicio
 					<span class="sr-only">(current)</span>
 			</a></li>
-			<li class="nav-item"><a class="nav-link" href="#">Link</a></li>
 			<li class="nav-item dropdown"><a
 				class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
 				role="button" data-toggle="dropdown" aria-haspopup="true"
 				aria-expanded="false"> Youtube </a>
 				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 					<a class="dropdown-item" href="videos">Listado</a> <a
-						class="dropdown-item" href="youtube/formulario.jsp">Formulario</a>
-					<a class="dropdown-item" href="youtube/detalle.jsp">Detalle</a>
-				</div></li>
-
+						class="dropdown-item" href="videos?op=1">Formulario</a>
+					<a class="dropdown-item" href="videos?op=13">Detalle</a>
+				</div>
+			</li>	
+		</ul>
+		<ul class="navbar-nav mr-aut">
+		 
+	       	<c:if test="${usuario == null}">
+	        	<a class="nav-link" href="login.jsp">Login</a>
+	        </c:if>
+	        <c:if test="${usuario != null}">
+	        	<span class="nav-link text-light"><i class="fas fa-user"></i> Hola ${usuario}</span>
+	        	<a class="nav-link" href="logout">Logout</a>
+	        </c:if>		       
+	      
 		</ul>
 	</div> 
 	</div> <!-- end container -->

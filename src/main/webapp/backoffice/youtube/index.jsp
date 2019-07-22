@@ -1,23 +1,14 @@
 <%@page import="com.ipartek.formacion.controller.YoutubeController"%>
 <%@page import="com.ipartek.formacion.model.pojo.Youtube"%>
 <%@page import="java.util.ArrayList"%>
-<%@include file="../includes/header.jsp"%>
-<%@include file="../includes/navbar.jsp"%>
+<%@include file="../../includes/header.jsp"%>
+<%@include file="../../includes/navbar.jsp"%>
 
 <div class="row">
     <div class="col-10">
       <h1>Youtube</h1>
-      
-      <c:if test="${mensaje != null}">
-			<div class="alert alert-${mensaje.tipo} alert-dismissible fade show"
-				role="alert">
-				<p>${mensaje.texto}</p>
-				<button type="button" class="close" data-dismiss="alert"
-					aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-		</c:if>
+      <%@include file="../../includes/mensaje.jsp"%>
+     
       
     </div>
     <div class="col">
@@ -51,11 +42,14 @@
 	%>
 	<tr>
 		<td class="video">
-			<div class="embed-responsive embed-responsive-16by9">
+			<div class="embed-responsive">
+					<img alt="" class="rounded" src="https://img.youtube.com/vi/<%=video.getCodigo()%>/default.jpg">
+					<!-- 
 					<iframe class="embed-responsive-item"
 						src="https://www.youtube.com/embed/<%=video.getCodigo()%>?rel=0"
 						allowfullscreen>
 					</iframe>
+					 -->
 			</div>
 		</td>
 		<td class="align-middle">
@@ -73,4 +67,4 @@
 </tbody>
 </table>
 
-<%@include file="../includes/footer.jsp"%>
+<%@include file="../../includes/footer.jsp"%>
