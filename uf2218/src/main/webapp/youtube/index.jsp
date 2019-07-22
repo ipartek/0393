@@ -5,7 +5,7 @@
 
 	<h1>Listado Videos</h1>
 	
-	<a href="videos?op=<%=VideoController.OP_NUEVO%>">Nuevo Video</a>
+	<a href="videos?op=<%=VideoController.OP_NUEVO%>" class="mb-3 btn btn-outline-primary">Nuevo Video</a>
 	
 	<ul class="list-group">
 	  <c:forEach items="${videos}" var="v">	

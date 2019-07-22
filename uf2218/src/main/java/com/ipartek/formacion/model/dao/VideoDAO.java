@@ -139,29 +139,32 @@ public class VideoDAO {
 		}
 		return resultado;
 	}
+*/
 
-	private boolean crear(Rol pojo) throws MySQLIntegrityConstraintViolationException, MysqlDataTruncation {
+	public boolean crear(Video pojo) throws Exception {
 		boolean resultado = false;
-		String sql = "INSERT INTO `nidea`.`rol` (`nombre`) VALUES (?);";
+		String sql = "INSERT INTO videos (nombre, codigo) VALUES (?,?);";
 
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+		try (Connection con = ConnectionManager.getConnection(); 
+			 PreparedStatement pst = con.prepareStatement(sql)) {
 
 			pst.setString(1, pojo.getNombre());
+			pst.setString(2, pojo.getCodigo());
 
-			resultado = doSave(pst, pojo);
+			int affectedRows = pst.executeUpdate();
+			if ( affectedRows == 1 ) {
+				resultado = true;
+			}
 
-		} catch (MySQLIntegrityConstraintViolationException e) {
-			System.out.println("Rol duplicado");
-			throw e;
-		} catch (MysqlDataTruncation e) {
-			System.out.println("Nombre muy largo");
-			throw e;
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		return resultado;
 	}
+
+/*	
 
 	private boolean doSave(PreparedStatement pst, Rol pojo)
 			throws MySQLIntegrityConstraintViolationException, MysqlDataTruncation {

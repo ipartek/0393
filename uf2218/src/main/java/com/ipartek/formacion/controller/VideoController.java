@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ipartek.formacion.controller.pojo.Alert;
 import com.ipartek.formacion.model.dao.VideoDAO;
 import com.ipartek.formacion.model.pojo.Video;
 
@@ -120,6 +121,16 @@ public class VideoController extends HttpServlet {
 		v.setId(Integer.parseInt(sid));
 		v.setNombre(nombre);
 		v.setCodigo(codigo);
+		
+		try {
+			
+			videoDAO.crear(v);
+			request.setAttribute("mensaje", new Alert("success","Registro creado con exito"));
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			request.setAttribute("mensaje", new Alert("danger","Tenemos un problema " + e.getMessage() ));
+		}	
 		
 		request.setAttribute("video", v );
 		view = VIEW_FORM;	
