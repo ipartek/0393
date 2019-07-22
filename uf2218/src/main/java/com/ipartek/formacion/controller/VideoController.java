@@ -21,7 +21,7 @@ import com.ipartek.formacion.model.pojo.Video;
 /**
  * Servlet implementation class VideoController
  */
-@WebServlet("/videos")
+@WebServlet("/backoffice/videos")
 public class VideoController extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;

@@ -1,16 +1,16 @@
 <%@page import="com.ipartek.formacion.controller.VideoController"%>
 
-<%@include file="../includes/header.jsp"%>
-<%@include file="../includes/navbar.jsp"%>
+<%@include file="../../includes/header.jsp"%>
+<%@include file="../../includes/navbar.jsp"%>
 
 	<h1>Detalle Video</h1>
 	
 	<div class="row">
 		<div class="col">
 		
-			<%@include file="../includes/mensaje.jsp"%>
+			<%@include file="../../includes/mensaje.jsp"%>
 			
-			<form action="videos" method="post" class="mb-2">
+			<form action="backoffice/videos" method="post" class="mb-2">
 			
 				<input type="hidden" name="op" value="<%=VideoController.OP_GUARDAR%>">
 			
@@ -60,7 +60,7 @@
 				      </div>
 				      <div class="modal-footer">
 				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-			        	<form action="videos" method="post">	
+			        	<form action="backoffice/videos" method="post">	
 							<input type="hidden" name="op" value="<%=VideoController.OP_ELIMINAR%>">
 							<input type="hidden" name="id" value="${video.id}" readonly>			
 							<input type="submit" value="Eliminar" class="btn btn-danger btn-block">	
@@ -94,4 +94,4 @@
 		</div>
 	</div>
 	
-<%@include file="../includes/footer.jsp"%>
+<%@include file="../../includes/footer.jsp"%>

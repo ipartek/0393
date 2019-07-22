@@ -6,21 +6,29 @@
 	
 	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
 	    <ul class="navbar-nav mr-auto">
-	      <li class="nav-item active">
+	      <li class="nav-item">
 	        <a class="nav-link" href="index.jsp">Inicio</a>
 	      </li>
-	       <li class="nav-item active">
-	        <a class="nav-link" href="videos">Videos</a>
+	       <li class="nav-item">
+	        <a class="nav-link" href="backoffice/videos">Videos</a>
 	      </li>	 	      
-	       <li class="nav-item active">
+	       
 	       	<c:if test="${usuario == null}">
-	        	<a class="nav-link" href="login.jsp">Login</a>
+	       		<li class="nav-item">
+	        		<a class="nav-link" href="login.jsp">Login</a>
+	        	</li>	
 	        </c:if>
+        
 	        <c:if test="${usuario != null}">
-	        	<span>${usuario}</span>
-	        	<a class="nav-link" href="logout">Logout</a>
+	        	<li class="nav-item">	        		
+	        			${usuario}
+	        			<i class="fas fa-user"></i>	        		
+	        	</li>
+	        	<li class="nav-item">
+	        		<a class="nav-link" href="logout"><i class="fas fa-sign-out-alt"></i> Salir</a>
+	        	</li>
 	        </c:if>		       
-	      </li>	 	            
+	      
 	    </ul>	   
 	  </div>
 	</nav>

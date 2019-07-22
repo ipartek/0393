@@ -3,7 +3,7 @@
     
    	<h1>Login</h1>
    	
-   	${mensaje}
+   	<%@include file="includes/mensaje.jsp"%>
    	
    	<form action="login" method="post">
    	
