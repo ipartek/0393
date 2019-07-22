@@ -1,6 +1,7 @@
 package com.ipartek.formacion.controller;
 
 import java.io.IOException;
+import java.util.Set;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -8,6 +9,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 
 import com.ipartek.formacion.controller.pojo.Alert;
 import com.ipartek.formacion.model.dao.VideoDAO;
@@ -32,13 +37,16 @@ public class VideoController extends HttpServlet {
 	public static final String OP_DETALLE = "13";
 	
 	private static VideoDAO videoDAO;
+		
+	private Validator validator;
 	
        
   
 	@Override
 	public void init(ServletConfig config) throws ServletException {	
 		super.init(config);
-		videoDAO = VideoDAO.getInstance(); 
+		videoDAO = VideoDAO.getInstance();	
+		validator = Validation.buildDefaultValidatorFactory().getValidator();		
 	}
 	
 	/**
@@ -123,20 +131,32 @@ public class VideoController extends HttpServlet {
 		v.setNombre(nombre);
 		v.setCodigo(codigo);
 		
-		try {
-			
-			if ( v.getId() == -1 ) {			
-				videoDAO.crear(v);
-			}else {
-				videoDAO.modificar(v);
-			}
-			request.setAttribute("mensaje", new Alert("success","Registro creado con exito"));
-			
-		}catch (Exception e) {
-			e.printStackTrace();
-			request.setAttribute("mensaje", new Alert("danger","Tenemos un problema " + e.getMessage() ));
-		}	
+		Set<ConstraintViolation<Video>> violations = validator.validate(v);
+		if ( violations.isEmpty() ) {
 		
+			try {
+				
+				if ( v.getId() == -1 ) {				
+					videoDAO.crear(v);
+				}else {
+					videoDAO.modificar(v);
+				}
+				request.setAttribute("mensaje", new Alert("success","Registro creado con exito"));
+				
+			}catch (Exception e) {
+				
+				request.setAttribute("mensaje", new Alert("danger","Tenemos un problema, el codigo ya existe" ));
+			}
+			
+		}else {  // hay violaciones de las validaciones
+			
+			String mensaje = "";
+			
+			for (ConstraintViolation<Video> violation : violations) {
+				mensaje += violation.getPropertyPath() +": " + violation.getMessage() +"<br>";
+			}
+			request.setAttribute("mensaje", new Alert("warning", mensaje ));
+		}
 		request.setAttribute("video", v );
 		view = VIEW_FORM;	
 		

@@ -21,12 +21,16 @@
 				
 				<div class="form-group">
 					<label for="nombre">Nombre:</label>
-					<input type="text" name="nombre" value="${video.nombre}" class="form-control">
+					<input type="text" name="nombre" value="${video.nombre}"
+					       placeholder="Mínimio 3 máximo 150"
+					       class="form-control">
 				</div>
 				
 				<div class="form-group">
 					<label for="codigo">Codigo:</label>
-					<input type="text" name="codigo" value="${video.codigo}" class="form-control">
+					<input type="text" name="codigo" value="${video.codigo}"
+					       placeholder="Exactamente 11" 
+						   class="form-control">
 				</div>	
 			
 				<input type="submit" value="${(video.id != -1)?'Modificar':'Crear'}" class="btn btn-outline-primary  btn-block">

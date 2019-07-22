@@ -135,9 +135,7 @@ public class VideoDAO {
 				resultado = true;
 			}
 		
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		} 
 		return resultado;
 	}
 
@@ -158,9 +156,6 @@ public class VideoDAO {
 				resultado = true;
 			}
 
-
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 
 		return resultado;
