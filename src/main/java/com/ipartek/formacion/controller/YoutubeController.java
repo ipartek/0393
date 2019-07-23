@@ -23,18 +23,16 @@ import com.ipartek.formacion.model.pojo.Youtube;
 /**
  * Servlet implementation class VideoController
  */
-@WebServlet("/videos")
+@WebServlet("/backoffice/videos")
 public class YoutubeController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	
-	public static final String VIEW_INDEX = "backoffice/youtube/index.jsp";
-	public static final String VIEW_FORM  = "backoffice/youtube/formulario.jsp";
-	public static final String VIEW_DETALLE  = "backoffice/youtube/detalle.jsp";
+	public static final String VIEW_INDEX = "youtube/index.jsp";
+	public static final String VIEW_FORM  = "youtube/formulario.jsp";
+	public static final String VIEW_DETALLE  = "youtube/detalle.jsp";
 	public static String view  = VIEW_INDEX;
 		
-	
-	
 	public static final String OP_LISTAR = "0";
 	public static final String OP_GUARDAR = "23";
 	public static final String OP_BORRAR = "4";
@@ -86,7 +84,7 @@ public class YoutubeController extends HttpServlet {
 		case OP_LISTAR:
 			listar(request,response);
 			break;
-		//estos llaman al formulario	
+		//llaman al formulario	
 		case OP_FORM: //llama al formulario para crear nuevo o modificar
 			detalle(request, response);
 			break;
@@ -96,7 +94,7 @@ public class YoutubeController extends HttpServlet {
 		case OP_DETALLE: //cargara el video entero
 			detalle(request, response);
 			break;
-		//los que hacen las acciones dentro del formulario
+		//Realizan las acciones dentro del formulario
 		case OP_GUARDAR:
 			guardar(request, response);
 			break;

@@ -42,13 +42,24 @@ public class LoginController extends HttpServlet {
 		if("admin".equals(usuario) && "admin".equals(password)){
 			//crear una sesion para el navegador
 			HttpSession session = request.getSession();
-			session.setAttribute("usuario", "Paco");
-
-			request.setAttribute("mensaje", new Alert("success","Ongi Etorri " + usuario ) );			
-			request.getRequestDispatcher("backoffice/index.jsp").forward(request, response);
+			//session.setMaxInactiveInterval(60 * 5); //5 minutos
+			
+			session.setAttribute("usuario", "usuario"+request.getLocalAddr());
+			
+			request.setAttribute("mensaje", new Alert("success","Ongi Etorri " + usuario ) );
+			
+			//guardamos a donde intentaba ir para que sea redirigido alli despues de loguearse
+			String callback = (String) request.getAttribute("callback");
+			if (callback==null) {
+				request.getRequestDispatcher("backoffice/index.jsp").forward(request, response);
+			}else {
+				session.removeAttribute("callback");
+				response.sendRedirect(callback);
+			}
+		
 		}else {
 			request.setAttribute("mensaje", new Alert("danger", "credenciales no correctas"));
-			request.getRequestDispatcher("login.jsp").forward(request, response);
+			request.getRequestDispatcher("/login.jsp").forward(request, response);
 		}
 	}
 

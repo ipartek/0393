@@ -19,9 +19,9 @@
 				role="button" data-toggle="dropdown" aria-haspopup="true"
 				aria-expanded="false"> Youtube </a>
 				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-					<a class="dropdown-item" href="videos">Listado</a> <a
-						class="dropdown-item" href="videos?op=1">Formulario</a>
-					<a class="dropdown-item" href="videos?op=13">Detalle</a>
+					<a class="dropdown-item" href="backoffice/videos">Listado</a> <a
+						class="dropdown-item" href="backoffice/videos?op=1">Formulario</a>
+					<a class="dropdown-item" href="backoffice/videos?op=13">Detalle</a>
 				</div>
 			</li>	
 		</ul>
