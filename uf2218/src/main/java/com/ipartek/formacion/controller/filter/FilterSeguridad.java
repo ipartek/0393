@@ -43,7 +43,12 @@ public class FilterSeguridad implements Filter {
 		HttpServletRequest req = (HttpServletRequest)request;
 		HttpServletResponse res = (HttpServletResponse)response;
 		
+		
+		
 		HttpSession session = req.getSession();
+		
+		session.setAttribute("callback", req.getRequestURI()  );
+		
 		
 		if ( session.getAttribute("usuario") != null ) {			
 			// pass the request along the filter chain
