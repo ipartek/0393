@@ -39,10 +39,21 @@ public class LoginController extends HttpServlet {
 			
 			
 			HttpSession session = request.getSession();
-			session.setAttribute("usuario", "Paco");
+			// session.setMaxInactiveInterval( 60 * 5 ); // 5 min
 			
-			request.setAttribute("mensaje", new Alert("success","Ongi Etorri " + usuario ) );			
-			request.getRequestDispatcher("backoffice/index.jsp").forward(request, response);
+			
+			session.setAttribute("usuario", "usuario"+request.getLocalAddr() );
+			
+			request.setAttribute("mensaje", new Alert("success","Ongi Etorri " + usuario ) );
+			
+			String callback = (String) session.getAttribute("callback");
+			
+			if ( callback == null ) {
+				request.getRequestDispatcher("backoffice/index.jsp").forward(request, response);
+			}else {
+				session.removeAttribute("callback");				
+				response.sendRedirect(callback);
+			}	
 			
 		}else {
 			
