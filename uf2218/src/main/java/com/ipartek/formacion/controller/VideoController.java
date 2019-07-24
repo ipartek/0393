@@ -1,6 +1,8 @@
 package com.ipartek.formacion.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Set;
 
 import javax.servlet.ServletConfig;
@@ -9,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -178,6 +181,15 @@ public class VideoController extends HttpServlet {
 		Video v = videoDAO.getById(id);
 		request.setAttribute("video", v );
 		view = VIEW_FORM;
+		
+		
+		HttpSession session = request.getSession();
+		HashMap<Integer,Video> videosVistos = (HashMap<Integer,Video>)session.getAttribute("videosVistos");
+		if ( videosVistos == null ) {
+			videosVistos = new HashMap<Integer,Video>();
+		}		
+		videosVistos.put(v.getId(), v);
+		session.setAttribute("videosVistos", videosVistos);
 		
 	}
 
