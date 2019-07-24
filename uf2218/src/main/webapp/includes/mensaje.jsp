@@ -5,4 +5,8 @@
 	    <span aria-hidden="true">&times;</span>
 	  </button>
 	</div>
+	
+	<% //despues de mostrar = null para no mostrar de nuevo %>
+	${mensaje=null}
+	
 </c:if>	
