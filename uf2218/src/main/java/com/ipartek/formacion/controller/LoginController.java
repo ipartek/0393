@@ -42,7 +42,7 @@ public class LoginController extends HttpServlet {
 			// session.setMaxInactiveInterval( 60 * 5 ); // 5 min
 			
 			
-			session.setAttribute("usuario", "usuario"+request.getLocalAddr() );
+			session.setAttribute("usuario", "usuario"+request.getRemoteAddr() );
 			
 			request.setAttribute("mensaje", new Alert("success","Ongi Etorri " + usuario ) );
 			

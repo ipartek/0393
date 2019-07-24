@@ -9,7 +9,7 @@
  <h1>BACKOFFICE</h1>
  
  
- <%=UsuariosLogeadosListener.nombre%>
+ <%=UsuariosLogeadosListener.usuariosLogeados%>
 
 
 <%@include file="../includes/footer.jsp"%>

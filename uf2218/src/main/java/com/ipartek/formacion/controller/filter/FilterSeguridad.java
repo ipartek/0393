@@ -57,7 +57,7 @@ public class FilterSeguridad implements Filter {
 			chain.doFilter(request, response);
 		}else {
 			//response redireccionar a login
-			session.setAttribute("mensaje", new Alert("danger", "Sesion Caducada, por favor inicia una"));
+			session.setAttribute("mensaje", new Alert("danger", "Por favor inicia session para poder acceder"));
 			res.sendRedirect( req.getContextPath() + "/login.jsp");
 		}	
 	}
