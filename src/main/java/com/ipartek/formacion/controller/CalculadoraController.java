@@ -25,9 +25,9 @@ public class CalculadoraController extends HttpServlet {
 	public static final String OP_MULTIPLICAR = "multiplicar";
 	public static final String OP_DIVIDIR = "dividir";
 	
-	private static double numero1= 0.0;
-	private static double numero2= 0.0;
-	private Double resultado = 0.0;
+	private static double numero1;
+	private static double numero2;
+	private Double resultado;
 	private static String op;
 	
     /**
@@ -77,23 +77,33 @@ public class CalculadoraController extends HttpServlet {
 			//TODO
 			break;
 		}
+		
 		request.setAttribute("op", op);
 		request.getRequestDispatcher(view).forward(request, response);
 
 	}
 
 	private void sumar(HttpServletRequest request, HttpServletResponse response) {
+		numero1=0.0;
+		numero2=0.0;
+		resultado =0.0;
 		String datoNum1= request.getParameter("numero1");
-		if(datoNum1.isEmpty()) {
-			numero1= resultado;
-		}else {
-			numero1 = Double.parseDouble(datoNum1);	
-		}
-		
 		String datoNum2= request.getParameter("numero2");
-		if(!datoNum2.isEmpty()) {
-			numero2 = Double.parseDouble(datoNum2);
-		}	
+		try {
+			if(!datoNum1.isEmpty()) {
+				numero1 = Double.parseDouble(datoNum1);	
+			}
+			if(!datoNum2.isEmpty()) {	
+				numero2 = Double.parseDouble(datoNum2);	
+			}	
+		
+		} catch (NumberFormatException e) {
+			numero1=0.0;
+			numero2=0.0;
+			resultado = 0.0;
+			request.setAttribute("mensaje", new Alert("warning", "Has introducido una valor no valido"));
+			
+		}
 		
 		resultado= numero1+numero2;
 		request.setAttribute("numero1", numero1 );
@@ -103,17 +113,26 @@ public class CalculadoraController extends HttpServlet {
 	}
 
 	private void restar(HttpServletRequest request, HttpServletResponse response) {
+		numero1=0.0;
+		numero2=0.0;
+		resultado =0.0;
 		String datoNum1= request.getParameter("numero1");
-		if(datoNum1.isEmpty()) {
-			numero1= resultado;
-		}else {
-			numero1 = Double.parseDouble(datoNum1);	
-		}
-		
 		String datoNum2= request.getParameter("numero2");
-		if(!datoNum2.isEmpty()) {
-			numero2 = Double.parseDouble(datoNum2);
-		}	
+		
+		try {
+			if(!datoNum1.isEmpty()) {
+				numero1 = Double.parseDouble(datoNum1);	
+			}
+			if(!datoNum2.isEmpty()) {	
+				numero2 = Double.parseDouble(datoNum2);	
+			}	
+		
+		} catch (Exception e) {
+			numero1=0.0;
+			numero2=0.0;
+			resultado = 0.0;
+			request.setAttribute("mensaje", new Alert("warning", "Has introducido una valor no valido"));
+		}
 		
 		resultado= numero1-numero2;
 		request.setAttribute("numero1", numero1 );
@@ -123,16 +142,26 @@ public class CalculadoraController extends HttpServlet {
 	}
 	
 	private void multiplicar(HttpServletRequest request, HttpServletResponse response) {
+		numero1=0.0;
+		numero2=0.0;
+		resultado =0.0;
 		String datoNum1= request.getParameter("numero1");
-		if(datoNum1.isEmpty()) {
-			numero1= resultado;
-		}else {
-			numero1 = Double.parseDouble(datoNum1);	
-		}
-		
 		String datoNum2= request.getParameter("numero2");
-		if(!datoNum2.isEmpty()) {
-			numero2 = Double.parseDouble(datoNum2);
+		
+		try {
+			if(!datoNum1.isEmpty()) {
+				numero1 = Double.parseDouble(datoNum1);	
+			}
+			if(!datoNum2.isEmpty()) {	
+				numero2 = Double.parseDouble(datoNum2);	
+			}	
+		
+		} catch (Exception e) {
+			numero1=0.0;
+			numero2=0.0;
+			resultado = 0.0;
+			request.setAttribute("mensaje", new Alert("warning", "Has introducido una valor no valido"));
+			
 		}	
 		
 		resultado= numero1*numero2;
@@ -143,28 +172,40 @@ public class CalculadoraController extends HttpServlet {
 	}
 	
 	private void dividir(HttpServletRequest request, HttpServletResponse response) {
+		numero1=0.0;
+		numero2=0.0;
+		resultado =0.0;
 		String datoNum1= request.getParameter("numero1");
-		if(datoNum1.isEmpty()) {
-			numero1= resultado;
-		}else {
-			numero1 = Double.parseDouble(datoNum1);	
-		}
-		
 		String datoNum2= request.getParameter("numero2");
-		if (datoNum2.equals("0.0")) {
-			request.setAttribute("mensaje", new Alert("danger","Error no se puede dividir entre 0"));
-			
-		}else {	
-			if(!datoNum2.isEmpty()) {
-				numero2 = Double.parseDouble(datoNum2);
-			} 
-			resultado= numero1/numero2;
+		try {
+			if(!datoNum1.isEmpty()) {
+				numero1 = Double.parseDouble(datoNum1);	
+			}
+			if (!datoNum1.equals("0.0")&& datoNum2.equals("0.0")) {
+				numero1=0.0;
+				numero2=0.0;
+				resultado =0.0;
+				request.setAttribute("mensaje", new Alert("danger","Error no se puede dividir entre 0"));	
+			}else{	
+				if(!datoNum2.isEmpty()) {	
+					numero2 = Double.parseDouble(datoNum2);	
+				}
+			}	
+		
+		} catch (Exception e) {
+			resultado = 0.0;
+			request.setAttribute("mensaje", new Alert("warning", "Has introducido una valor no valido"));
 		}
 		
+		if (!datoNum1.equals("0.0") && !datoNum2.equals("0.0")) {
+			resultado= numero1/numero2;
+		}else {
+			request.setAttribute("mensaje", new Alert("danger","Error no se puede dividir entre 0"));
+		}
+
 		request.setAttribute("numero1", numero1 );
 		request.setAttribute("numero2", numero2 );
-		request.setAttribute("resultado", resultado );
-		
+		request.setAttribute("resultado", resultado );		
 	}
 
 }
