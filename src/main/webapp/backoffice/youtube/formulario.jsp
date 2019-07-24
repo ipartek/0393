@@ -1,13 +1,13 @@
 <%@page import="com.ipartek.formacion.controller.YoutubeController"%>
 <%@include file="../../includes/header.jsp"%>
-<%@include file="../../includes/navbar.jsp"%>>
+<%@include file="../../includes/navbar.jsp"%>
 
 <h1>Formulario</h1>
 
 <div class="row">
 	<div class="col">
 	 	<%@include file="../../includes/mensaje.jsp"%>
-		<form action="videos" method="post">
+		<form action="backoffice/videos" method="post">
 			
 				<%
 					if (YoutubeController.OP_FORM.equals(request.getAttribute("op"))) {
@@ -31,37 +31,28 @@
 					}
 				%>
 			
-			<label for="id">Id:</label>
-		    <input name="id" value="${video.id}" readonly>
+  			 <input type="hidden" class="form-control" name="op" id="op" value="6">
+   			
+   			<div class="form-group">
+   				<input type="text" readonly="" class="form-control" name="id" id="id" placeholder="" value="${video.id}">
+  			</div>
+   			
+			<div class="form-group">
+			    <label for="inputTitulo" class="col-sm-3 col-form-label col-form-label-lg">Título</label>
+			    <input type="text" class="form-control" name="nombre" id="inputTitulo" placeholder="Mínimo 3 maximo 150" value="${video.nombre}">
+			 </div>
 		    
-			<div class="form-group row">
-				<label for="colFormLabelLg"
-					class="col-sm-3 col-form-label col-form-label-lg">Titulo</label>
-				<div class="col-sm-4">
-					<input type="text" value="${video.nombre}"
-						class="form-control form-control-lg" name="nombre" id="nombre"
-						placeholder="Mínimo 3 maximo 150">
-				</div>
-			</div>
-			<div class="form-group row">
-				<label for="colFormLabelLg"
-					class="col-sm-3 col-form-label col-form-label-lg">Codigo</label>
-				<div class="col-sm-4">
-					<input type="text" value="${video.codigo}"
-						class=" form-control
-						form-control-lg" name="codigo" id="codigo"
-						placeholder="Exactamente 11">
-				</div>
-			</div>
-			
-			
-		
-
+		    <div class="form-group">
+			    <label for="inputCodigo" class="col-sm-3 col-form-label col-form-label-lg">Código</label>
+			    <input type="text" class="form-control" name="codigo" id="inputTitulo" placeholder="Exactamente 11" value="${video.codigo}">
+			 </div>
+		    
 			<div class="form-group row">
 				<%
 					if (YoutubeController.OP_FORM.equals(request.getAttribute("op"))) {
 				%>
-				<button type="submit" class="btn btn-primary mb-2">Guardar</button>
+				<button type="submit" class="btn btn-primary mb-2 btn-block">Guardar</button>
+				
 				<%
 					}
 				%>
@@ -77,12 +68,12 @@
 				%>
 				<c:if test="${video.id != -1}">
 					<!-- Button trigger modal -->
-					<button type="button" class="btn btn-outline-danger btn-block" data-toggle="modal" data-target="#exampleModal">
+					<button type="button" class="btn btn-outline-danger btn-block" data-toggle="modal" data-target="#eliminar">
 					  Eliminar
 					</button>
 			
 					<!-- Modal -->
-					<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal fade" id="eliminar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 					  <div class="modal-dialog" role="document">
 					    <div class="modal-content">
 					      <div class="modal-header">

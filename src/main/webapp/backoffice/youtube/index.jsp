@@ -12,7 +12,7 @@
       
     </div>
     <div class="col">
-     <a class="btn btn-primary mt-2" href="videos?op=<%=YoutubeController.OP_FORM%>" role="button" title="anadir"><i class="fas fa-plus"></i> Añadir</a>
+     <a class="btn btn-primary mt-2" href="backoffice/videos?op=<%=YoutubeController.OP_FORM%>" role="button" title="anadir"><i class="fas fa-plus"></i> Añadir</a>
 
     </div>
 </div>
@@ -53,11 +53,40 @@
 			</div>
 		</td>
 		<td class="align-middle">
-			<a href="videos?op=<%=YoutubeController.OP_DETALLE%>&id=<%=video.getId()%>"><span class=""><%=video.getNombre()%></span></a>
+			<a href="backoffice/videos?op=<%=YoutubeController.OP_DETALLE%>&id=<%=video.getId()%>"><span class=""><%=video.getNombre()%></span></a>
 		</td>	
 		<td class="align-middle">
-		<a class="btn btn-success" href="videos?op=<%=YoutubeController.OP_FORM%>&id=<%=video.getId()%>" role="button" title="editar"><i class="fas fa-edit"></i> Editar</a>
-		<a class="btn btn-danger" href="videos?op=<%=YoutubeController.OP_BORRAR%>&id=<%=video.getId()%>" role="button" title="eliminar"><i class="fas fa-trash-alt"></i> Borrar</a>
+		<a class="btn btn-success" href="backoffice/videos?op=<%=YoutubeController.OP_FORM%>&id=<%=video.getId()%>" role="button" title="editar"><i class="fas fa-edit"></i> Editar</a>
+		<!-- 
+		<a class="btn btn-danger" href="backoffice/videos?op=<%=YoutubeController.OP_BORRAR%>&id=<%=video.getId()%>" role="button" title="eliminar"><i class="fas fa-trash-alt"></i> Borrar</a>
+		 -->
+		<a class="btn btn-danger text-light" role="button" title="eliminar" data-toggle="modal" data-target="#eliminar"><i class="fas fa-trash-alt"></i> Borrar</a>
+		
+		<!-- Modal -->
+					<div class="modal fade" id="eliminar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					  <div class="modal-dialog" role="document">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <h5 class="modal-title" id="exampleModalLabel">¿Estas Seguro de ELIMINAR el registro?</h5>
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					          <span aria-hidden="true">&times;</span>
+					        </button>
+					      </div>
+					      <div class="modal-body">
+					        <p>Cuidado porque operación no es reversible</p>
+					      </div>
+					      <div class="modal-footer">
+				        	<form action="backoffice/videos" method="post">	
+								<input type="hidden" name="op" value="<%=YoutubeController.OP_ELIMINAR%>">
+								<input type="hidden" name="id" value="<%=video.getId()%>" readonly>			
+								<input type="submit" value="Eliminar" class="btn btn-danger btn-block">	
+							</form>
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					      </div>
+					    </div>
+					  </div>
+					</div>	
+
 		</td>
 	</tr>	
 		<%

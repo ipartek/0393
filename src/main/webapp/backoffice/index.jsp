@@ -6,9 +6,10 @@
 <h1>BACKOFFICE</h1>
 
 <%=UsuariosLogeadosListener.nombre %>
+<%=UsuariosLogeadosListener.usuariosLogeados%>
 
 <ul>
-<c:forEach items="${UsuariosLogeadosListener.nombres}" var="v">
+<c:forEach items="${UsuariosLogeadosListener.usuariosLogeados}" var="v">
 				<li>${v}</li>
 </c:forEach>
 </ul>

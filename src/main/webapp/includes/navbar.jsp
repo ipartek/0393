@@ -12,16 +12,23 @@
 	
 		<ul class="navbar-nav mr-auto">
 			<li class="nav-item active"><a class="nav-link" href="index.jsp">Inicio
-					<span class="sr-only">(current)</span>
-			</a></li>
+					<span class="sr-only">(current)</span></a>
+			</li>
+			<c:if test="${usuario != null}">
+	        	<li class="nav-item active"><a class="nav-link" href="backoffice/index.jsp">Backoffice</a>
+			</li>
+	        </c:if>
+	        <li class="nav-item active"><a class="nav-link" href="backoffice/videos">Videos</a>
+	        <!-- 
 			<li class="nav-item dropdown"><a
 				class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
 				role="button" data-toggle="dropdown" aria-haspopup="true"
 				aria-expanded="false"> Youtube </a>
 				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-					<a class="dropdown-item" href="backoffice/videos">Listado</a> <a
-						class="dropdown-item" href="backoffice/videos?op=1">Formulario</a>
+					<a class="dropdown-item" href="backoffice/videos">Listado</a>	
+					<a class="dropdown-item" href="backoffice/videos?op=1">Formulario</a>
 					<a class="dropdown-item" href="backoffice/videos?op=13">Detalle</a>
+					-->
 				</div>
 			</li>	
 		</ul>
@@ -40,4 +47,4 @@
 	</div> <!-- end container -->
 </nav>
 <!-- end navbar -->
-<main class="container mb-5">
+<main class="container pt-2 mb-5">
