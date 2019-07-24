@@ -8,6 +8,8 @@ import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
+import com.ipartek.formacion.model.pojo.Youtube;
+
 /**
  * Application Lifecycle Listener implementation class UsuariosLogeadosListener
  *
@@ -16,7 +18,7 @@ import javax.servlet.http.HttpSessionListener;
 public class UsuariosLogeadosListener implements HttpSessionListener, HttpSessionAttributeListener {
 
 	public static String nombre= "Variable publica y estatica, TODO lo mismo pero para una coleccion";
-	public static ArrayList<String> listaNombres = new ArrayList();
+	public static ArrayList<String> usuariosLogeados = new ArrayList<String>();
 
     /**
      * Default constructor. 
@@ -44,15 +46,20 @@ public class UsuariosLogeadosListener implements HttpSessionListener, HttpSessio
      * @see HttpSessionAttributeListener#attributeAdded(HttpSessionBindingEvent)
      */
     public void attributeAdded(HttpSessionBindingEvent event)  { 
-         // TODO Auto-generated method stub
-    	//alguien ha hecho request.setAttribute()
+    	//pasa por aqui cuando se hace un request.setAttribute()
+    	if ("usuario".equals(event.getName())) {
+    		usuariosLogeados.add((String)event.getValue());
+    	}
+    	//usuarios.add(event.getSession().getAttribute("usuario").toString());
     }
 
 	/**
      * @see HttpSessionAttributeListener#attributeRemoved(HttpSessionBindingEvent)
      */
     public void attributeRemoved(HttpSessionBindingEvent event)  { 
-         // TODO Auto-generated method stub
+    	if ("usuario".equals(event.getName())) {
+    		usuariosLogeados.remove((String)event.getValue());
+    	}
     }
 
 	/**

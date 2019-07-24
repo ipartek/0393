@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.ipartek.formacion.controller.pojo.Alert;
+
 /**
  * Servlet Filter implementation class FilterSeguridad
  */
@@ -43,8 +45,7 @@ public class FilterSeguridad implements Filter {
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		// TODO Auto-generated method stub
-		// place your code here
+		
 		HttpServletRequest req = (HttpServletRequest)request;
 		HttpServletResponse res = (HttpServletResponse)response;
 		
@@ -58,6 +59,7 @@ public class FilterSeguridad implements Filter {
 			// pass the request along the filter chain
 			chain.doFilter(request, response);
 		}else {
+			session.setAttribute("mensaje", new Alert("warning", "Sesión caducada, por favor inicia sesión para poder acceder"));
 			// response redirecciona a login
 			res.sendRedirect(req.getContextPath() + "/login.jsp");
 		}		

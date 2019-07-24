@@ -51,7 +51,8 @@ public class LoginController extends HttpServlet {
 			//guardamos a donde intentaba ir para que sea redirigido alli despues de loguearse
 			String callback = (String) request.getAttribute("callback");
 			if (callback==null) {
-				request.getRequestDispatcher("backoffice/index.jsp").forward(request, response);
+				//request.getRequestDispatcher("backoffice/index.jsp").forward(request, response);
+				request.getRequestDispatcher("backoffice/videos").forward(request, response);
 			}else {
 				session.removeAttribute("callback");
 				response.sendRedirect(callback);

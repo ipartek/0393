@@ -8,9 +8,9 @@
 <%=UsuariosLogeadosListener.nombre %>
 
 <ul>
-<c:forEach items="${UsuariosLogeadosListener.nombre}" var="nombre">
-				<li>${nombre}</li>
-			</c:forEach>
+<c:forEach items="${UsuariosLogeadosListener.nombres}" var="v">
+				<li>${v}</li>
+</c:forEach>
 </ul>
 
 
