@@ -57,7 +57,7 @@ public class CalculadoraController extends HttpServlet {
 
 		op = request.getParameter("op");
 		if (op == null) {
-			//TODO
+			request.setAttribute("mensaje", new Alert("warning", "Selecciona una operación"));
 		}
 
 		switch (op) {
@@ -103,13 +103,12 @@ public class CalculadoraController extends HttpServlet {
 			resultado = 0.0;
 			request.setAttribute("mensaje", new Alert("warning", "Has introducido una valor no valido"));
 			
+		}finally {
+			resultado= numero1+numero2;
+			request.setAttribute("numero1", numero1 );
+			request.setAttribute("numero2", numero2 );
+			request.setAttribute("resultado", resultado );
 		}
-		
-		resultado= numero1+numero2;
-		request.setAttribute("numero1", numero1 );
-		request.setAttribute("numero2", numero2 );
-		request.setAttribute("resultado", resultado );
-	
 	}
 
 	private void restar(HttpServletRequest request, HttpServletResponse response) {
@@ -132,13 +131,12 @@ public class CalculadoraController extends HttpServlet {
 			numero2=0.0;
 			resultado = 0.0;
 			request.setAttribute("mensaje", new Alert("warning", "Has introducido una valor no valido"));
+		}finally {
+			resultado= numero1-numero2;
+			request.setAttribute("numero1", numero1 );
+			request.setAttribute("numero2", numero2 );
+			request.setAttribute("resultado", resultado );
 		}
-		
-		resultado= numero1-numero2;
-		request.setAttribute("numero1", numero1 );
-		request.setAttribute("numero2", numero2 );
-		request.setAttribute("resultado", resultado );
-		
 	}
 	
 	private void multiplicar(HttpServletRequest request, HttpServletResponse response) {
@@ -162,13 +160,12 @@ public class CalculadoraController extends HttpServlet {
 			resultado = 0.0;
 			request.setAttribute("mensaje", new Alert("warning", "Has introducido una valor no valido"));
 			
-		}	
-		
-		resultado= numero1*numero2;
-		request.setAttribute("numero1", numero1 );
-		request.setAttribute("numero2", numero2 );
-		request.setAttribute("resultado", resultado );
-		
+		}finally {
+			resultado= numero1*numero2;
+			request.setAttribute("numero1", numero1 );
+			request.setAttribute("numero2", numero2 );
+			request.setAttribute("resultado", resultado );
+		}
 	}
 	
 	private void dividir(HttpServletRequest request, HttpServletResponse response) {

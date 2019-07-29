@@ -3,6 +3,7 @@
 <%@include file="../includes/navbar.jsp"%>
 
 <%@include file="../includes/mensaje.jsp"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>  <!-- el import para que formatee el resultado con comas -->
 
 <h1>Calculadora</h1>
 <form action="calculadora" method="post">
@@ -10,7 +11,7 @@
 		<label for="inputNum1"
 			class="col-sm-3 col-form-label col-form-label-lg">Número 1</label>
 			 <input
-			type="number" step="0.01" class="form-control" name="numero1" id="inputNum1"
+			type="number" step="0.001" class="form-control" name="numero1" id="inputNum1"
 			placeholder="Introduce un número" value="${numero1}">
 	</div>
 	
@@ -18,7 +19,7 @@
 		<label for="inputNum2"
 			class="col-sm-3 col-form-label col-form-label-lg">Número 2</label> 
 			<input
-			type="number" step="0.01" class="form-control" name="numero2" id="inputNum2"
+			type="number" step="0.001" class="form-control" name="numero2" id="inputNum2"
 			placeholder="Introduce un número" value="${numero2}">
 	</div>
 	<select name="op" class="form-control" value="${op}">
@@ -34,7 +35,8 @@
 </form>	
 	<div class="resultado">
 		<label for="resultado"
-			class="col-sm-3 col-form-label col-form-label-lg">Resultado: ${resultado}
+			class="col-sm-3 col-form-label col-form-label-lg">Resultado: 
+			<fmt:formatNumber type ="number" pattern="#,###.##" value="${resultado}"/>
 		</label>
 	</div>
 
