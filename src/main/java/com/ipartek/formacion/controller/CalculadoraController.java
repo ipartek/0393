@@ -56,10 +56,11 @@ public class CalculadoraController extends HttpServlet {
 			throws ServletException, IOException {
 
 		op = request.getParameter("op");
+		/*
 		if (op == null) {
 			request.setAttribute("mensaje", new Alert("warning", "Selecciona una operación"));
 		}
-
+		*/
 		switch (op) {
 		case OP_SUMAR:
 			sumar(request, response);
@@ -74,7 +75,7 @@ public class CalculadoraController extends HttpServlet {
 			dividir(request, response);
 			break;
 		default:
-			//TODO
+			request.setAttribute("mensaje", new Alert("warning", "Por favor selecciona una operación"));
 			break;
 		}
 		

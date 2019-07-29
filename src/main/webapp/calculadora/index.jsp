@@ -23,7 +23,7 @@
 			placeholder="Introduce un número" value="${numero2}">
 	</div>
 	<select name="op" class="form-control" value="${op}">
-		<option value="">Selecciona una operación</option>
+		<option value="0">Selecciona una operación</option>
  		<option value="<%= CalculadoraController.OP_SUMAR %>" ${(op==CalculadoraController.OP_SUMAR)?'selected':''}>Sumar</option>
  		<option value="<%= CalculadoraController.OP_RESTAR %>" ${(op==CalculadoraController.OP_RESTAR)?'selected':''}>Restar</option>
  		<option value="<%= CalculadoraController.OP_MULTIPLICAR %>" ${(op==CalculadoraController.OP_MULTIPLICAR)?'selected':''}>Multiplicar</option>
