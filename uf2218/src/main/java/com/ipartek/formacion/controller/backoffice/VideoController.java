@@ -1,4 +1,4 @@
-package com.ipartek.formacion.controller;
+package com.ipartek.formacion.controller.backoffice;
 
 import java.io.IOException;
 import java.util.ArrayList;
