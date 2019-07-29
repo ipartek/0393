@@ -15,7 +15,7 @@
 		<input type="text" name="num2" value="${num2}" placeholder="Escribe numero 2" class="form-control">
 		<br>
 		<select name="op" class="custom-select">
-			<option value="">-- selecciona opcion --</option>
+			<option value="-1">-- selecciona opcion --</option>
 			<c:forEach items="<%=CalculadoraController.OPERACIONES%>" var="operacion">
 				<option value="${operacion[0]}"  ${(operacion[0]==op)?"selected":""}  >${operacion[1]}</option>				
 			</c:forEach>
@@ -26,6 +26,12 @@
 	
 	</form>
 
-	<p>Resultado <span class="h1 text-primary">${resultado}</span></p>
+	<c:if test="${resultado != null and op != -1 }">
+		<p>Resultado
+			<span class="h1 text-primary">
+				<fmt:formatNumber value="${resultado}" pattern="#,###.##"/>
+			</span>
+		</p>
+	</c:if>
 
 <%@include file="../includes/footer.jsp"%>

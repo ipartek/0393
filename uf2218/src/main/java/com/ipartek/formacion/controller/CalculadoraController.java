@@ -65,10 +65,15 @@ public class CalculadoraController extends HttpServlet {
 				resultado = n1 * n2;
 				break;
 			case "4": // TODO mirar luego desde array
-				resultado = n1 / n2;
+				if ( n2 != 0 ) {
+					resultado = n1 / n2;
+				}else {
+					request.setAttribute("mensaje", new Alert("warning", "No se puede dividir por cero"));
+				}	
 				break;	
 	
 			default:
+				request.setAttribute("mensaje", new Alert("warning", "Por favor selecciona una opcion"));
 				break;
 			}
 			
@@ -76,16 +81,19 @@ public class CalculadoraController extends HttpServlet {
 			
 			request.setAttribute("mensaje", new Alert("danger", "Por favor escribe numeros"));
 			
+		}finally {
+		
+			request.setAttribute("resultado", resultado);
+			request.setAttribute("op", op);
+			request.setAttribute("num1", num1);
+			request.setAttribute("num2", num2);			
+			
+			request.getRequestDispatcher("ejemplos/calculadora.jsp").forward(request, response);
+			
 		}	
 		
 		
-		request.setAttribute("resultado", resultado);
-		request.setAttribute("op", op);
-		request.setAttribute("num1", num1);
-		request.setAttribute("num2", num2);
 		
-		
-		request.getRequestDispatcher("ejemplos/calculadora.jsp").forward(request, response);
 		
 	}
 	
