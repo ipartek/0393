@@ -11,9 +11,9 @@
 	
 	
 	<ol>
-		<li><a href="i18n?idiomaSeleccionado=es">IMAGEN BANDERA EGPAÑA</a></li>
-		<li><a href="i18n?idiomaSeleccionado=en">IMAGEN BANDERA EEUU</a></li>
-		<li><a href="i18n?idiomaSeleccionado=eu">IMAGEN IKURRINA</a></li>
+		<li><a href="i18n?idiomaSeleccionado=es_ES">IMAGEN BANDERA EGPAÑA</a></li>
+		<li><a href="i18n?idiomaSeleccionado=en_EN">IMAGEN BANDERA EEUU</a></li>
+		<li><a href="i18n?idiomaSeleccionado=eu_ES">IMAGEN IKURRINA</a></li>
 	</ol>
 	
 

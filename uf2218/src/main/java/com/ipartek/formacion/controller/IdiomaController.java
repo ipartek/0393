@@ -25,12 +25,16 @@ public class IdiomaController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		String idiomaSeleccionado = request.getParameter("idiomaSeleccionado");
+		String language = "en";
+		String country = "EN";
 		
-		if ( idiomaSeleccionado == null ) {
-			//TODO comprobar null
+		if ( idiomaSeleccionado != null ) {			
+			language = idiomaSeleccionado.split("_")[0];
+			country = idiomaSeleccionado.split("_")[1];
 		}
 		
-		Locale locale = new Locale("en_EN");		
+		
+		Locale locale = new Locale(language, country);		
 		ResourceBundle properties = ResourceBundle.getBundle ( "i18n/i18nmessages", locale );
 		
 		
