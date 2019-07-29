@@ -5,6 +5,10 @@
    	
    	<%@include file="includes/mensaje.jsp"%>
    	
+   		<p class="h3 text-danger"><fmt:message key="menu.ejemplos" /></p>
+	<p class="h3 text-danger"><fmt:message key="menu.inicio" /></p>
+   	
+   	
    	<ul class="list-group">
 	  <li class="list-group-item"><a href="ejemplos/basico.jsp">Ejemplo Servlet Basico sin JSP</a></li>
 	  <li class="list-group-item"><a href="ejemplos/basico2.jsp">Ejemplo Servlet Basico con JSP</a></li>

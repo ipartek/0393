@@ -3,6 +3,23 @@
 
 <%@page errorPage="error.jsp" %>  
 
+
+
+	<%
+		// Gestion del idioma
+	%>
+
+	<c:set var="idiomaSeleccionado" 
+		   value="${not empty sessionScope.idiomaSeleccionado ? sessionScope.idiomaSeleccionado : 'eu_ES'}" 
+		   scope="session" />
+	
+	<fmt:setLocale value="${idiomaSeleccionado}" />
+	<fmt:setBundle basename="i18n.i18nmessages" /> 
+
+	<%
+		// end Gestion del idioma
+	%>
+
 <!doctype html>
 <html lang="en">
   <head>

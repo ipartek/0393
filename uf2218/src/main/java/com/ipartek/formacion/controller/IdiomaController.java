@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class IdiomaController
@@ -32,10 +33,13 @@ public class IdiomaController extends HttpServlet {
 			language = idiomaSeleccionado.split("_")[0];
 			country = idiomaSeleccionado.split("_")[1];
 		}
-		
-		
+				
 		Locale locale = new Locale(language, country);		
 		ResourceBundle properties = ResourceBundle.getBundle ( "i18n/i18nmessages", locale );
+		
+		// guardar en session idioma seleccionado para las JSPs
+		HttpSession session = request.getSession();
+		session.setAttribute("idiomaSeleccionado", idiomaSeleccionado);
 		
 		
 		request.setAttribute("mensajeIdioma", properties.getString("menu.inicio") );

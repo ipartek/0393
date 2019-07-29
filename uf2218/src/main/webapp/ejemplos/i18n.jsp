@@ -7,6 +7,9 @@
 
 	<h1>Idiomas</h1>
 	
+	
+	<h2>Recuperar properties desde Servlet</h2>
+	
 	${mensajeIdioma}
 	
 	
@@ -15,6 +18,20 @@
 		<li><a href="i18n?idiomaSeleccionado=en_EN">IMAGEN BANDERA EEUU</a></li>
 		<li><a href="i18n?idiomaSeleccionado=eu_ES">IMAGEN IKURRINA</a></li>
 	</ol>
+	
+	
+	<h2>Recuperar properties desde JSP</h2>
+	
+	<%
+		//@see includes/header.jsp para la gestion del idioma
+	%>
+	
+	<p>locale:  ${locale}</p>
+	
+	<p class="h3 text-danger"><fmt:message key="menu.ejemplos" /></p>
+	<p class="h3 text-danger"><fmt:message key="menu.inicio" /></p>
+	
+	
 	
 
 <%@include file="../includes/footer.jsp"%>
