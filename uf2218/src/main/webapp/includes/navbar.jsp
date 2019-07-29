@@ -8,7 +8,7 @@
 	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
 	    <ul class="navbar-nav mr-auto">
 	      <li class="nav-item">
-	        <a class="nav-link" href="index.jsp">Inicio</a>
+	        <a class="nav-link" href="index.jsp"><fmt:message key="menu.inicio" /></a>
 	      </li>
 	       <li class="nav-item">
 	        <a class="nav-link" href="backoffice/videos">Videos</a>
@@ -47,6 +47,12 @@
 	  </div>
 	</nav>
     <!-- end navar -->
+    
+    <nav class="bg-dark">
+    	<a href="i18n?idiomaSeleccionado=en_EN&ruta=${pageContext.request.requestURI}"><img src="resources/img/british.png" alt="" class="${sessionScope.idiomaSeleccionado != 'en_EN' ? 'inactive': ''  }"></a>
+    	<a href="i18n?idiomaSeleccionado=eu_ES&ruta=${pageContext.request.requestURI}"><img src="resources/img/euskadi.png" alt="" class="${sessionScope.idiomaSeleccionado != 'eu_ES' ? 'inactive': ''  }"></a>
+    	<a href="i18n?idiomaSeleccionado=es_ES&ruta=${pageContext.request.requestURI}"><img src="resources/img/Spain.png" alt="" class="${sessionScope.idiomaSeleccionado != 'es_ES' ? 'inactive': ''  }"></a> 
+    </nav>
     
     
     <main class="container">

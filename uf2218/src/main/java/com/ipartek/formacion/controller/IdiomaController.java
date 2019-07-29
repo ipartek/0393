@@ -26,6 +26,11 @@ public class IdiomaController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		String idiomaSeleccionado = request.getParameter("idiomaSeleccionado");
+		
+		String ruta = request.getParameter("ruta");
+		ruta = ruta.split("uf2218/")[1];
+		
+		
 		String language = "en";
 		String country = "EN";
 		
@@ -46,7 +51,11 @@ public class IdiomaController extends HttpServlet {
 		
 		// request.setAttribute("mensajeIdioma", idiomaSeleccionado);
 		
-		request.getRequestDispatcher("ejemplos/i18n.jsp").forward(request, response);
+		if ( ruta != null ) {
+			request.getRequestDispatcher(ruta).forward(request, response);
+		}else {
+			request.getRequestDispatcher("index.jsp").forward(request, response);
+		}	
 		
 		
 	}
