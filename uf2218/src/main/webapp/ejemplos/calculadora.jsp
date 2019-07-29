@@ -8,13 +8,13 @@
 	<h1>Calculadora</h1>
 	
 	
-	<form action="calcular" method="get">
+	<form action="calcular" method="get" class="col-4">
 	
-		<input type="text" name="num1" value="${num1}" placeholder="Escribe numero 1">
+		<input type="text" name="num1" value="${num1}" placeholder="Escribe numero 1" class="form-control">
 		<br>
-		<input type="text" name="num2" value="${num2}" placeholder="Escribe numero 2">
+		<input type="text" name="num2" value="${num2}" placeholder="Escribe numero 2" class="form-control">
 		<br>
-		<select name="op">
+		<select name="op" class="custom-select">
 			<option value="">-- selecciona opcion --</option>
 			<c:forEach items="<%=CalculadoraController.OPERACIONES%>" var="operacion">
 				<option value="${operacion[0]}"  ${(operacion[0]==op)?"selected":""}  >${operacion[1]}</option>				
@@ -22,10 +22,10 @@
 		</select>
 		<br>
 			
-		<input type="submit" value="Calcular">
+		<input type="submit" class="btn btn-block btn-outline-primary mt-3" value="Calcular">
 	
 	</form>
 
-	<p>Resultado <span style="color:teal; font-size: 2em;">${resultado}</span></p>
+	<p>Resultado <span class="h1 text-primary">${resultado}</span></p>
 
 <%@include file="../includes/footer.jsp"%>
