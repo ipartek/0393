@@ -11,14 +11,14 @@
 	<div class="collapse navbar-collapse" id="navbarSupportedContent">
 	
 		<ul class="navbar-nav mr-auto">
-			<li class="nav-item active"><a class="nav-link" href="index.jsp">Inicio
+			<li class="nav-item active"><a class="nav-link" href="index.jsp" > <fmt:message key="menu.inicio"/>
 					<span class="sr-only">(current)</span></a>
 			</li>
 			<c:if test="${usuario != null}">
 	        	<li class="nav-item active"><a class="nav-link" href="backoffice/index.jsp">Backoffice</a>
 			</li>
 	        </c:if>
-	        <li class="nav-item active"><a class="nav-link" href="backoffice/videos">Videos</a>
+	        <li class="nav-item active"><a class="nav-link" href="backoffice/videos">${mensajeVideo}</a>
 	        <!-- 
 			<li class="nav-item dropdown"><a
 				class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
@@ -32,7 +32,7 @@
 				</div>
 			</li>	
 		</ul>
-		<ul class="navbar-nav mr-aut">
+		<ul class="navbar-nav mr-auto">
 		 
 	       	<c:if test="${usuario == null}">
 	        	<a class="nav-link" href="login.jsp">Login</a>
@@ -47,4 +47,13 @@
 	</div> <!-- end container -->
 </nav>
 <!-- end navbar -->
+
+<!-- navbar idiomas -->
+<div class="d-flex flex-row-reverse bd-highlight container">
+  <div class="p-2"><a href="i18n?idiomaSeleccionado=es_ES&ruta=${pageContext.request.requestURI}"><img alt="es" src="resources/img/Spain.png" class="${sessionScope.idiomaSeleccionado != 'es_ES' ? 'inactive':'' }" width=25px></a></div>
+  <div class="p-2"><a href="i18n?idiomaSeleccionado=en_EN&ruta=${pageContext.request.requestURI}"><img alt="es" src="resources/img/british.png" class="${sessionScope.idiomaSeleccionado != 'en_EN' ? 'inactive':'' }" width=25px></a></div>
+  <div class="p-2"><a href="i18n?idiomaSeleccionado=eu_ES&ruta=${pageContext.request.requestURI}"><img alt="es" src="resources/img/euskadi.png"  class="${sessionScope.idiomaSeleccionado != 'eu_ES' ? 'inactive':'' }" width=25px ></a></div>
+</div>
+
+<!-- end navbar idiomas -->
 <main class="container pt-2 mb-5">

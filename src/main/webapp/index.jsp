@@ -20,6 +20,7 @@
 	<li class="list-group-item"><a href="ejemplos/el.jsp">EL - Expression Language</a></li>
 	<li class="list-group-item"><a href="calculadora/index.jsp">Calculadora</a></li>
 	<li class="list-group-item"><a href="ahorcado/index.jsp">Ahorcado</a></li>
+	<li class="list-group-item"><a href="i18n">i18n - multidioma</a></li>
 	<li class="list-group-item">Session</li>
 	<li class="list-group-item">Cookies</li>
 	<li class="list-group-item">Filtros</li>

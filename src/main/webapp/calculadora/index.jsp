@@ -3,7 +3,6 @@
 <%@include file="../includes/navbar.jsp"%>
 
 <%@include file="../includes/mensaje.jsp"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>  <!-- el import para que formatee el resultado con comas -->
 
 <h1>Calculadora</h1>
 <form action="calculadora" method="post">

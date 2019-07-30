@@ -30,3 +30,9 @@ table td.video{
 .error-404 .m-t-20 {
   margin-top: 20px!important;
 }
+
+/*iconos para la gestión de idiomas*/
+img.inactive { /* para toda imagen clase active*/
+  -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+  filter: grayscale(100%);
+}
