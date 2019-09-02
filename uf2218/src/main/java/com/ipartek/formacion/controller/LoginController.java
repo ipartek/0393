@@ -1,6 +1,7 @@
 package com.ipartek.formacion.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -12,7 +13,9 @@ import javax.servlet.http.HttpSession;
 
 import com.ipartek.formacion.controller.pojo.Alert;
 import com.ipartek.formacion.model.dao.UsuarioDAO;
+import com.ipartek.formacion.model.dao.VideoDAO;
 import com.ipartek.formacion.model.pojo.Usuario;
+import com.ipartek.formacion.model.pojo.Video;
 
 /**
  * Servlet implementation class LoginController
@@ -20,7 +23,8 @@ import com.ipartek.formacion.model.pojo.Usuario;
 @WebServlet("/login")
 public class LoginController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static UsuarioDAO usuarioDAO = UsuarioDAO.getInstance();;
+	private static UsuarioDAO usuarioDAO = UsuarioDAO.getInstance();
+	private static VideoDAO videoDAO = VideoDAO.getInstance();
 	
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -54,9 +58,14 @@ public class LoginController extends HttpServlet {
 			String callback = (String) session.getAttribute("callback");
 			
 			if ( callback == null ) {
+				
 				//llamar el dao video
-				request.setAttribute("numeroVideos", 3);
-				request.setAttribute("numeroUsuarios", 3);
+				
+				ArrayList<Video> listaVideos = videoDAO.getAll();
+				ArrayList<Usuario> listaUsuarios = usuarioDAO.getAll();
+				
+				request.setAttribute("numeroVideos", listaVideos.size());
+				request.setAttribute("numeroUsuarios", listaUsuarios.size());
 				
 				
 				request.getRequestDispatcher("backoffice/index.jsp").forward(request, response);
