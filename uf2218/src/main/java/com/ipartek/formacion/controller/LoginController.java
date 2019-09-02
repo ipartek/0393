@@ -51,8 +51,8 @@ public class LoginController extends HttpServlet {
 		String contrasena = request.getParameter("contrasena");
 		
 		Usuario usuario = usuarioDAO.existe(nombre, contrasena);
-		int numeroUsuarios = usuarioDAO.sacarNumUser();
-		int numeroVideos = videoDAO.sacarNumVideo();
+		int numeroUsuarios = usuarioDAO.getAll().size();
+		int numeroVideos = videoDAO.getAll().size();
 		
 		if ( usuario != null) {
 			

@@ -50,7 +50,7 @@ public class VideoDAO {
 		return lista;
 	}
 	
-	public int sacarNumVideo() {
+	/*public int sacarNumVideo() {
 		
 		int numVideo = 0;
 		
@@ -69,7 +69,7 @@ public class VideoDAO {
 		}
 		
 		return numVideo;
-	}
+	}*/
 
 	
 	public Video getById(int id) {

@@ -6,7 +6,7 @@
    	<%@include file="includes/mensaje.jsp"%>
    	
    	<div class="d-flex align-content-center">
-	   	<form action="login" method="post" class="col-4">
+	   	<form action="login" method="post" class="">
 	   		<div class="form-group">
 	   			<input class="form-control" type="text" name="nombre" autofocus placeholder="Tu Nombre Usuario">
 	   		</div>
