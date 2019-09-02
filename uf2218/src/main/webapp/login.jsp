@@ -5,14 +5,21 @@
    	
    	<%@include file="includes/mensaje.jsp"%>
    	
+   	
+   	<div class="flex">
+   	
+   	
    	<form action="login" method="post">
    	
-   		<input type="text" name="usuario" placeholder="Tu Nombre Usuario">
-   		<br>
-   		<input type="password" name="pass" placeholder="Contraseña">
-   		<br>
-   		<input type="submit" value="Entrar">
    	
+   	<div class="form-group">
+   		<input type="text" name="nombre" autofocus placeholder="Tu Nombre Usuario" class="form-control">
+   		<br>
+   		<input type="password" name="contrasena" placeholder="Contraseña" class="form-control">
+   		<br>
+   		<input type="submit" value="Entrar" class="btn btn-block btn-primary">
+   	</div>
    	</form>
+   	</div>
     	    	
 <%@include file="includes/footer.jsp"%>   
