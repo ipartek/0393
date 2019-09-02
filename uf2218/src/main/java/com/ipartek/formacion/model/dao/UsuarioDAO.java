@@ -57,14 +57,32 @@ public class UsuarioDAO {
 				
 			}
 			
-			
-			
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
 		return usuario;
+	}
+	
+	public int sacarNumUser() {
+		
+		int numUser = 0;
+		
+		String sql = " SELECT COUNT(*) FROM usuario;";
+		
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(sql);
+				ResultSet rs = pst.executeQuery()
+			){
+			if (rs.next()) {
+				numUser = rs.getInt(1);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return numUser;
 	}
 
 }

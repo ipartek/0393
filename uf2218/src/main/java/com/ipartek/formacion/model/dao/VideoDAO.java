@@ -49,6 +49,27 @@ public class VideoDAO {
 		}
 		return lista;
 	}
+	
+	public int sacarNumVideo() {
+		
+		int numVideo = 0;
+		
+		String sql = " SELECT COUNT(*) FROM video;";
+		
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(sql);
+				ResultSet rs = pst.executeQuery()
+			){
+			if (rs.next()) {
+				numVideo = rs.getInt(1);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return numVideo;
+	}
 
 	
 	public Video getById(int id) {

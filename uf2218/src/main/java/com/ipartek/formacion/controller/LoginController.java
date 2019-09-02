@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import com.ipartek.formacion.controller.pojo.Alert;
 import com.ipartek.formacion.model.dao.UsuarioDAO;
+import com.ipartek.formacion.model.dao.VideoDAO;
 import com.ipartek.formacion.model.pojo.Usuario;
 
 /**
@@ -22,12 +23,14 @@ public class LoginController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private static UsuarioDAO usuarioDAO;
+	private static VideoDAO videoDAO;
     
 	
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		usuarioDAO = UsuarioDAO.getInstance();
+		videoDAO = VideoDAO.getInstance();
 	}
    
 
@@ -48,6 +51,8 @@ public class LoginController extends HttpServlet {
 		String contrasena = request.getParameter("contrasena");
 		
 		Usuario usuario = usuarioDAO.existe(nombre, contrasena);
+		int numeroUsuarios = usuarioDAO.sacarNumUser();
+		int numeroVideos = videoDAO.sacarNumVideo();
 		
 		if ( usuario != null) {
 			
@@ -55,6 +60,8 @@ public class LoginController extends HttpServlet {
 			// session.setMaxInactiveInterval( 60 * 5 ); // 5 min
 			
 			session.setAttribute("usuario", usuario );
+			session.setAttribute("numeroUsuarios", numeroUsuarios);
+			session.setAttribute("numeroVideos", numeroVideos);
 			
 			request.setAttribute("mensaje", new Alert("success","Ongi Etorri " + usuario.getNombre() ) );
 			
@@ -63,8 +70,8 @@ public class LoginController extends HttpServlet {
 			if ( callback == null ) {
 				
 				//TODO llamar DAO de videos
-				request.setAttribute("numeroVideos", 3);
-				request.setAttribute("numeroUsuarios", 66);
+				request.setAttribute("numeroVideos", numeroVideos);
+				request.setAttribute("numeroUsuarios", numeroUsuarios);
 				request.getRequestDispatcher("backoffice/index.jsp").forward(request, response);
 			}else {
 				session.removeAttribute("callback");				
