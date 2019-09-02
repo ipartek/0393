@@ -1,4 +1,4 @@
-<%@page import="com.ipartek.formacion.controller.VideoController"%>
+<%@page import="com.ipartek.formacion.controller.backoffice.VideoController"%>
 
 <%@include file="../../includes/header.jsp"%>
 <%@include file="../../includes/navbar.jsp"%>

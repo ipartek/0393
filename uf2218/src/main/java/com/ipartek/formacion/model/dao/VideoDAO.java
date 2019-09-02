@@ -17,7 +17,7 @@ public class VideoDAO {
 		super();
 	}
 
-	public static VideoDAO getInstance() {
+	public static synchronized VideoDAO getInstance() {
 		if (INSTANCE == null) {
 			INSTANCE = new VideoDAO();
 		}

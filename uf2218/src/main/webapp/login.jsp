@@ -5,13 +5,16 @@
    	
    	<%@include file="includes/mensaje.jsp"%>
    	
-   	<form action="login" method="post">
-   	
-   		<input type="text" name="usuario" placeholder="Tu Nombre Usuario">
+   	<form action="login" method="post" class="col-4">
+   	<div class="form-group">
+   		<input type="text" name="nombre" autofocus placeholder="Tu Nombre Usuario">
+   	</div>
    		<br>
-   		<input type="password" name="pass" placeholder="Contraseña">
+   	<div class="form-group">
+   		<input type="password" name="contrasenya" placeholder="Contraseña">
+   	</div>
    		<br>
-   		<input type="submit" value="Entrar">
+   		<input type="submit" value="Entrar" class="btn btn-block btn-primary">
    	
    	</form>
     	    	
