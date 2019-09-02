@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.ipartek.formacion.controller.pojo.Alert;
+import com.ipartek.formacion.model.dao.UsuarioDAO;
+import com.ipartek.formacion.model.pojo.Usuario;
 
 /**
  * Servlet implementation class LoginController
@@ -16,53 +18,60 @@ import com.ipartek.formacion.controller.pojo.Alert;
 @WebServlet("/login")
 public class LoginController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-   
+	private static UsuarioDAO usuarioDAO;
+
+	@Override
+	public void init() throws ServletException {
+		super.init();
+		usuarioDAO = UsuarioDAO.getInstance();
+	}
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		doPost(request, response);
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		String nombre = request.getParameter("nombre");
+		String contrasena = request.getParameter("contrasena");
 		
+		Usuario usuario=usuarioDAO.existe(nombre, contrasena);
 		
-		String usuario  = request.getParameter("usuario");
-		String password = request.getParameter("pass");
-		
-		if ( "admin".equals(usuario) && "admin".equals(password)) {
-			
-			
+		if (usuario!=null) {
+
 			HttpSession session = request.getSession();
 			// session.setMaxInactiveInterval( 60 * 5 ); // 5 min
-			
-			
-			session.setAttribute("usuario", "usuario"+request.getRemoteAddr() );
-			
-			request.setAttribute("mensaje", new Alert("success","Ongi Etorri " + usuario ) );
-			
+
+			session.setAttribute("nombre", "nombre" + request.getRemoteAddr());
+
+			request.setAttribute("mensaje", new Alert("success", "Ongi Etorri " + nombre));
+
 			String callback = (String) session.getAttribute("callback");
-			
-			if ( callback == null ) {
+
+			if (callback == null) {
 				request.getRequestDispatcher("backoffice/index.jsp").forward(request, response);
-			}else {
-				session.removeAttribute("callback");				
+			} else {
+				session.removeAttribute("callback");
 				response.sendRedirect(callback);
-			}	
-			
-		}else {
-			
-			request.setAttribute("mensaje", new Alert("danger","credenciales no correctas") );			
+			}
+
+		} else {
+
+			request.setAttribute("mensaje", new Alert("danger", "credenciales no correctas"));
 			request.getRequestDispatcher("login.jsp").forward(request, response);
-			
-		}	
-		
-		
+
+		}
+
 	}
 
 }

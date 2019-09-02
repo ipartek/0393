@@ -7,9 +7,9 @@
    	
    	<form action="login" method="post">
    	
-   		<input type="text" name="usuario" placeholder="Tu Nombre Usuario">
+   		<input type="text" name="nombre" placeholder="Tu Nombre Usuario">
    		<br>
-   		<input type="password" name="pass" placeholder="Contraseña">
+   		<input type="password" name="contrasena" placeholder="Contraseña">
    		<br>
    		<input type="submit" value="Entrar">
    	
