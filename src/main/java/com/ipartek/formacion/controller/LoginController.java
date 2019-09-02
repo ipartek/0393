@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import com.ipartek.formacion.controller.pojo.Alert;
 import com.ipartek.formacion.model.dao.UsuarioDAO;
+import com.ipartek.formacion.model.dao.YoutubeDAO;
 import com.ipartek.formacion.model.pojo.Usuario;
 
 /**
@@ -21,12 +22,13 @@ import com.ipartek.formacion.model.pojo.Usuario;
 public class LoginController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private static UsuarioDAO usuarioDAO;  
-    
+    private static YoutubeDAO youtubeDAO;
     
     @Override
     public void init(ServletConfig config) throws ServletException {
     	super.init(config);
     	usuarioDAO = UsuarioDAO.getInstance();
+    	youtubeDAO = YoutubeDAO.getInstance();
     }
     /**
      * @see HttpServlet#HttpServlet()
@@ -65,9 +67,9 @@ public class LoginController extends HttpServlet {
 			//guardamos a donde intentaba ir para que sea redirigido alli despues de loguearse
 			String callback = (String) request.getAttribute("callback");
 			if (callback==null) {
-				//TODO llamar DAO de videos
-				request.setAttribute("numeroVideos", 3);
-				request.setAttribute("numeroUsuarios", 66);
+				// llamar DAO de videos y DAO de users para saber cuantos hay de cada
+				request.setAttribute("numeroVideos", youtubeDAO.getAll().size());
+				request.setAttribute("numeroUsuarios", usuarioDAO.getAll().size());
 				
 				request.getRequestDispatcher("backoffice/index.jsp").forward(request, response);
 				//request.getRequestDispatcher("backoffice/videos").forward(request, response);
