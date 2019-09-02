@@ -74,7 +74,7 @@ public class LoginController extends HttpServlet {
 				request.getRequestDispatcher("backoffice/index.jsp").forward(request, response);
 			}else {
 				session.removeAttribute("callback");				
-				response.sendRedirect(callback);
+				response.sendRedirect(callback); 
 			}	
 			
 		}else {
