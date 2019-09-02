@@ -18,7 +18,11 @@
 	        	<li class="nav-item active"><a class="nav-link" href="backoffice/index.jsp">Backoffice</a>
 			</li>
 	        </c:if>
-	        <li class="nav-item active"><a class="nav-link" href="backoffice/videos">${mensajeVideo}</a>
+	        <c:if test="${usuario != null}">
+	        	<li class="nav-item active"><a class="nav-link" href="backoffice/videos"><fmt:message key="menu.video"/></a>
+			</li>
+	        </c:if>
+	        
 	        <!-- 
 			<li class="nav-item dropdown"><a
 				class="nav-link dropdown-toggle" href="#" id="navbarDropdown"

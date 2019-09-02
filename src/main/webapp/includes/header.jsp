@@ -29,8 +29,7 @@
 	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
 	crossorigin="anonymous">
 <!-- fontAwesome -->	
-<link rel="stylesheet" href="resources/vendors/fontawesome-free-5.9.0-web/css/all.min.css"/>	
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"/>
 
 <base href="${pageContext.request.contextPath}/"></base>
 <!-- Nuestro CSS -->
