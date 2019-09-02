@@ -1,4 +1,4 @@
-<%@page import="com.ipartek.formacion.controller.VideoController"%>
+<%@page import="com.ipartek.formacion.controller.backoffice.VideoController"%>
 
 <%@include file="../../includes/header.jsp"%>
 <%@include file="../../includes/navbar.jsp"%>
@@ -15,7 +15,7 @@
 	  <c:forEach items="${videos}" var="v">	
 	  	<li class="list-group-item">
 	  		<a href="backoffice/videos?op=<%=VideoController.OP_DETALLE%>&id=${v.id}">
-	  			<img class="float-left mr-3" src="https://img.youtube.com/vi/${v.codigo}/default.jpg" alt="Imagen destacda del video ${v.nombre}"/>
+	  			<iframe class="embed-responsive-item-1by1" src="https://www.youtube.com/embed/${v.getCodigo()}?rel=0" allowfullscreen></iframe></li>
 	  			<p class="h3">${v.nombre}</p>
 	  		</a>
 	  	</li>
