@@ -1,6 +1,7 @@
 package com.ipartek.formacion.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -12,7 +13,9 @@ import javax.servlet.http.HttpSession;
 
 import com.ipartek.formacion.controller.pojo.Alert;
 import com.ipartek.formacion.model.dao.UsuarioDAO;
+import com.ipartek.formacion.model.dao.VideoDAO;
 import com.ipartek.formacion.model.pojo.Usuario;
+import com.ipartek.formacion.model.pojo.Video;
 
 /**
  * Servlet implementation class LoginController
@@ -22,6 +25,7 @@ public class LoginController extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
 	private static UsuarioDAO usuarioDAO;
+	private static VideoDAO videoDAO;
 	
 	@Override
 	public void init(ServletConfig config) throws ServletException {
@@ -29,6 +33,7 @@ public class LoginController extends HttpServlet {
 		super.init(config);
 		
 		usuarioDAO = UsuarioDAO.getInstance();
+		videoDAO = VideoDAO.getInstance();
 	}
        
    
@@ -68,8 +73,11 @@ public class LoginController extends HttpServlet {
 				
 				//TODO tipo sbadmin recuadros con numero de video y usuarios y enlace a listado de videos
 				
-				request.setAttribute("numeroVideos", 3);
-				request.setAttribute("numeroUsuarios", 43);
+				ArrayList<Video> listaVideos = videoDAO.getAll();
+				ArrayList<Usuario> listaUsuarios = usuarioDAO.getAll();
+				
+				request.setAttribute("numeroVideos", listaVideos.size()); // videoDAO.getAll().size();
+				request.setAttribute("numeroUsuarios", listaUsuarios.size());
 				
 				request.getRequestDispatcher("backoffice/index.jsp").forward(request, response);
 			}else {
