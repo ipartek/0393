@@ -1,6 +1,8 @@
 package com.ipartek.formacion.controller;
 
 import java.io.IOException;
+
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -9,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.ipartek.formacion.controller.pojo.Alert;
+import com.ipartek.formacion.model.dao.UsuarioDAO;
+import com.ipartek.formacion.model.pojo.Usuario;
 
 /**
  * Servlet implementation class LoginController
@@ -16,7 +20,15 @@ import com.ipartek.formacion.controller.pojo.Alert;
 @WebServlet("/login")
 public class LoginController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	
+	private static UsuarioDAO usuarioDAO;
+    
+	
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+		super.init(config);
+		usuarioDAO = UsuarioDAO.getInstance();
+	}
    
 
 	/**
@@ -32,23 +44,27 @@ public class LoginController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		
-		String usuario  = request.getParameter("usuario");
-		String password = request.getParameter("pass");
+		String nombre  = request.getParameter("nombre");
+		String contrasena = request.getParameter("contrasena");
 		
-		if ( "admin".equals(usuario) && "admin".equals(password)) {
-			
+		Usuario usuario = usuarioDAO.existe(nombre, contrasena);
+		
+		if ( usuario != null) {
 			
 			HttpSession session = request.getSession();
 			// session.setMaxInactiveInterval( 60 * 5 ); // 5 min
 			
+			session.setAttribute("usuario", usuario );
 			
-			session.setAttribute("usuario", "usuario"+request.getRemoteAddr() );
-			
-			request.setAttribute("mensaje", new Alert("success","Ongi Etorri " + usuario ) );
+			request.setAttribute("mensaje", new Alert("success","Ongi Etorri " + usuario.getNombre() ) );
 			
 			String callback = (String) session.getAttribute("callback");
 			
 			if ( callback == null ) {
+				
+				//TODO llamar DAO de videos
+				request.setAttribute("numeroVideos", 3);
+				request.setAttribute("numeroUsuarios", 66);
 				request.getRequestDispatcher("backoffice/index.jsp").forward(request, response);
 			}else {
 				session.removeAttribute("callback");				

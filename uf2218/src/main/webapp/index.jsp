@@ -5,7 +5,7 @@
    	
    	<%@include file="includes/mensaje.jsp"%>
    	
-   		<p class="h3 text-danger"><fmt:message key="menu.ejemplos" /></p>
+   	<p class="h3 text-danger"><fmt:message key="menu.ejemplos" /></p>
 	<p class="h3 text-danger"><fmt:message key="menu.inicio" /></p>
    	
    	
