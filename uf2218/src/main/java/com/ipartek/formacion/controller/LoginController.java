@@ -1,6 +1,7 @@
 package com.ipartek.formacion.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -12,7 +13,9 @@ import javax.servlet.http.HttpSession;
 
 import com.ipartek.formacion.controller.pojo.Alert;
 import com.ipartek.formacion.model.dao.UsuarioDAO;
+import com.ipartek.formacion.model.dao.VideoDAO;
 import com.ipartek.formacion.model.pojo.Usuario;
+import com.ipartek.formacion.model.pojo.Video;
 
 /**
  * Servlet implementation class LoginController
@@ -23,10 +26,13 @@ public class LoginController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static UsuarioDAO usuarioDAO;
 	
+	private static VideoDAO videoDAO;
+	
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		usuarioDAO = UsuarioDAO.getInstance();
+		videoDAO =  VideoDAO.getInstance();
 	}
 	
 
@@ -60,7 +66,14 @@ public class LoginController extends HttpServlet {
 			
 			String callback = (String) session.getAttribute("callback");
 			
-			if ( callback == null ) {
+			if ( callback == null ) {				
+				
+				ArrayList<Video> listaVideos = videoDAO.getAll();
+				ArrayList<Usuario> listaUsuarios = usuarioDAO.getAll();
+				
+				request.setAttribute("totalUsuarios", listaUsuarios.size());
+				request.setAttribute("totalVideos", listaVideos.size());
+				
 				request.getRequestDispatcher("backoffice/index.jsp").forward(request, response);
 			}else {
 				session.removeAttribute("callback");				
@@ -73,7 +86,6 @@ public class LoginController extends HttpServlet {
 			request.getRequestDispatcher("login.jsp").forward(request, response);
 			
 		}	
-		
 		
 	}
 
