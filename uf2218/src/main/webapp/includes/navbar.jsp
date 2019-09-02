@@ -22,7 +22,7 @@
         
 	        <c:if test="${usuario != null}">
 	        	<li class="nav-item">	        		
-	        			${usuario}
+	        			${usuario.nombre}
 	        			<i class="fas fa-user"></i>	        		
 	        	</li>
 	        	<li class="nav-item">

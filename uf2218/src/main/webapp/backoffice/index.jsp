@@ -4,12 +4,20 @@
 <%@include file="../includes/navbar.jsp"%> 
 <%@include file="../includes/mensaje.jsp"%>
 
-<meta http-equiv="refresh" content="3">
 
- <h1>BACKOFFICE</h1>
+<h1>BACKOFFICE</h1>
  
- 
- <%=UsuariosLogeadosListener.usuariosLogeados%>
+VIDEOS ${numeroVideos}
+<br>
+TODO enlaces para ver listado de Videos
+
+
+
+<br>
+USUARIOS ${numeroUsuarios} 
+
+
+
 
 
 <%@include file="../includes/footer.jsp"%>
