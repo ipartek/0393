@@ -8,8 +8,10 @@
 
  <h1>BACKOFFICE</h1>
  
+
+VIDEOS ${numerosVideos}
  
- <%=UsuariosLogeadosListener.usuariosLogeados%>
+USUARIOS ${numeroUsuarios}
 
 
 <%@include file="../includes/footer.jsp"%>
