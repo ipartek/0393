@@ -2,7 +2,6 @@ package com.ipartek.formacion.controller;
 
 import java.io.IOException;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,62 +18,59 @@ import com.ipartek.formacion.model.pojo.Usuario;
  */
 @WebServlet("/login")
 public class LoginController extends HttpServlet {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private static UsuarioDAO usuarioDAO = UsuarioDAO.getInstance();
-	      
-   
+
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		doPost(request, response);
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		
-		String nombre  = request.getParameter("nombre");
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		String nombre = request.getParameter("nombre");
 		String contrasenya = request.getParameter("contrasenya");
-		
+
 		Usuario usuario = usuarioDAO.existe(nombre, contrasenya);
-		
-		if ( usuario != null ) {
-			
-			
+
+		if (usuario != null) {
+
 			HttpSession session = request.getSession();
 			// session.setMaxInactiveInterval( 60 * 5 ); // 5 min
-						
-			session.setAttribute("usuario", usuario );
-			
-			request.setAttribute("mensaje", new Alert("success","Ongi Etorri " + usuario.getNombre() ) );
-			
+
+			session.setAttribute("usuario", usuario);
+
+			request.setAttribute("mensaje", new Alert("success", "Ongi Etorri " + usuario.getNombre()));
+
 			String callback = (String) session.getAttribute("callback");
-			
-			if ( callback == null ) {
-				
-				//TODO llamar DAO de videos
-				request.setAttribute("numeroVideos", 3);
-				request.setAttribute("numeroUsuarios", 66);
-				
-				request.getRequestDispatcher("backoffice/index.jsp").forward(request, response);
-			}else {
-				session.removeAttribute("callback");				
+
+			if (callback == null) {
+
+				response.sendRedirect("backoffice/inicio");
+
+			} else {
+				session.removeAttribute("callback");
 				response.sendRedirect(callback);
-			}	
-			
-		}else {
-			
-			request.setAttribute("mensaje", new Alert("danger","credenciales no correctas") );			
+			}
+
+		} else {
+
+			request.setAttribute("mensaje", new Alert("danger", "credenciales no correctas"));
 			request.getRequestDispatcher("login.jsp").forward(request, response);
-			
-		}	
-		
-		
+
+		}
+
 	}
 
 }
