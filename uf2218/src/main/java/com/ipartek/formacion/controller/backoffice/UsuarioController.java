@@ -20,7 +20,7 @@ import com.ipartek.formacion.model.pojo.Usuario;
 /**
  * Servlet implementation class VideoController
  */
-@WebServlet("/backoffice/inicio")
+@WebServlet("/backoffice/usuarios")
 public class UsuarioController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
@@ -161,9 +161,8 @@ public class UsuarioController extends HttpServlet {
 
 	private void listar(HttpServletRequest request, HttpServletResponse response) {
 
-		request.setAttribute("videos", usuarioDAO.getAll());
+		request.setAttribute("usuarios", usuarioDAO.getAll());
 		view = VIEW_INDEX;
-
 	}
 
 	private void detalle(HttpServletRequest request, HttpServletResponse response) {

@@ -81,31 +81,88 @@ public class UsuarioDAO {
 		return lista;
 	}
 
+	public boolean delete(int id) {
+		boolean resultado = false;
+		String sql = "DELETE FROM usuario WHERE id = ?;";
+
+		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+
+			pst.setInt(1, id);
+
+			int affetedRows = pst.executeUpdate();
+			if (affetedRows == 1) {
+				resultado = true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return resultado;
+	}
+
+	public boolean modificar(Usuario pojo) throws SQLException {
+		boolean resultado = false;
+
+		String sql = "UPDATE usuario SET nombre = ?, contrasenya = ? WHERE id = ?;";
+
+		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+
+			pst.setString(1, pojo.getNombre());
+			pst.setString(2, pojo.getContrasenya());
+			pst.setInt(3, pojo.getId());
+
+			int affectedRows = pst.executeUpdate();
+			if (affectedRows == 1) {
+				resultado = true;
+			}
+
+		}
+		return resultado;
+	}
+
+	public boolean crear(Usuario pojo) throws SQLException {
+		boolean resultado = false;
+		String sql = "INSERT INTO usuario (nombre, contrasenya) VALUES (?,?);";
+
+		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+
+			pst.setString(1, pojo.getNombre());
+			pst.setString(2, pojo.getContrasenya());
+
+			int affectedRows = pst.executeUpdate();
+			if (affectedRows == 1) {
+				resultado = true;
+			}
+		}
+
+		return resultado;
+	}
+
+	public Usuario getById(int id) {
+		Usuario usuario = new Usuario();
+		String sql = "SELECT * FROM usuario WHERE id = ? ;";
+
+		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+
+			// sustituyo la 1º ? por la variable id
+			pst.setInt(1, id);
+
+			try (ResultSet rs = pst.executeQuery()) {
+				if (rs.next()) {
+					usuario = mapper(rs);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return usuario;
+	}
+
 	public Usuario mapper(ResultSet rs) throws SQLException {
 		Usuario u = new Usuario();
 		u.setId(rs.getInt("id"));
 		u.setNombre(rs.getString("nombre"));
 		u.setContrasenya(rs.getString("contrasenya"));
 		return u;
-	}
-
-	public boolean delete(int id) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public void modificar(Usuario u) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void crear(Usuario u) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public Usuario getById(int id) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

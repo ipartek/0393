@@ -63,10 +63,6 @@ public class LoginController extends HttpServlet {
 			String callback = (String) session.getAttribute("callback");
 
 			if (callback == null) {
-				// session.setAttribute("nVideos", VideoDAO.getInstance().getAll().size());
-				// session.setAttribute("nUsuarios", usuarioDAO.getAll().size());
-				// request.getRequestDispatcher("backoffice/index.jsp").forward(request,
-				// response);
 				callback = "backoffice/inicio";
 			} else {
 				session.removeAttribute("callback");
