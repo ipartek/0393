@@ -39,9 +39,9 @@ public class UserController extends HttpServlet {
 			throws ServletException, IOException {
 
 		String op = request.getParameter("op");
-
-		if (op == null) {
-			op = OP_LISTAR;
+		
+		if ( op == null ) {
+			op = OP_LISTAR;	
 		}
 
 		switch (op) {
@@ -54,6 +54,7 @@ public class UserController extends HttpServlet {
 			listar(request, response);
 			break;
 		}
+		
 
 		request.getRequestDispatcher(view).forward(request, response);
 
