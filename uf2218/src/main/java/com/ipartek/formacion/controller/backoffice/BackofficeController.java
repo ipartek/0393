@@ -45,7 +45,7 @@ public class BackofficeController extends HttpServlet {
 		ArrayList<Usuario> listaUsuarios = usuarioDAO.getAll();
 
 		request.setAttribute("numeroVideos", listaVideos.size());
-		request.setAttribute("numeroUsuarios", listaUsuarios.size()); // request
+		request.setAttribute("numeroUsuarios", listaUsuarios.size());
 
 		// request interna
 		request.getRequestDispatcher("index.jsp").forward(request, response);
