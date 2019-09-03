@@ -51,8 +51,7 @@ public class UsuariosLogeadosListener implements HttpSessionListener, HttpSessio
     	if ( "usuario".equals(event.getName()) ) {
     		usuariosLogeados.add( (String)event.getValue());
     	}
-    	
-    	
+    
     }
 
 	/**

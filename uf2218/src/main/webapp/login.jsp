@@ -21,8 +21,8 @@
 				placeholder="Contraseña" name="contrasenya" required>
 		</div>
 	</div>
-
-
+ 
+ 
 
 	<div class="col-md-6 offset-md-4">
 		<input type="submit" class="btn btn-primary" value="Entrar">

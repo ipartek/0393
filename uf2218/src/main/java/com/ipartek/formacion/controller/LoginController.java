@@ -21,12 +21,13 @@ import com.ipartek.formacion.model.pojo.Usuario;
 public class LoginController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private static UsuarioDAO usuarioDAO;
-   
+
 
     @Override
     public void init(ServletConfig config) throws ServletException {
        	super.init(config);
        	usuarioDAO = UsuarioDAO.getInstance();
+      
     }
     
 	/**
@@ -45,6 +46,7 @@ public class LoginController extends HttpServlet {
 		String nombre  = request.getParameter("nombre");
 		String contrasenya = request.getParameter("contrasenya");
 		
+		
 		Usuario usuario = usuarioDAO.existe(nombre, contrasenya);
 				
 		if (usuario != null ) {
@@ -56,15 +58,21 @@ public class LoginController extends HttpServlet {
 			
 			session.setAttribute("usuario",usuario );
 			
-			request.setAttribute("mensaje", new Alert("success","Ongi Etorri " + usuario ) );
-			
+			request.setAttribute("mensaje", new Alert("success","Ongi Etorri " + usuario.getNombre()));			
 			String callback = (String) session.getAttribute("callback");
 			
 			if ( callback == null ) {
-				//TODO llamar DAO VIDEOS
-				request.setAttribute("numeroVideos",3);
-				request.setAttribute("numeroUsuarios",15);
+				/*
+				request.setAttribute("numeroVideos", videoDAO.getAll().size());
+				request.setAttribute("numeroUsuarios",usuarioDAO.getAll().size());
+				//request interna
 				request.getRequestDispatcher("backoffice/index.jsp").forward(request, response);
+				*/
+				
+				//Redirrecion para cambiar la url de "/login" a "/backoffice/inicio"
+				
+				response.sendRedirect("backoffice/inicio");
+				
 			}else {
 				session.removeAttribute("callback");				
 				response.sendRedirect(callback);
