@@ -7,3 +7,15 @@ nav img{
 	width: 25px;
 	height: 25px;
 }
+
+/*iconos para el index del backoffice*/
+.card-body-icon {
+    position: absolute;
+    z-index: 0;
+    top: -1.25rem;
+    right: -1rem;
+    opacity: 0.4;
+    font-size: 5rem;
+    -webkit-transform: rotate(15deg);
+    transform: rotate(15deg);
+}
