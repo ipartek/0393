@@ -7,14 +7,6 @@
 
 <h1>BACKOFFICE</h1>
  
-VIDEOS ${numeroVideos}
-<br>
-TODO enlaces para ver listado de Videos
-
-
-
-<br>
-USUARIOS ${numeroUsuarios} 
 
 
 <div class="row">
