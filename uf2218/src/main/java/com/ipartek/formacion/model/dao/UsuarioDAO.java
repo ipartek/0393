@@ -6,11 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import org.apache.pdfbox.contentstream.operator.text.NextLine;
-
 import com.ipartek.formacion.model.ConnectionManager;
 import com.ipartek.formacion.model.pojo.Usuario;
-import com.ipartek.formacion.model.pojo.Video;
 
 public class UsuarioDAO {
 
@@ -83,12 +80,32 @@ public class UsuarioDAO {
 		}
 		return lista;
 	}
-	
+
 	public Usuario mapper(ResultSet rs) throws SQLException {
 		Usuario u = new Usuario();
-		u.setId( rs.getInt("id") );
-		u.setNombre( rs.getString("nombre"));
+		u.setId(rs.getInt("id"));
+		u.setNombre(rs.getString("nombre"));
 		u.setContrasenya(rs.getString("contrasenya"));
 		return u;
+	}
+
+	public boolean delete(int id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public void modificar(Usuario u) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void crear(Usuario u) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public Usuario getById(int id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

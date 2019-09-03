@@ -1,7 +1,6 @@
 package com.ipartek.formacion.controller.backoffice;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Set;
 
 import javax.servlet.ServletConfig;
@@ -10,7 +9,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -18,13 +16,12 @@ import javax.validation.Validator;
 import com.ipartek.formacion.controller.pojo.Alert;
 import com.ipartek.formacion.model.dao.UsuarioDAO;
 import com.ipartek.formacion.model.pojo.Usuario;
-import com.ipartek.formacion.model.pojo.Video;
 
 /**
  * Servlet implementation class VideoController
  */
 @WebServlet("/backoffice/inicio")
-public class BackofficeController2 extends HttpServlet {
+public class UsuarioController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
@@ -171,20 +168,10 @@ public class BackofficeController2 extends HttpServlet {
 
 	private void detalle(HttpServletRequest request, HttpServletResponse response) {
 
-		String sid = request.getParameter("id");
-		int id = Integer.parseInt(sid);
+		int id = Integer.parseInt(request.getParameter("id"));
 
 		Usuario u = usuarioDAO.getById(id);
-		request.setAttribute("video", v);
+		request.setAttribute("usuario", u);
 		view = VIEW_FORM;
-
-		HttpSession session = request.getSession();
-		HashMap<Integer, Video> videosVistos = (HashMap<Integer, Video>) session.getAttribute("videosVistos");
-		if (videosVistos == null) {
-			videosVistos = new HashMap<Integer, Video>();
-		}
-		videosVistos.put(v.getId(), v);
-		session.setAttribute("videosVistos", videosVistos);
-
 	}
 }
