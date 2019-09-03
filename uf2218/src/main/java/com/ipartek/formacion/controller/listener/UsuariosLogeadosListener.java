@@ -8,6 +8,8 @@ import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
+import com.ipartek.formacion.model.pojo.Usuario;
+
 /**
  * Application Lifecycle Listener implementation class UsuariosLogeadosListener
  *
@@ -15,64 +17,60 @@ import javax.servlet.http.HttpSessionListener;
 @WebListener
 public class UsuariosLogeadosListener implements HttpSessionListener, HttpSessionAttributeListener {
 
-	
-	public static ArrayList<String> usuariosLogeados = new ArrayList<String>();
-	
-	
-	
-    /**
-     * Default constructor. 
-     */
-    public UsuariosLogeadosListener() {
-       
-    }
+	public static ArrayList<Usuario> usuariosLogeados = new ArrayList<Usuario>();
 
 	/**
-     * @see HttpSessionListener#sessionCreated(HttpSessionEvent)
-     */
-    public void sessionCreated(HttpSessionEvent se)  { 
-         // session creada
-    }
+	 * Default constructor.
+	 */
+	public UsuariosLogeadosListener() {
+
+	}
 
 	/**
-     * @see HttpSessionListener#sessionDestroyed(HttpSessionEvent)
-     */
-    public void sessionDestroyed(HttpSessionEvent se)  { 
-         // TODO Auto-generated method stub
-    }
+	 * @see HttpSessionListener#sessionCreated(HttpSessionEvent)
+	 */
+	public void sessionCreated(HttpSessionEvent se) {
+		// session creada
+	}
 
 	/**
-     * @see HttpSessionAttributeListener#attributeAdded(HttpSessionBindingEvent)
-     */
-    public void attributeAdded(HttpSessionBindingEvent event)  { 
-        
-    	System.out.println("attributeAdded " + event.getName() );
-    	
-    	if ( "usuario".equals(event.getName()) ) {
-    		usuariosLogeados.add( (String)event.getValue());
-    	}
-    	
-    	
-    }
+	 * @see HttpSessionListener#sessionDestroyed(HttpSessionEvent)
+	 */
+	public void sessionDestroyed(HttpSessionEvent se) {
+		// TODO Auto-generated method stub
+	}
 
 	/**
-     * @see HttpSessionAttributeListener#attributeRemoved(HttpSessionBindingEvent)
-     */
-    public void attributeRemoved(HttpSessionBindingEvent event)  { 
-         
-    	System.out.println("attributeRemoved " + event.getName() );
-    	
-    	if ( "usuario".equals(event.getName()) ) {
-    		usuariosLogeados.remove( (String)event.getValue());
-    	}
-    	
-    }
+	 * @see HttpSessionAttributeListener#attributeAdded(HttpSessionBindingEvent)
+	 */
+	public void attributeAdded(HttpSessionBindingEvent event) {
+
+		System.out.println("attributeAdded " + event.getName());
+
+		if ("usuario".equals(event.getName())) {
+			usuariosLogeados.add((Usuario) event.getValue());
+		}
+
+	}
 
 	/**
-     * @see HttpSessionAttributeListener#attributeReplaced(HttpSessionBindingEvent)
-     */
-    public void attributeReplaced(HttpSessionBindingEvent event)  { 
-         // TODO Auto-generated method stub
-    }
-	
+	 * @see HttpSessionAttributeListener#attributeRemoved(HttpSessionBindingEvent)
+	 */
+	public void attributeRemoved(HttpSessionBindingEvent event) {
+
+		System.out.println("attributeRemoved " + event.getName());
+
+		if ("usuario".equals(event.getName())) {
+			usuariosLogeados.remove((String) event.getValue());
+		}
+
+	}
+
+	/**
+	 * @see HttpSessionAttributeListener#attributeReplaced(HttpSessionBindingEvent)
+	 */
+	public void attributeReplaced(HttpSessionBindingEvent event) {
+		// TODO Auto-generated method stub
+	}
+
 }

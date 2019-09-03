@@ -11,7 +11,7 @@
 	   			<input type="text" name="nombre" autofocus placeholder="Tu Nombre Usuario" class="form-control">
 	   		</div>
 	   		<div class="form-group">
-	   			<input type="password" name="contrasenya" placeholder="Contraseña" class="form-control">
+	   			<input type="password" name="contrasena" placeholder="Contraseña" class="form-control">
 	   		</div>
 	   		<input type="submit" value="Entrar" class="btn btn-block btn-primary">
 	   	
