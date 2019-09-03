@@ -1,3 +1,4 @@
+<%@page import="com.ipartek.formacion.controller.backoffice.UsuarioController"%>
 <%@page import="com.ipartek.formacion.controller.listener.UsuariosLogeadosListener"%>
 
 <%@include file="../../includes/header.jsp"%>
@@ -7,6 +8,7 @@
 
 <h1>USUARIOS REGISTRADOS</h1>
 
+<a href="backoffice/usuarios?op=<%=VideoController.OP_NUEVO%>" class="mb-3 btn btn-outline-primary">Nuevo Usuario</a>
 
 <div class="row d-flex justify-content-center">
 	<table class="table table-striped w-75">
@@ -23,7 +25,7 @@
 				<tr>
 				<th scope="row">${lu.id }</th>
 				<td>		
-					${lu.nombre }
+					<a href="backoffice/usuarios?op=<%=UsuarioController.OP_DETALLE%>&id=${lu.id}">${lu.nombre }</a>
 				</td>
 				<td>${lu.contrasena }</td>
 				<td>
