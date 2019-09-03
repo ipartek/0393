@@ -93,4 +93,83 @@ public class UsuarioDAO {
 		return u;
 	}
 
+	public Usuario getById(int id) {
+		Usuario usuario = new Usuario();
+		String sql = "SELECT id, nombre, contrasenya FROM usuario WHERE id = ? ;";
+
+		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+
+			// sustituyo la 1º ? por la variable id
+			pst.setInt(1, id);
+
+			try (ResultSet rs = pst.executeQuery()) {
+				if (rs.next()) {
+
+					usuario = mapper(rs);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return usuario;
+	}
+
+	public boolean modificar(Usuario pojo) throws Exception {
+		boolean resultado = false;
+
+		String sql = "UPDATE usuario SET nombre = ?, contrasenya = ? WHERE  id = ?;";
+
+		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+
+			pst.setString(1, pojo.getNombre());
+			pst.setString(2, pojo.getContrasenya());
+			pst.setInt(3, pojo.getId());
+
+			int affectedRows = pst.executeUpdate();
+			if (affectedRows == 1) {
+				resultado = true;
+			}
+
+		}
+		return resultado;
+	}
+
+	public boolean crear(Usuario pojo) throws Exception {
+		boolean resultado = false;
+		String sql = "INSERT INTO usuario (nombre, contrasenya) VALUES (?,?);";
+
+		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+
+			pst.setString(1, pojo.getNombre());
+			pst.setString(2, pojo.getContrasenya());
+
+			int affectedRows = pst.executeUpdate();
+			if (affectedRows == 1) {
+				resultado = true;
+			}
+
+		}
+
+		return resultado;
+	}
+
+	public boolean delete(int id) {
+		boolean resultado = false;
+		String sql = "DELETE FROM usuario WHERE id = ?;";
+
+		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+
+			pst.setInt(1, id);
+
+			int affetedRows = pst.executeUpdate();
+			if (affetedRows == 1) {
+				resultado = true;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return resultado;
+	}
 }
