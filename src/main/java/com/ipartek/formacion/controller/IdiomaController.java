@@ -36,11 +36,11 @@ public class IdiomaController extends HttpServlet {
 		String language = "en";
 		String country = "EN";
 
-		String ruta = request.getParameter("ruta").split("uf2218/")[1];
-
-		if (ruta == null) {
-			ruta = "ejemplos/i18n.jsp";
-		}
+		/*
+		 * String ruta = request.getParameter("ruta").split("uf2218/")[1];
+		 * 
+		 * if (ruta == null) { ruta = "ejemplos/i18n.jsp"; }
+		 */
 
 		if (idiomaSeleccionado != null) {
 			language = idiomaSeleccionado.split("_")[0];
@@ -64,14 +64,13 @@ public class IdiomaController extends HttpServlet {
 		 * request.getRequestDispatcher("index.jsp").forward(request, response); }
 		 */
 
+		// si esta logueado redirecciona al index de backoffice y sino al index
+		String contextPath = request.getContextPath();
 		if (session.getAttribute("usuario") != null) {
-			request.getRequestDispatcher("backoffice/inicio").forward(request, response);
+			response.sendRedirect(contextPath + "/backoffice/inicio");
 		} else {
-			request.getRequestDispatcher("index.jsp").forward(request, response);
+			response.sendRedirect(contextPath); // inicio de la app web
 		}
-
-		// request.getRequestDispatcher("ejemplos/i18n.jsp").forward(request, response);
-		// request.getRequestDispatcher("index.jsp").forward(request, response);
 
 	}
 
