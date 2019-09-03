@@ -22,8 +22,8 @@
         
 	        <c:if test="${usuario != null}">
 	        	<li class="nav-item">	        		
-	        			${usuario.nombre}
-	        			<i class="fas fa-user"></i>	        		
+	        			<span class="nav-link">${usuario.nombre}
+	        			<i class="fas fa-user"></i></span>       		
 	        	</li>
 	        	<li class="nav-item">
 	        		<a class="nav-link" href="logout"><i class="fas fa-sign-out-alt"></i> Salir</a>
