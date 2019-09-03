@@ -67,9 +67,6 @@ public class LoginController extends HttpServlet {
 
 			if (callback == null) {
 
-				/*
-				 * //TODO llamar DAO de videos
-				 */
 				// redireccion para cambiar la url de "/login a "backoffice/inicio
 				response.sendRedirect("backoffice/inicio");
 
