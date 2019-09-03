@@ -25,7 +25,6 @@ public class LoginController extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
 	private static UsuarioDAO usuarioDAO;
-	
 	private static VideoDAO videoDAO;
 	
 	@Override
@@ -68,13 +67,20 @@ public class LoginController extends HttpServlet {
 			
 			if ( callback == null ) {				
 				
+				/*
 				ArrayList<Video> listaVideos = videoDAO.getAll();
 				ArrayList<Usuario> listaUsuarios = usuarioDAO.getAll();
 				
 				request.setAttribute("totalUsuarios", listaUsuarios.size());
 				request.setAttribute("totalVideos", listaVideos.size());
 				
+				//request interna
 				request.getRequestDispatcher("backoffice/index.jsp").forward(request, response);
+				
+				*/
+				//redireccion para enviar la url de /login a backoffice/inicio.
+				response.sendRedirect("backoffice/inicio");
+				
 			}else {
 				session.removeAttribute("callback");				
 				response.sendRedirect(callback);

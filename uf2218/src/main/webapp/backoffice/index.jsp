@@ -10,7 +10,7 @@
  
  <div class="row d-flex justify-content-center">
  	<div class="col-5">
- 		<i class="fas fa-users fa-10x"></i>
+ 		<a href="backoffice/usuarios"><i class="fas fa-users fa-10x"></i></a>
  		<h2>${ totalUsuarios } Usuarios</h2>
  	</div>
  	<div class="col-5">
