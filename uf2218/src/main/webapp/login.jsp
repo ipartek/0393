@@ -8,12 +8,13 @@
    	<div class="d-flex align-content-center">
 	   	<form action="login" method="post" class="">
 	   		<div class="form-group">
-	   			<input class="form-control" type="text" name="nombre" autofocus placeholder="Tu Nombre Usuario">
+	   			<input type="text" name="nombre" autofocus placeholder="Tu Nombre Usuario" class="form-control">
 	   		</div>
 	   		<div class="form-group">
-	   			<input class="form-control" type="password" name="contrasena" placeholder="Contraseña">
+	   			<input type="password" name="contrasena" placeholder="Contraseña" class="form-control">
 	   		</div>
 	   		<input type="submit" value="Entrar" class="btn btn-block btn-primary">
+	   	
 	   	</form>
    	</div>
     	    	

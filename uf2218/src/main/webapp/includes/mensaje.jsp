@@ -1,3 +1,4 @@
+
 <c:if test="${mensaje != null}">
 	<div class="alert alert-${mensaje.tipo} alert-dismissible fade show" role="alert">
 	  <p>${mensaje.texto}</p>

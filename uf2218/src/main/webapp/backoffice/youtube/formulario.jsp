@@ -71,14 +71,7 @@
 				</div>
 				
 				
-			</c:if>	
-			
-			
-			
-			
-			
-			
-			
+			</c:if>		
 			
 		</div>
 		<div class="col">	

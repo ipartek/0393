@@ -5,8 +5,9 @@
 <%@include file="../includes/mensaje.jsp"%>
 
 
- <h1>BACKOFFICE</h1>
+<h1>BACKOFFICE</h1>
  
+
  <div class="row">
           <div class="col-xl-3 col-sm-6 mb-3">
             <div class="card text-white bg-primary o-hidden h-100">
@@ -32,7 +33,7 @@
                 </div>
                 <div class="mr-5">${numeroUsuarios} usuarios registrados</div>
               </div>
-              <a class="card-footer text-white clearfix small z-1" href="#">
+              <a class="card-footer text-white clearfix small z-1" href="backoffice/usuarios">
                 <span class="float-left">Listado de usuarios</span>
                 <span class="float-right">
                   <i class="fas fa-angle-right"></i>
@@ -41,5 +42,6 @@
             </div>
           </div>
         </div>
+
 
 <%@include file="../includes/footer.jsp"%>
