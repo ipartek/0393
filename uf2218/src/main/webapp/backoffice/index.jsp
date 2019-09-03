@@ -8,8 +8,9 @@
 <h1>BACKOFFICE</h1>
  
 VIDEOS ${numeroVideos}
+<a href="backoffice/videos">Ver Videos</a>
 <br>
-TODO enlaces para ver listado de Videos
+
 
 
 
