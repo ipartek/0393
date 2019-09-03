@@ -31,19 +31,11 @@ public class LoginController extends HttpServlet {
 
 	}
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		doPost(request, response);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -65,22 +57,8 @@ public class LoginController extends HttpServlet {
 
 			if (callback == null) {
 
-				// TODO tipo sbadmin recuadros con numero de video y usuarios y enlace a listado
-				// de videos
-
-				/*
-				 * ArrayList<Video> listaVideos = videoDAO.getAll(); ArrayList<Usuario>
-				 * listaUsuarios = usuarioDAO.getAll();
-				 * 
-				 * request.setAttribute("numeroVideos", listaVideos.size()); //
-				 * videoDAO.getAll().size(); request.setAttribute("numeroUsuarios",
-				 * listaUsuarios.size());
-				 * 
-				 * request.getRequestDispatcher("backoffice/index.jsp").forward(request,
-				 * response);
-				 */
-
 				response.sendRedirect("backoffice/inicio");
+
 			} else {
 				session.removeAttribute("callback");
 				response.sendRedirect(callback);
