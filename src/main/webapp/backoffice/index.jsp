@@ -34,7 +34,7 @@
                 </div>
                 <div class="mr-5">${numeroUsuarios} usuarios</div>
               </div>
-              <a class="card-footer text-white clearfix small z-1" href="#">
+              <a class="card-footer text-white clearfix small z-1" href="backoffice/usuario">
                 <span class="float-left">Ver listado</span>
                 <span class="float-right">
                   <i class="fas fa-angle-right"></i>

@@ -54,9 +54,9 @@
 
 <!-- navbar idiomas -->
 <div class="d-flex flex-row-reverse bd-highlight container">
-  <div class="p-2"><a href="i18n?idiomaSeleccionado=es_ES&ruta=${pageContext.request.requestURI}"><img alt="es" src="resources/img/Spain.png" class="${sessionScope.idiomaSeleccionado != 'es_ES' ? 'inactive':'' }" width=25px></a></div>
-  <div class="p-2"><a href="i18n?idiomaSeleccionado=en_EN&ruta=${pageContext.request.requestURI}"><img alt="es" src="resources/img/british.png" class="${sessionScope.idiomaSeleccionado != 'en_EN' ? 'inactive':'' }" width=25px></a></div>
-  <div class="p-2"><a href="i18n?idiomaSeleccionado=eu_ES&ruta=${pageContext.request.requestURI}"><img alt="es" src="resources/img/euskadi.png"  class="${sessionScope.idiomaSeleccionado != 'eu_ES' ? 'inactive':'' }" width=25px ></a></div>
+  <div class="p-2"><a href="i18n?idiomaSeleccionado=es_ES"><img alt="es" src="resources/img/Spain.png" class="${sessionScope.idiomaSeleccionado != 'es_ES' ? 'inactive':'' }" width=25px></a></div>
+  <div class="p-2"><a href="i18n?idiomaSeleccionado=en_EN"><img alt="es" src="resources/img/british.png" class="${sessionScope.idiomaSeleccionado != 'en_EN' ? 'inactive':'' }" width=25px></a></div>
+  <div class="p-2"><a href="i18n?idiomaSeleccionado=eu_ES"><img alt="es" src="resources/img/euskadi.png"  class="${sessionScope.idiomaSeleccionado != 'eu_ES' ? 'inactive':'' }" width=25px ></a></div>
 </div>
 
 <!-- end navbar idiomas -->
