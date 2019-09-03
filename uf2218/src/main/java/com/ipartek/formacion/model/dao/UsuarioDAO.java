@@ -158,7 +158,7 @@ public class UsuarioDAO {
 		return usuario;
 	}
 
-	public Usuario mapper(ResultSet rs) throws SQLException {
+	private Usuario mapper(ResultSet rs) throws SQLException {
 		Usuario u = new Usuario();
 		u.setId(rs.getInt("id"));
 		u.setNombre(rs.getString("nombre"));

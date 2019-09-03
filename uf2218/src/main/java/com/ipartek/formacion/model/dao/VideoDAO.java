@@ -130,7 +130,7 @@ public class VideoDAO {
 		return resultado;
 	}
 
-	public Video mapper(ResultSet rs) throws SQLException {
+	private Video mapper(ResultSet rs) throws SQLException {
 		Video v = new Video();
 		v.setId(rs.getInt("id"));
 		v.setNombre(rs.getString("nombre"));
