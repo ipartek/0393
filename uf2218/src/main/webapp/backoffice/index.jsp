@@ -14,9 +14,9 @@
 		<a href="backoffice/videos" class="btn btn-success d-block">Ver videos</a>	
 	</div>
 	
-	<div class="d-flex align-items-center justify-content-center col-3 bg-warning m-2 p-2 border rounded shadow-sm">
+	<div class="col-3 bg-warning m-2 p-2 border rounded shadow-sm">
 		<h3 class="text-center"><i class="fas fa-users"></i> ${numeroUsuarios } usuarios</h3>
-			
+		<a href="backoffice/users" class="btn btn-success d-block">Ver usuarios</a>	
 	</div>
 
 </div>

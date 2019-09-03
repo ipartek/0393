@@ -63,7 +63,7 @@ public class UsuarioDAO {
 	public ArrayList<Usuario> getAll() {
 
 		ArrayList<Usuario> lista = new ArrayList<Usuario>();
-		String sql = "SELECT `id`, `nombre`, `contrasena` FROM `usuario` ORDER BY `id` DESC LIMIT 500";
+		String sql = "SELECT `id`, `nombre`, `contrasena` FROM `usuario` ORDER BY `id` LIMIT 500";
 
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement pst = con.prepareStatement(sql);
@@ -78,6 +78,27 @@ public class UsuarioDAO {
 			e.printStackTrace();
 		}
 		return lista;
+	}
+
+	public Usuario getById(int id) {
+		Usuario usuario = new Usuario();
+		String sql = "SELECT `id`, `nombre`, `contrasena`  FROM usuario WHERE id = ? ;";
+
+		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+
+			// sustituyo la 1º ? por la variable id
+			pst.setInt(1, id);
+
+			try (ResultSet rs = pst.executeQuery()) {
+				if (rs.next()) {
+
+					usuario = mapper(rs);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return usuario;
 	}
 
 	public Usuario mapper(ResultSet rs) throws SQLException {

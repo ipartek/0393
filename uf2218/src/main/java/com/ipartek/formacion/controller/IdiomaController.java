@@ -50,13 +50,19 @@ public class IdiomaController extends HttpServlet {
 
 		// request.setAttribute("mensajeIdioma", idiomaSeleccionado);
 
-		if (ruta != null) {
-			request.getRequestDispatcher(ruta).forward(request, response);
-		} else {
-			request.getRequestDispatcher("index.jsp").forward(request, response);
-		}
+		/*
+		 * if (ruta != null) { request.getRequestDispatcher(ruta).forward(request,
+		 * response); } else {
+		 * request.getRequestDispatcher("index.jsp").forward(request, response); }
+		 */
 
-		// TODO revisar fallo idioma, mirar master
+		String contextPath = request.getContextPath();
+
+		if (session.getAttribute("usuario") != null) {
+			response.sendRedirect(contextPath + "/backoffice/inicio");
+		} else {
+			response.sendRedirect(contextPath); // inicio app web
+		}
 
 	}
 
