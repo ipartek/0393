@@ -15,7 +15,7 @@
 					<span class="sr-only">(current)</span></a>
 			</li>
 			<c:if test="${usuario != null}">
-	        	<li class="nav-item active"><a class="nav-link" href="backoffice/index.jsp">Backoffice</a>
+	        	<li class="nav-item active"><a class="nav-link" href="backoffice/inicio">Backoffice</a>
 			</li>
 	        </c:if>
 	        <c:if test="${usuario != null}">
@@ -42,7 +42,7 @@
 	        	<a class="nav-link" href="login.jsp">Login</a>
 	        </c:if>
 	        <c:if test="${usuario != null}">
-	        	<span class="nav-link text-light"><i class="fas fa-user"></i> Hola ${usuario}</span>
+	        	<span class="nav-link text-light"><i class="fas fa-user"></i> Hola ${usuario.nombre}</span>
 	        	<a class="nav-link" href="logout">Logout</a>
 	        </c:if>		       
 	      
