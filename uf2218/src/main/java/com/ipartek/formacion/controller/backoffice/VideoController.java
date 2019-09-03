@@ -161,9 +161,7 @@ public class VideoController extends HttpServlet {
 			request.setAttribute("mensaje", new Alert("warning", mensaje ));
 		}
 		request.setAttribute("video", v );
-		view = VIEW_FORM;	
-		
-		
+		view = VIEW_FORM;
 	}
 
 	private void listar(HttpServletRequest request, HttpServletResponse response) {
@@ -192,7 +190,4 @@ public class VideoController extends HttpServlet {
 		session.setAttribute("videosVistos", videosVistos);
 		
 	}
-
-
-
 }

@@ -4,11 +4,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import org.apache.pdfbox.contentstream.operator.text.NextLine;
 
 import com.ipartek.formacion.model.ConnectionManager;
 import com.ipartek.formacion.model.pojo.Usuario;
+import com.ipartek.formacion.model.pojo.Video;
 
 public class UsuarioDAO {
 
@@ -61,5 +63,32 @@ public class UsuarioDAO {
 		}
 
 		return usuario;
+	}
+
+	public ArrayList<Usuario> getAll() {
+
+		ArrayList<Usuario> lista = new ArrayList<Usuario>();
+		String sql = "SELECT `id`, `nombre`, `contrasenya` FROM `usuario` ORDER BY `id` DESC LIMIT 500";
+
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(sql);
+				ResultSet rs = pst.executeQuery()) {
+
+			while (rs.next()) {
+				lista.add(mapper(rs));
+			}
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+		return lista;
+	}
+	
+	public Usuario mapper(ResultSet rs) throws SQLException {
+		Usuario u = new Usuario();
+		u.setId( rs.getInt("id") );
+		u.setNombre( rs.getString("nombre"));
+		u.setContrasenya(rs.getString("contrasenya"));
+		return u;
 	}
 }

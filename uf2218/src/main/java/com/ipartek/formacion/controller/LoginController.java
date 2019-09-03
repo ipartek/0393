@@ -19,58 +19,65 @@ import com.ipartek.formacion.model.pojo.Usuario;
  */
 @WebServlet("/login")
 public class LoginController extends HttpServlet {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private static UsuarioDAO usuarioDAO;
-	
+
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		usuarioDAO = UsuarioDAO.getInstance();
 	}
-	
+
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		doPost(request, response);
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		
-		String nombre  = request.getParameter("nombre");
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		String nombre = request.getParameter("nombre");
 		String contrasenya = request.getParameter("contrasenya");
-		
+
 		Usuario usuario = usuarioDAO.login(nombre, contrasenya);
-		
-		if ( usuario != null ) {
-			
+
+		if (usuario != null) {
+
 			HttpSession session = request.getSession();
 			// session.setMaxInactiveInterval( 60 * 5 ); // 5 min
-			
-			session.setAttribute("usuario", usuario );
-			
-			request.setAttribute("mensaje", new Alert("success","Ongi Etorri " + usuario.getNombre() ) );
-			
+
+			session.setAttribute("usuario", usuario);
+
+			request.setAttribute("mensaje", new Alert("success", "Ongi Etorri " + usuario.getNombre()));
+
 			String callback = (String) session.getAttribute("callback");
-			
-			if ( callback == null ) {
-				request.getRequestDispatcher("backoffice/index.jsp").forward(request, response);
-			}else {
-				session.removeAttribute("callback");				
-				response.sendRedirect(callback);
-			}	
-			
-		}else {
-			
-			request.setAttribute("mensaje", new Alert("danger","credenciales no correctas") );			
+
+			if (callback == null) {
+				// session.setAttribute("nVideos", VideoDAO.getInstance().getAll().size());
+				// session.setAttribute("nUsuarios", usuarioDAO.getAll().size());
+				// request.getRequestDispatcher("backoffice/index.jsp").forward(request,
+				// response);
+				callback = "backoffice/inicio";
+			} else {
+				session.removeAttribute("callback");
+			}
+
+			response.sendRedirect(callback);
+		} else {
+
+			request.setAttribute("mensaje", new Alert("danger", "credenciales no correctas"));
 			request.getRequestDispatcher("login.jsp").forward(request, response);
-			
+
 		}
 	}
 }

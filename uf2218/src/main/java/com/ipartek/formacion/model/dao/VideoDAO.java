@@ -222,8 +222,4 @@ public class VideoDAO {
 		v.setCodigo( rs.getString("codigo"));
 		return v;
 	}
-
-
-	
-	
 }
