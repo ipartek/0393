@@ -68,7 +68,7 @@ public class UsuarioDAO {
 	public ArrayList<Usuario> getAll() {
 		
 		ArrayList<Usuario> lista = new ArrayList<Usuario>();
-		String sql = "SELECT id, nombre, contrasena FROM usuario ORDER BY id DESC LIMIT 500";
+		String sql = "SELECT id, nombre, contrasena FROM usuario ORDER BY id ASC LIMIT 500";
 
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement pst = con.prepareStatement(sql);

@@ -43,7 +43,7 @@ public class UsuarioController extends HttpServlet {
 		
 		request.setAttribute("listaUsuarios", listaUsuarios);
 		
-		request.getRequestDispatcher("backoffice/usuarios/index.jsp").forward(request, response);
+		request.getRequestDispatcher("usuarios/index.jsp").forward(request, response);
 	}
 
 }
