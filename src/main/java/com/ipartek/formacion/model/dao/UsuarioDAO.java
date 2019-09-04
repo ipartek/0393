@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import com.ipartek.formacion.model.ConnectionManager;
@@ -11,6 +12,15 @@ import com.ipartek.formacion.model.pojo.Usuario;
 
 public class UsuarioDAO {
 	private static UsuarioDAO INSTANCE = null;
+
+	private static final String SQL_EXISTE = "SELECT id, nombre, contrasenya " + " FROM usuario "
+			+ " WHERE nombre = ? AND contrasenya = ? ;";
+	private static final String SQL_GET_ALL = "SELECT id, nombre, contrasenya FROM usuario ORDER BY id ASC LIMIT 500;";
+	private static final String SQL_GET_BY_ID = "SELECT id, nombre, contrasenya FROM usuario WHERE id = ?;";
+	private static final String SQL_UPDATE = "UPDATE usuario SET nombre = ?, contrasenya = ? WHERE  id = ?;";
+	private static final String SQL_DELETE = "DELETE FROM usuario WHERE id = ?;";
+	private static final String SQL_INSERT = "INSERT INTO usuario (nombre, contrasenya) VALUES (?,?);";
+	private static final String SQL_GET_BY_NAME = "SELECT id,nombre,contrasenya FROM usuario WHERE nombre LIKE ? ORDER BY id ASC LIMIT 500;";
 
 	private UsuarioDAO() {
 		super();
@@ -36,8 +46,8 @@ public class UsuarioDAO {
 	 */
 	public Usuario existe(String nombre, String contrasenya) {
 		Usuario usuario = null;
-		String sql = "SELECT id, nombre, contrasenya " + " FROM usuario " + " WHERE nombre = ? AND contrasenya = ? ;";
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_EXISTE);) {
 
 			// sustituir ? por parametros
 			pst.setString(1, nombre);
@@ -60,12 +70,9 @@ public class UsuarioDAO {
 	}
 
 	public ArrayList<Usuario> getAll() {
-
 		ArrayList<Usuario> lista = new ArrayList<Usuario>();
-		String sql = "SELECT id, nombre, contrasenya FROM usuario ORDER BY id ASC LIMIT 500";
-
 		try (Connection con = ConnectionManager.getConnection();
-				PreparedStatement pst = con.prepareStatement(sql);
+				PreparedStatement pst = con.prepareStatement(SQL_GET_ALL);
 				ResultSet rs = pst.executeQuery()) {
 
 			while (rs.next()) {
@@ -80,8 +87,8 @@ public class UsuarioDAO {
 
 	public Usuario getById(int id) {
 		Usuario usuario = new Usuario();
-		String sql = "SELECT id, nombre, contrasenya FROM usuario WHERE id = ?;";
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_GET_BY_ID)) {
 			// sustituyo la 1º ? por la variable id
 			pst.setInt(1, id);
 
@@ -98,10 +105,8 @@ public class UsuarioDAO {
 
 	public boolean modificar(Usuario pojo) throws Exception {
 		boolean resultado = false;
-
-		String sql = "UPDATE usuario SET nombre = ?, contrasenya = ? WHERE  id = ?;";
-
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_UPDATE)) {
 
 			pst.setString(1, pojo.getNombre());
 			pst.setString(2, pojo.getContrasenya());
@@ -118,29 +123,31 @@ public class UsuarioDAO {
 		return resultado;
 	}
 
-	public boolean crear(Usuario pojo) throws Exception {
-		boolean resultado = false;
-		String sql = "INSERT INTO usuario (nombre, contrasenya) VALUES (?,?);";
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+	public Usuario crear(Usuario pojo) throws Exception {
+
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS)) {
 			pst.setString(1, pojo.getNombre());
 			pst.setString(2, pojo.getContrasenya());
 
 			int affectedRows = pst.executeUpdate();
 			if (affectedRows == 1) {
-				resultado = true;
+				// conseguimos el ID que acabamos de crear
+				ResultSet rs = pst.getGeneratedKeys();
+				if (rs.next()) {
+					pojo.setId(rs.getInt(1));
+				}
 			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
-		return resultado;
+		return pojo;
 	}
 
 	public boolean eliminar(int id) {
 		boolean resultado = false;
-		String sql = "DELETE FROM usuario WHERE id = ?;";
+		// String sql = "DELETE FROM usuario WHERE id = ?;";
 
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_DELETE);) {
 
 			pst.setInt(1, id);
 
@@ -154,6 +161,26 @@ public class UsuarioDAO {
 		}
 
 		return resultado;
+	}
+
+	public ArrayList<Usuario> getAllByName(String buscar) {
+		ArrayList<Usuario> lista = new ArrayList<Usuario>();
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_GET_BY_NAME)) {
+
+			pst.setString(1, '%' + buscar + '%'); // busca todos, los que contengan esa letra/palabra
+			// pst.setString(1,buscar + '%'); //busca los que empiecen por esa letra/palabra
+
+			try (ResultSet rs = pst.executeQuery()) {
+				while (rs.next()) {
+					lista.add(mapper(rs));
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return lista;
 	}
 
 	public Usuario mapper(ResultSet rs) throws SQLException {

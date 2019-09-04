@@ -36,6 +36,7 @@ public class UsuarioController extends HttpServlet {
 	public static final String OP_BORRAR = "4";
 	public static final String OP_ELIMINAR = "hfd3";
 	public static final String OP_DETALLE = "13";
+	public static final String OP_BUSCAR = "5";
 
 	public static final String OP_FORM = "1";
 	public static final String OP_EDITAR = "2";
@@ -101,7 +102,7 @@ public class UsuarioController extends HttpServlet {
 		case OP_BORRAR: // llama al formulario de borrar
 			detalle(request, response);
 			break;
-		case OP_DETALLE: // cargara el video entero
+		case OP_DETALLE: // cargara el usuario entero
 			detalle(request, response);
 			break;
 		// Realizan las acciones dentro del formulario
@@ -110,6 +111,10 @@ public class UsuarioController extends HttpServlet {
 			break;
 		case OP_ELIMINAR:
 			eliminar(request, response);
+			break;
+		// buscador de usuarios
+		case OP_BUSCAR:
+			buscar(request, response);
 			break;
 		default:
 			listar(request, response);
@@ -205,6 +210,13 @@ public class UsuarioController extends HttpServlet {
 		}
 		request.setAttribute("usuario", u);
 		view = VIEW_INDEX;
+	}
+
+	private void buscar(HttpServletRequest request, HttpServletResponse response) {
+		String buscar = request.getParameter("buscar");
+		request.setAttribute("usuarios", usuarioDAO.getAllByName(buscar));
+		view = VIEW_INDEX;
+
 	}
 
 }
