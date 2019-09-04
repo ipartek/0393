@@ -19,7 +19,7 @@ import com.ipartek.formacion.model.pojo.Usuario;
 /**
  * Servlet implementation class UsuariosController
  */
-@WebServlet("/UsuariosController")
+@WebServlet("/backoffice/usuarios")
 public class UsuariosController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static UsuarioDAO usuarioDAO = UsuarioDAO.getInstance();
@@ -28,10 +28,11 @@ public class UsuariosController extends HttpServlet {
 	public static final String VIEW_FORM = "usuarios/formulario.jsp";
 	public static String view = VIEW_INDEX;
 
-	private static final String OP_CREATE = "a23d";
-	private static final String OP_UPDATE = "l78t";
-	private static final String OP_DELETE = "d3ng";
-	private static final String OP_LIST = "q092d";
+	public static final String OP_CREATE = "a23d";
+	public static final String OP_UPDATE = "l78t";
+	public static final String OP_DELETE = "d3ng";
+	public static final String OP_LIST = "q092d";
+	public static final String OP_DETALLE = "13";
 
 	private Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
@@ -50,7 +51,7 @@ public class UsuariosController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doPost(request, response);
+		doProcess(request, response);
 	}
 
 	/**
@@ -60,7 +61,7 @@ public class UsuariosController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+		doProcess(request, response);
 	}
 
 	protected void doProcess(HttpServletRequest request, HttpServletResponse response)
@@ -72,6 +73,11 @@ public class UsuariosController extends HttpServlet {
 		}
 
 		switch (op) {
+
+		case OP_DETALLE:
+			detalle(request, response);
+			break;
+
 		case OP_CREATE:
 			create(request, response);
 			break;
@@ -92,6 +98,17 @@ public class UsuariosController extends HttpServlet {
 		request.getRequestDispatcher(view).forward(request, response);
 	}
 
+	private void detalle(HttpServletRequest request, HttpServletResponse response) {
+
+		String sid = request.getParameter("id");
+		int id = Integer.parseInt(sid);
+
+		Usuario u = usuarioDAO.getById(id);
+		request.setAttribute("usuarioEditar", u);
+		view = VIEW_FORM;
+
+	}
+
 	private void delete(HttpServletRequest request, HttpServletResponse response) {
 		String sid = request.getParameter("id");
 		int id = Integer.parseInt(sid);
@@ -110,6 +127,13 @@ public class UsuariosController extends HttpServlet {
 		request.setAttribute("usuarios", usuarioDAO.getAll());
 		view = VIEW_INDEX;
 
+	}
+
+	private void buscar(HttpServletRequest request, HttpServletResponse response) {
+
+		String nombreBuscar = request.getParameter("nombreBuscar");
+		request.setAttribute("usuarios", usuarioDAO.getAllByNombre(nombreBuscar));
+		view = VIEW_INDEX;
 	}
 
 	private void update(HttpServletRequest request, HttpServletResponse response) {

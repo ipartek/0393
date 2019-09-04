@@ -12,6 +12,9 @@
 	      </li>
 	       <li class="nav-item">
 	        <a class="nav-link" href="backoffice/videos">Videos</a>
+	      </li>	
+	      <li class="nav-item">
+	        <a class="nav-link" href="backoffice/usuarios">Usuarios</a>
 	      </li>	 	      
 	       
 	       	<c:if test="${usuario == null}">

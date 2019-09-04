@@ -13,6 +13,13 @@ public class UsuarioDAO {
 
 	private static UsuarioDAO INSTANCE = null;
 
+	private static final String SQL_GET_ALL = "SELECT id,nombre,contra FROM usuario ORDER BY id DESC LIMIT 500;";
+	private static final String SQL_GET_BY_ID = "SELECT id,nombre,contra FROM usuario WHERE id = ?;";
+	private static final String SQL_GET_ALL_BY_NOMBRE = "SELECT id,nombre,contra FROM usuario WHERE nombre LIKE ? ORDER BY nombre ASC LIMIT 500;";
+	private static final String SQL_INSERT = "INSERT INTO usuario ( nombre, contra) VALUES ( ? , ?);";
+	private static final String SQL_UPDATE = "UPDATE usuario SET nombre= ?, contra= ? WHERE id = ?;";
+	private static final String SQL_DELETE = "DELETE FROM usuario WHERE id = ?;";
+
 	private UsuarioDAO() {
 		super();
 	}
@@ -79,6 +86,25 @@ public class UsuarioDAO {
 			e.printStackTrace();
 		}
 		return usuario;
+	}
+
+	public Usuario getById(int id) {
+		Usuario resul = new Usuario();
+
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_GET_BY_ID)) {
+
+			pst.setInt(1, id);
+
+			try (ResultSet rs = pst.executeQuery()) {
+				if (rs.next()) {
+					resul = mapper(rs);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return resul;
 	}
 
 	public boolean crear(Usuario pojo) throws Exception {
@@ -153,5 +179,27 @@ public class UsuarioDAO {
 		us.setNombre(rs.getString("nombre"));
 		us.setContra(rs.getString("contra"));
 		return us;
+	}
+
+	public ArrayList<Usuario> getAllByNombre(String nombre) {
+		ArrayList<Usuario> lista = new ArrayList<Usuario>();
+
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_GET_ALL_BY_NOMBRE);) {
+
+			pst.setString(1, "%" + nombre + "%");
+
+			try (ResultSet rs = pst.executeQuery()) {
+
+				while (rs.next()) {
+					lista.add(mapper(rs));
+				}
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return lista;
 	}
 }

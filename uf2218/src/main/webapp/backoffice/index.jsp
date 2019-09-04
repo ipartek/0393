@@ -30,7 +30,7 @@
                 <div class="card-body-icon">
                   <i class="fas fa-users-cog"></i>
                 </div>
-                <div class="mr-5">66 New Users!</div>
+                <div class="mr-5">${numeroUsuarios} New Users!</div>
               </div>
               <a class="card-footer text-white clearfix small z-1" href="backoffice/usuarios">
                 <span class="float-left">View Details</span>
