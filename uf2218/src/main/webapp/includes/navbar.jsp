@@ -19,7 +19,7 @@
         
 	        <c:if test="${usuario != null}">
 	        	<li class="nav-item">
-	       			 <a class="nav-link" href="backoffice/videos">Usuarios</a>
+	       			 <a class="nav-link" href="backoffice/users">Usuarios</a>
 	    		 </li>
 	    		 <li class="nav-item">
 	        		<a class="nav-link" href="backoffice/videos">Videos</a>

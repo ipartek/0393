@@ -5,7 +5,7 @@ SELECT id, nombre, contrasena FROM usuario ORDER BY id DESC LIMIT 500;
 
 -- busqueda por nombre
 
-SELECT id, nombre, contrasena FROM usuario WHERE nombre LIKE '%e%' ORDER BY nombre ASC LIMIT 500;
+SELECT id, nombre, contrasena FROM usuario WHERE nombre LIKE '%?%' ORDER BY nombre ASC LIMIT 500;
 
 -- crear usuario
 
