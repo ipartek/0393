@@ -45,7 +45,7 @@ public class YoutubeController extends HttpServlet {
 
 	private static YoutubeDAO youtubeDAO;
 	private static String op;
-	
+
 	private static ArrayList<Youtube> videos;
 
 	ValidatorFactory factory;
@@ -129,27 +129,28 @@ public class YoutubeController extends HttpServlet {
 			Youtube v = youtubeDAO.getById(id);
 			request.setAttribute("video", v);
 			request.setAttribute("op", op);
-			
-			if (op.equals(OP_DETALLE)) {				
+
+			if (op.equals(OP_DETALLE)) {
 				HttpSession session = request.getSession();
-				HashMap<Integer,Youtube> videosVistos = (HashMap<Integer,Youtube>)session.getAttribute("videosVistos");
-				if ( videosVistos == null ) {
-					videosVistos = new HashMap<Integer,Youtube>();
-				}		
+				HashMap<Integer, Youtube> videosVistos = (HashMap<Integer, Youtube>) session
+						.getAttribute("videosVistos");
+				if (videosVistos == null) {
+					videosVistos = new HashMap<Integer, Youtube>();
+				}
 				videosVistos.put(v.getId(), v);
 				session.setAttribute("videosVistos", videosVistos);
 			}
-	
+
 		} else {
 			request.setAttribute("video", new Youtube());
 			request.setAttribute("op", op);
 		}
-		
-		if(op.equals(OP_DETALLE)) {
+
+		if (op.equals(OP_DETALLE)) {
 			view = VIEW_DETALLE;
-		}else {
+		} else {
 			view = VIEW_FORM;
-		}		
+		}
 	}
 
 	private void eliminar(HttpServletRequest request, HttpServletResponse response) {
@@ -180,14 +181,14 @@ public class YoutubeController extends HttpServlet {
 			// llama al DAO
 			// si id == -1 => INSERT
 			// si id > 0 => UPDATE
-
+			HttpSession session = request.getSession();
 			try {
 				if (v.getId() == -1) {
-					youtubeDAO.crear(v);
+					youtubeDAO.crear(v, session);
 					listar(request, response);
 					request.setAttribute("mensaje", new Alert("success", "Registro creado con exito"));
 				} else {
-					youtubeDAO.modificar(v);
+					youtubeDAO.modificar(v, session);
 					listar(request, response);
 					request.setAttribute("mensaje", new Alert("success", "Registro modificado con exito"));
 				}
