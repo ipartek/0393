@@ -3,7 +3,7 @@ USE `v2019`;
 
 -- UPDATE video SET id_usuario = 1 WHERE id_usuario = 0;
 
--- Unir video con usuario
+-- Select de video mostrando el nombre del usuario
 SELECT video.id, video.nombre, usuario.nombre FROM video INNER JOIN usuario ON video.id_usuario = usuario.id;
 
 -- buscar por nombre

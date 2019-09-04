@@ -18,6 +18,32 @@ USE `v2019`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `usuario`
+--
+
+DROP TABLE IF EXISTS `usuario`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `usuario` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(45) NOT NULL,
+  `contrasenya` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `nombre_UNIQUE` (`nombre`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `usuario`
+--
+
+LOCK TABLES `usuario` WRITE;
+/*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
+INSERT INTO `usuario` VALUES (1,'admin','admin'),(2,'pepe','pepe'),(3,'lucas','lucas');
+/*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `video`
 --
 
@@ -28,9 +54,12 @@ CREATE TABLE `video` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(150) NOT NULL,
   `codigo` varchar(11) NOT NULL,
+  `id_usuario` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `codigo_UNIQUE` (`codigo`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8;
+  UNIQUE KEY `codigo_UNIQUE` (`codigo`),
+  KEY `FK_VIDEO_TIENE_USUARIO_idx` (`id_usuario`),
+  CONSTRAINT `FK_VIDEO_TIENE_USUARIO` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,7 +68,7 @@ CREATE TABLE `video` (
 
 LOCK TABLES `video` WRITE;
 /*!40000 ALTER TABLE `video` DISABLE KEYS */;
-INSERT INTO `video` VALUES (1,'REO Speedwagon - Can´t Fight This Feeling','zpOULjyy-n8'),(3,'LA RESISTENCIA - Entrevista a María León | #LaResistencia 25.06.2019','0ALt-O36bec'),(23,'No te olvides de poner el Where en el Delete From','i_cVJgIz_Cs');
+INSERT INTO `video` VALUES (3,'LA RESISTENCIA - Entrevista a María León | #LaResistencia 25.06.2019','0ALt-O36bec',1),(23,'No te olvides de poner el Where en el Delete From','i_cVJgIz_Cs',1);
 /*!40000 ALTER TABLE `video` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -60,4 +89,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-07-29 13:40:33
+-- Dump completed on 2019-09-04 13:47:59
