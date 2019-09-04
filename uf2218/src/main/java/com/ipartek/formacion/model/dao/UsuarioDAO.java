@@ -13,6 +13,8 @@ public class UsuarioDAO {
 
 	private static UsuarioDAO INSTANCE = null;
 
+	private static final String SQL_GET_ALL = "SELECT `id`, `nombre`, `contrasena` FROM `usuario` ORDER BY `id` LIMIT 500";
+
 	private UsuarioDAO() {
 		super();
 	}
@@ -63,17 +65,16 @@ public class UsuarioDAO {
 	public ArrayList<Usuario> getAll() {
 
 		ArrayList<Usuario> lista = new ArrayList<Usuario>();
-		String sql = "SELECT `id`, `nombre`, `contrasena` FROM `usuario` ORDER BY `id` LIMIT 500";
 
 		try (Connection con = ConnectionManager.getConnection();
-				PreparedStatement pst = con.prepareStatement(sql);
+				PreparedStatement pst = con.prepareStatement(SQL_GET_ALL);
 				ResultSet rs = pst.executeQuery()) {
 
 			while (rs.next()) {
 
 				lista.add(mapper(rs));
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 
 			e.printStackTrace();
 		}
@@ -99,6 +100,14 @@ public class UsuarioDAO {
 			e.printStackTrace();
 		}
 		return usuario;
+	}
+
+	public ArrayList<Usuario> getAllByName() {
+
+		ArrayList<Usuario> lista = new ArrayList<Usuario>();
+
+		return lista;
+
 	}
 
 	public Usuario mapper(ResultSet rs) throws SQLException {

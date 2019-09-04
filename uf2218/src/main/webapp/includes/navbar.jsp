@@ -9,10 +9,7 @@
 	    <ul class="navbar-nav mr-auto">
 	      <li class="nav-item">
 	        <a class="nav-link" href="index.jsp"><fmt:message key="menu.inicio" /></a>
-	      </li>
-	       <li class="nav-item">
-	        <a class="nav-link" href="backoffice/videos">Videos</a>
-	      </li>	 	      
+	      </li>	      
 	       
 	       	<c:if test="${usuario == null}">
 	       		<li class="nav-item">
@@ -21,6 +18,15 @@
 	        </c:if>
         
 	        <c:if test="${usuario != null}">
+	        	<li class="nav-item">
+	       			 <a class="nav-link" href="backoffice/videos">Usuarios</a>
+	    		 </li>
+	    		 <li class="nav-item">
+	        		<a class="nav-link" href="backoffice/videos">Videos</a>
+	      		</li>
+	      		<li class="nav-item">
+	        		<a class="nav-link" href="backoffice/inicio">Dashboard</a>
+	      		</li>			
 	        	<li class="nav-item">	        		
 	        			${usuario.nombre}
 	        			<i class="fas fa-user"></i>	        		
