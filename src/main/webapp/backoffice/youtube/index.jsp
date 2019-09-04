@@ -60,10 +60,10 @@
 		<!-- 
 		<a class="btn btn-danger" href="backoffice/videos?op=<%=YoutubeController.OP_BORRAR%>&id=<%=video.getId()%>" role="button" title="eliminar"><i class="fas fa-trash-alt"></i> Borrar</a>
 		 -->
-		<a class="btn btn-danger text-light" role="button" title="eliminar" data-toggle="modal" data-target="#eliminar"><i class="fas fa-trash-alt"></i> Borrar</a>
+		<a class="btn btn-danger text-light" role="button" title="eliminar" data-toggle="modal" data-target="#eliminar<%=video.getId()%>"><i class="fas fa-trash-alt"></i> Borrar</a>
 		
 		<!-- Modal -->
-					<div class="modal fade" id="eliminar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal fade" id="eliminar<%=video.getId()%>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 					  <div class="modal-dialog" role="document">
 					    <div class="modal-content">
 					      <div class="modal-header">
@@ -76,7 +76,7 @@
 					        <p>Cuidado porque operación no es reversible</p>
 					      </div>
 					      <div class="modal-footer">
-				        	<form action="backoffice/videos" method="post">	
+				        	<form action="backoffice/videos" method="post">					 
 								<input type="hidden" name="op" value="<%=YoutubeController.OP_ELIMINAR%>">
 								<input type="hidden" name="id" value="<%=video.getId()%>" readonly>			
 								<input type="submit" value="Eliminar" class="btn btn-danger btn-block">	
