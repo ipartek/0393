@@ -10,7 +10,7 @@
 	%>
 
 	<c:set var="idiomaSeleccionado" 
-		   value="${not empty sessionScope.idiomaSeleccionado ? sessionScope.idiomaSeleccionado : 'eu_ES'}" 
+		   value="${not empty sessionScope.idiomaSeleccionado ? sessionScope.idiomaSeleccionado : 'es_ES'}" 
 		   scope="session" />
 	
 	<fmt:setLocale value="${idiomaSeleccionado}" />
