@@ -91,14 +91,15 @@ public class VideoDAO {
 		return resultado;
 	}
 
-	public boolean crear(Video pojo) throws Exception {
+	public boolean crear(Video pojo, int idUser) throws Exception {
 		boolean resultado = false;
-		String sql = "INSERT INTO video (nombre, codigo) VALUES (?,?);";
+		String sql = "INSERT INTO video (nombre, codigo, id_usuario) VALUES (?,?,?);";
 
 		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
 
 			pst.setString(1, pojo.getNombre());
 			pst.setString(2, pojo.getCodigo());
+			pst.setInt(3, idUser);
 
 			int affectedRows = pst.executeUpdate();
 			if (affectedRows == 1) {

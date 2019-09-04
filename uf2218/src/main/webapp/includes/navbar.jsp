@@ -21,7 +21,7 @@
 			<c:if test="${usuario != null}">
 				<li class="nav-item">
 					<a class="nav-link" href="backoffice/inicio">
-						<i class="fas fa-user"></i>${usuario.nombre}
+						<i class="fas fa-user"></i>${sessionScope.usuario.nombre}
 					</a>
 				</li>
 				<li class="nav-item">
@@ -62,18 +62,15 @@
 <!-- end navar -->
 
 <nav class="bg-dark">
-	<a
-		href="i18n?idiomaSeleccionado=en_EN&ruta=${pageContext.request.requestURI}"><img
-		src="resources/img/british.png" alt=""
-		class="${sessionScope.idiomaSeleccionado != 'en_EN' ? 'inactive': ''  }"></a>
-	<a
-		href="i18n?idiomaSeleccionado=eu_ES&ruta=${pageContext.request.requestURI}"><img
-		src="resources/img/euskadi.png" alt=""
-		class="${sessionScope.idiomaSeleccionado != 'eu_ES' ? 'inactive': ''  }"></a>
-	<a
-		href="i18n?idiomaSeleccionado=es_ES&ruta=${pageContext.request.requestURI}"><img
-		src="resources/img/Spain.png" alt=""
-		class="${sessionScope.idiomaSeleccionado != 'es_ES' ? 'inactive': ''  }"></a>
+	<a href="i18n?idiomaSeleccionado=en_EN">
+		<img src="resources/img/british.png" alt="" class="${sessionScope.idiomaSeleccionado != 'en_EN' ? 'inactive': ''  }">
+	</a>
+	<a href="i18n?idiomaSeleccionado=eu_ES">
+		<img src="resources/img/euskadi.png" alt="" class="${sessionScope.idiomaSeleccionado != 'eu_ES' ? 'inactive': ''  }">
+	</a>
+	<a href="i18n?idiomaSeleccionado=es_ES">
+		<img src="resources/img/Spain.png" alt="" class="${sessionScope.idiomaSeleccionado != 'es_ES' ? 'inactive': ''  }">
+	</a>
 </nav>
 
 

@@ -13,16 +13,16 @@
 	<div class="row">
 		<div class="col-3">
 			<div class="jumbotron bg-danger p-4">
-				<h3 class="text-light">${nVideos} Videos <i class="fab fa-youtube"></i></h3>
+				<h3 class="text-light">${nVideos} <fmt:message key="menu.videos" /> <i class="fab fa-youtube"></i></h3>
 				<br>
-				<a class="text-light" href="backoffice/videos?op=<%=VideoController.OP_LISTAR%>">View Details >></a>
+				<a class="text-light" href="backoffice/videos?op=<%=VideoController.OP_LISTAR%>"><fmt:message key="backoffice.detalles" /> >></a>
 			</div>
 		</div>
 		<div class="col-3">
 			<div class="jumbotron bg-primary p-4">
-				<h3 class="text-light">${nUsuarios} Usuarios <i class="fas fa-user"></i></h3>
+				<h3 class="text-light">${nUsuarios} <fmt:message key="menu.usuarios" /> <i class="fas fa-user"></i></h3>
 				<br>
-				<a class="text-light" href="backoffice/usuarios?op=<%=UsuarioController.OP_LISTAR%>">View Details >></a>
+				<a class="text-light" href="backoffice/usuarios?op=<%=UsuarioController.OP_LISTAR%>"><fmt:message key="backoffice.detalles" /> >></a>
 			</div>
 		</div>
 	</div>
