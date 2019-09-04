@@ -81,45 +81,6 @@ public class UsuarioDAO {
 		return lista;
 	}
 
-	public boolean delete(int id) {
-		boolean resultado = false;
-		String sql = "DELETE FROM usuario WHERE id = ?;";
-
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
-
-			pst.setInt(1, id);
-
-			int affetedRows = pst.executeUpdate();
-			if (affetedRows == 1) {
-				resultado = true;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return resultado;
-	}
-
-	public boolean modificar(Usuario pojo) throws SQLException {
-		boolean resultado = false;
-
-		String sql = "UPDATE usuario SET nombre = ?, contrasenya = ? WHERE id = ?;";
-
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
-
-			pst.setString(1, pojo.getNombre());
-			pst.setString(2, pojo.getContrasenya());
-			pst.setInt(3, pojo.getId());
-
-			int affectedRows = pst.executeUpdate();
-			if (affectedRows == 1) {
-				resultado = true;
-			}
-
-		}
-		return resultado;
-	}
-
 	public boolean crear(Usuario pojo) throws SQLException {
 		boolean resultado = false;
 		String sql = "INSERT INTO usuario (nombre, contrasenya) VALUES (?,?);";
@@ -156,6 +117,61 @@ public class UsuarioDAO {
 			e.printStackTrace();
 		}
 		return usuario;
+	}
+
+	public Usuario getByName(String nombre) {
+		Usuario usuario = new Usuario();
+		String sql = "SELECT * FROM usuario WHERE nombre LIKE '%" + nombre + "%';";
+
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(sql);
+				ResultSet rs = pst.executeQuery()) {
+			if (rs.next()) {
+				usuario = mapper(rs);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return usuario;
+	}
+
+	public boolean modificar(Usuario pojo) throws SQLException {
+		boolean resultado = false;
+
+		String sql = "UPDATE usuario SET nombre = ?, contrasenya = ? WHERE id = ?;";
+
+		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+
+			pst.setString(1, pojo.getNombre());
+			pst.setString(2, pojo.getContrasenya());
+			pst.setInt(3, pojo.getId());
+
+			int affectedRows = pst.executeUpdate();
+			if (affectedRows == 1) {
+				resultado = true;
+			}
+
+		}
+		return resultado;
+	}
+
+	public boolean delete(int id) {
+		boolean resultado = false;
+		String sql = "DELETE FROM usuario WHERE id = ?;";
+
+		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+
+			pst.setInt(1, id);
+
+			int affetedRows = pst.executeUpdate();
+			if (affetedRows == 1) {
+				resultado = true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return resultado;
 	}
 
 	private Usuario mapper(ResultSet rs) throws SQLException {

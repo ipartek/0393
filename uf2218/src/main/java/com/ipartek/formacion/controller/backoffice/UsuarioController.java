@@ -34,6 +34,7 @@ public class UsuarioController extends HttpServlet {
 	public static final String OP_NUEVO = "2";
 	public static final String OP_ELIMINAR = "3";
 	public static final String OP_DETALLE = "4";
+	public static final String OP_BUSCAR = "5";
 
 	private static UsuarioDAO usuarioDAO;
 
@@ -89,12 +90,23 @@ public class UsuarioController extends HttpServlet {
 			nuevo(request, response);
 			break;
 
+		case OP_BUSCAR:
+			buscar(request, response);
+			break;
+
 		default:
 			listar(request, response);
 			break;
 		}
 
 		request.getRequestDispatcher(view).forward(request, response);
+	}
+
+	public void buscar(HttpServletRequest request, HttpServletResponse response) {
+		String nombre = request.getParameter("nombreBuscar");
+
+		request.setAttribute("usuario", usuarioDAO.getByName(nombre));
+		view = VIEW_INDEX;
 	}
 
 	private void nuevo(HttpServletRequest request, HttpServletResponse response) {
