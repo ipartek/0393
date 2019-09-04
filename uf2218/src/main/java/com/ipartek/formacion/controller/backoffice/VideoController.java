@@ -133,13 +133,13 @@ public class VideoController extends HttpServlet {
 
 		Set<ConstraintViolation<Video>> violations = validator.validate(v);
 		if (violations.isEmpty()) {
-
+			HttpSession s = request.getSession();
 			try {
 
 				if (v.getId() == -1) {
-					videoDAO.crear(v);
+					videoDAO.crear(v, s);
 				} else {
-					videoDAO.modificar(v);
+					videoDAO.modificar(v, s);
 				}
 				request.setAttribute("mensaje", new Alert("success", "Registro creado con exito"));
 

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import com.ipartek.formacion.model.ConnectionManager;
@@ -114,10 +115,7 @@ public class UsuarioDAO {
 			try (ResultSet rs = pst.executeQuery()) {
 
 				while (rs.next()) {
-					/*
-					 * Video v = new Video(); v.setId( rs.getInt("id") ); v.setNombre(
-					 * rs.getString("nombre")); v.setCodigo( rs.getString("codigo"));
-					 */
+
 					lista.add(mapper(rs));
 				}
 			}
@@ -149,23 +147,27 @@ public class UsuarioDAO {
 		return resultado;
 	}
 
-	public boolean crear(Usuario pojo) throws Exception {
-		boolean resultado = false;
+	public Usuario crear(Usuario pojo) throws Exception {
 		String sql = "INSERT INTO usuario (nombre, contrasenya) VALUES (?,?);";
 
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
 			pst.setString(1, pojo.getNombre());
 			pst.setString(2, pojo.getContrasenya());
 
 			int affectedRows = pst.executeUpdate();
+
 			if (affectedRows == 1) {
-				resultado = true;
+				ResultSet rs = pst.getGeneratedKeys();
+				if (rs.next()) {
+					pojo.setId(rs.getInt(1));
+				}
 			}
 
 		}
 
-		return resultado;
+		return pojo;
 	}
 
 	public boolean delete(int id) {
