@@ -15,28 +15,28 @@
 			
 				<div class="form-group">	
 					<label for="id">Id:</label>
-					<input type="text" name="id" value="${usuario.id}" readonly class="form-control">
+					<input type="text" name="id" value="${usuarioEditar.id}" readonly class="form-control">
 				</div>
 				
 				<div class="form-group">
 					<label for="nombre">Nombre:</label>
-					<input type="text" name="nombre" value="${usuario.nombre}"
-					       placeholder="Mínimio 3 máximo 150"
+					<input type="text" name="nombre" value="${usuarioEditar.nombre}"
+					       placeholder=""
 					       class="form-control">
 				</div>
 				
 				<div class="form-group">
-					<label for="codigo">Contraseña:</label>
-					<input type="text" name="contrasena" value="${usuario.contrasena}"
-					       placeholder="Exactamente 11" 
+					<label for="contrasena">Contraseña:</label>
+					<input type="password" name="contrasena" value="${usuarioEditar.contrasena}"
+					       placeholder="" 
 						   class="form-control">
 				</div>	
 			
-				<input type="submit" value="${(usuario.id != -1)?'Modificar':'Crear'}" class="btn btn-outline-primary  btn-block">
+				<input type="submit" value="${(usuarioEditar.id != -1)?'Modificar':'Crear'}" class="btn btn-outline-primary  btn-block">
 			
 			</form>
 			
-			<c:if test="${usuario.id != -1}">
+			<c:if test="${usuarioEditar.id != -1}">
 			
 				
 				<!-- Button trigger modal -->
@@ -61,7 +61,7 @@
 				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 			        	<form action="backoffice/usuarios" method="post">	
 							<input type="hidden" name="op" value="<%=UsuarioController.OP_ELIMINAR%>">
-							<input type="hidden" name="id" value="${usuario.id}" readonly>			
+							<input type="hidden" name="id" value="${usuarioEditar.id}" readonly>			
 							<input type="submit" value="Eliminar" class="btn btn-danger btn-block">	
 						</form>
 				      </div>

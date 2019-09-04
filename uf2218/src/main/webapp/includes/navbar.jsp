@@ -11,12 +11,19 @@
 	      <li class="nav-item">
 	      	<a class="nav-link" href="index.jsp"><fmt:message key="menu.inicio" /></a>
 	      </li>
-	       <li class="nav-item">
-	        <a class="nav-link" href="backoffice/videos">Videos</a>
-	      </li> 
-	      <c:if test="${usuario != null}">      
-		      <li class="nav-item">
-			      <div class="dropdown">
+	       
+	      <c:if test="${usuario != null}">
+	      	<li class="nav-item">
+		      	<a class="nav-link" href="backoffice/inicio">Dashboard</a>
+		      </li>
+	      	<li class="nav-item">
+	        	<a class="nav-link" href="backoffice/videos">Videos</a>
+	      	</li>
+	      	<li class="nav-item">
+	        	<a class="nav-link" href="backoffice/usuarios">Usuarios</a>
+	      	</li>    
+		    <li class="nav-item">
+				<div class="dropdown">
 					  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					    Videos Visualizados
 					  </button>
@@ -26,9 +33,6 @@
 					    </c:forEach>				    
 					  </div>
 					</div>
-		      </li>
-		      <li class="nav-item">
-		      	<a class="nav-link" href="backoffice/inicio">Backoffice</a>
 		      </li>
 	      </c:if>
 	    </ul>

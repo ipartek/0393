@@ -1,0 +1,19 @@
+USE v2019;
+
+--listar todos usuarios
+SELECT id,nombre,contrasena FROM usuario ORDER BY DESC LIMIT 500; 
+
+--busqueda por nombre
+SELECT id,nombre, contrasena FROM usuario WHERE nombre LIKE '%?%' ORDER BY id DESC LIMIT 500;
+
+--eliminar por id
+DELETE FROM usuario WHERE id = ?;
+
+--crear usuario nuevo
+INSERT INTO usuario (nombre, contrasena) VALUES (?,?);
+
+--modificar un usuario
+UPDATE usuario SET nombre = ?, contrasena = ? WHERE  id = ?;
+
+--comparar tablas
+SELECT v.nombre, v.codigo, v.id, u.nombre FROM video v INNER JOIN usuario u ON v.id_usuario = u.id;

@@ -33,6 +33,7 @@ public class UsuarioController extends HttpServlet {
 	public static final String OP_NUEVO = "2";
 	public static final String OP_ELIMINAR = "3";
 	public static final String OP_DETALLE = "4";
+	public static final String OP_BUSCAR = "5";
 
 	private static UsuarioDAO usuarioDAO;
 
@@ -71,22 +72,21 @@ public class UsuarioController extends HttpServlet {
 		}
 
 		switch (op) {
-		case OP_DETALLE:
-			detalle(request, response);
-			break;
-
 		case OP_GUARDAR:
 			guardar(request, response);
 			break;
-
-		case OP_ELIMINAR:
-			eliminar(request, response);
-			break;
-
 		case OP_NUEVO:
 			nuevo(request, response);
 			break;
-
+		case OP_ELIMINAR:
+			eliminar(request, response);
+			break;
+		case OP_DETALLE:
+			detalle(request, response);
+			break;
+		case OP_BUSCAR:
+			buscar(request, response);
+			break;
 		default:
 			listar(request, response);
 			break;
@@ -96,9 +96,17 @@ public class UsuarioController extends HttpServlet {
 
 	}
 
+	private void buscar(HttpServletRequest request, HttpServletResponse response) {
+
+		String nombreBuscar = request.getParameter("nombreBuscar");
+
+		request.setAttribute("usuarios", usuarioDAO.getAllByName(nombreBuscar));
+		view = VIEW_INDEX;
+	}
+
 	private void nuevo(HttpServletRequest request, HttpServletResponse response) {
 
-		request.setAttribute("usuario", new Usuario());
+		request.setAttribute("usuarioEditar", new Usuario());
 		view = VIEW_FORM;
 	}
 
@@ -142,7 +150,7 @@ public class UsuarioController extends HttpServlet {
 
 			} catch (Exception e) {
 
-				request.setAttribute("mensaje", new Alert("danger", "Tenemos un problema, el codigo ya existe"));
+				request.setAttribute("mensaje", new Alert("danger", "Tenemos un problema, el usuario ya existe"));
 			}
 
 		} else { // hay violaciones de las validaciones
@@ -154,7 +162,7 @@ public class UsuarioController extends HttpServlet {
 			}
 			request.setAttribute("mensaje", new Alert("warning", mensaje));
 		}
-		request.setAttribute("usuario", u);
+		request.setAttribute("usuarioEditar", u);
 		view = VIEW_FORM;
 
 	}
@@ -165,7 +173,7 @@ public class UsuarioController extends HttpServlet {
 		int id = Integer.parseInt(sid);
 
 		Usuario u = usuarioDAO.getById(id);
-		request.setAttribute("usuario", u);
+		request.setAttribute("usuarioEditar", u);
 		view = VIEW_FORM;
 
 	}

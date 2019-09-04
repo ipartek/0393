@@ -13,6 +13,7 @@
 			<form action="backoffice/videos" method="post" class="mb-2">
 			
 				<input type="hidden" name="op" value="<%=VideoController.OP_GUARDAR%>">
+				<input type="hidden" name="userReg" value="${sessionScope.usuario.id}">
 			
 				<div class="form-group">	
 					<label for="id">Id:</label>

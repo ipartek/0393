@@ -6,9 +6,15 @@
 	
 	
 	<%@include file="../../includes/mensaje.jsp"%>
-			
 	
-	<a href="backoffice/usuarios?op=<%=UsuarioController.OP_NUEVO%>" class="mb-3 btn btn-outline-primary">Nuevo Usuario</a>
+	<a href="backoffice/usuarios?op=<%=UsuarioController.OP_NUEVO%>" class="mb-3 mr-2 btn btn-outline-primary">Nuevo Usuario</a>
+			
+	<form action="backoffice/usuarios" method="post" class="mb-2 form-inline">
+			<label class="mr-2" for="nombreBuscar">Busqueda:</label>
+			<input type="text" name="nombreBuscar" placeholder="" class="form-control mr-2">
+			<input type="hidden" name="op" value="<%=UsuarioController.OP_BUSCAR%>">
+			<input type="submit" value="Search">	
+	</form>
 	
 	<ul class="list-group">
 	  <c:forEach items="${usuarios}" var="u">	

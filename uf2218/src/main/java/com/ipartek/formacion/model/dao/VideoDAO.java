@@ -6,7 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpSession;
+
 import com.ipartek.formacion.model.ConnectionManager;
+import com.ipartek.formacion.model.pojo.Usuario;
 import com.ipartek.formacion.model.pojo.Video;
 
 public class VideoDAO {
@@ -46,7 +49,6 @@ public class VideoDAO {
 		}
 		return lista;
 	}
-
 
 	public Video getById(int id) {
 		Video video = new Video();
@@ -98,15 +100,18 @@ public class VideoDAO {
 	 * 
 	 */
 
-	public boolean modificar(Video pojo) throws Exception {
+	public boolean modificar(Video pojo, HttpSession session) throws Exception {
 		boolean resultado = false;
 
-		String sql = "UPDATE video SET nombre = ?, codigo = ? WHERE  id = ?;";
+		String sql = "UPDATE video SET nombre = ?, codigo = ?, id_usuario = ? WHERE  id = ?;";
+
+		Usuario usuario = (Usuario) session.getAttribute("usuario");
 
 		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
 
 			pst.setString(1, pojo.getNombre());
 			pst.setString(2, pojo.getCodigo());
+			pst.setInt(3, usuario.getId());
 			pst.setInt(3, pojo.getId());
 
 			int affectedRows = pst.executeUpdate();
@@ -118,14 +123,17 @@ public class VideoDAO {
 		return resultado;
 	}
 
-	public boolean crear(Video pojo) throws Exception {
+	public boolean crear(Video pojo, HttpSession session) throws Exception {
 		boolean resultado = false;
-		String sql = "INSERT INTO video (nombre, codigo) VALUES (?,?);";
+		String sql = "INSERT INTO video (nombre, codigo, id_usuario) VALUES (?,?,?);";
+
+		Usuario usuario = (Usuario) session.getAttribute("usuario");
 
 		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
 
 			pst.setString(1, pojo.getNombre());
 			pst.setString(2, pojo.getCodigo());
+			pst.setInt(3, usuario.getId());
 
 			int affectedRows = pst.executeUpdate();
 			if (affectedRows == 1) {
