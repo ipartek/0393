@@ -31,13 +31,9 @@
 					</td>
 					<td>${lu.contrasena }</td>
 					<td>
-						<c:if test="${lu.nombre=='admin' }">
-							<i class="fas fa-users-cog fa-2x text-success"></i>
-						</c:if>
-						<c:if test="${lu.nombre!='admin' }">
-							<i class="fas fa-user-edit fa-2x text-success"></i>&emsp;
-							<i class="fas fa-user-times fa-2x text-danger"></i>
-						</c:if>
+						<a href="backoffice/usuarios?op=<%=UsuarioController.OP_DETALLE%>&id=${lu.id}"><i class="fas fa-user-edit fa-2x text-success"></i></a>
+						&emsp;
+						<i class="fas fa-user-times fa-2x text-danger"></i>
 						
 					</td>
 				</tr>
