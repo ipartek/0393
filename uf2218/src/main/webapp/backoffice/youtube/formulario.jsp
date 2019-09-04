@@ -3,7 +3,7 @@
 <%@include file="../../includes/header.jsp"%>
 <%@include file="../../includes/navbar.jsp"%>
 
-	<h1>Detalle Video</h1>
+	<h1>Detalle Video</h1> 
 	
 	<div class="row">
 		<div class="col">
