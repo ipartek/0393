@@ -33,8 +33,8 @@
           </div>
           <div class="mr-5">${numeroUsuarios} usuarios</div>
         </div>
-        <a class="card-footer text-white clearfix small z-1" href="#">
-          <span class="float-left">View Details</span>
+        <a class="card-footer text-white clearfix small z-1" href="backoffice/usuario">
+          <span class="float-left">Ver Listado</span>
           <span class="float-right">
             <i class="fas fa-angle-right"></i>
           </span>

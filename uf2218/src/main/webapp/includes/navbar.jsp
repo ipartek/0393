@@ -1,4 +1,5 @@
-    <%@page import="com.ipartek.formacion.controller.backoffice.VideoController"%>
+<%@page import="com.ipartek.formacion.controller.backoffice.VideoController"%>
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 	  <a class="navbar-brand" href="#">JEE</a>
 	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -10,9 +11,6 @@
 	      <li class="nav-item">
 	        <a class="nav-link" href="index.jsp"><fmt:message key="menu.inicio" /></a>
 	      </li>
-	       <li class="nav-item">
-	        <a class="nav-link" href="backoffice/videos">Videos</a>
-	      </li>	 	      
 	       
 	       	<c:if test="${usuario == null}">
 	       		<li class="nav-item">
@@ -21,7 +19,16 @@
 	        </c:if>
         
 	        <c:if test="${usuario != null}">
-	        	<li class="nav-item">	        		
+	          <li class="nav-item">
+		        <a class="nav-link" href="backoffice/inicio">Dashboard</a>
+		      </li>
+		      <li class="nav-item">
+		        <a class="nav-link" href="backoffice/videos">Videos</a>
+		      </li>
+		      <li class="nav-item">
+		        <a class="nav-link" href="backoffice/usuario">Usuarios</a>
+		      </li>
+	          <li class="nav-item">	        		
 	        			${usuario.nombre}
 	        			<i class="fas fa-user"></i>	        		
 	        	</li>
