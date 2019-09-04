@@ -10,19 +10,30 @@
 	      <li class="nav-item">
 	        <a class="nav-link" href="index.jsp"><fmt:message key="menu.inicio" /></a>
 	      </li>
-	       <li class="nav-item">
-	        <a class="nav-link" href="backoffice/videos">Videos</a>
-	      </li>
+	       
 	       	<c:if test="${usuario == null}">
 	       		<li class="nav-item">
 	        		<a class="nav-link" href="login.jsp">Login</a>
 	        	</li>	
 	        </c:if>
 	        <c:if test="${usuario != null}">
+	        
+		        <li class="nav-item">
+			        <a class="nav-link" href="backoffice/inicio">Panel de control</a>
+			      </li>
+	        
+	        	<li class="nav-item">
+			        <a class="nav-link" href="backoffice/videos">Videos</a>
+			      </li>
+			      
+			      <li class="nav-item">
+			        <a class="nav-link" href="backoffice/usuarios">Usuarios</a>
+			      </li>
 	        	<li class="nav-item">
 	        		<span class="nav-link"><i class="fas fa-user"></i> ${usuario.nombre}</span>	        		
 	        		     		
 	        	</li>
+	        	
 	        	<li class="nav-item">
 	        		<a class="nav-link" href="logout"><i class="fas fa-sign-out-alt"></i> Salir</a>
 	        	</li>

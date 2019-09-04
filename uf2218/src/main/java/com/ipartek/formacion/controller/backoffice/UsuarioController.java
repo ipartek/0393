@@ -36,6 +36,7 @@ public class UsuarioController extends HttpServlet {
 	public static final String OP_NUEVO = "3";
 	public static final String OP_ELIMINAR = "4";
 	public static final String OP_DETALLE = "5";
+	public static final String OP_BUSCAR = "6";
        
 	@Override
 	public void init(ServletConfig config) throws ServletException {
@@ -80,7 +81,11 @@ public class UsuarioController extends HttpServlet {
 			
 		case OP_NUEVO:
 			nuevo(request, response);
-			break;		
+			break;
+			
+		case OP_BUSCAR:
+			buscar(request, response);
+			break;	
 		
 		default:
 			listar(request, response);
@@ -88,6 +93,18 @@ public class UsuarioController extends HttpServlet {
 		}
 		
 		request.getRequestDispatcher(view).forward(request, response);
+		
+	}
+
+	private void buscar(HttpServletRequest request, HttpServletResponse response) {
+		
+		String nombre = request.getParameter("nombre");
+		
+		ArrayList<Usuario> listaUsuarios = usuarioDAO.getAllByName(nombre);
+		
+		request.setAttribute("listaUsuarios", listaUsuarios);
+		
+		view = VIEW_INDEX;
 		
 	}
 

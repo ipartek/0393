@@ -5,12 +5,14 @@
 
 	<h1>Detalle Usuario</h1>
 	
+	<a href="backoffice/usuarios" class="mb-3 btn btn-outline-primary">Atrás</a>
+	
 	<div class="row">
 		<div class="col">
 		
 			<%@include file="../../includes/mensaje.jsp"%>
 			
-			<form action="backoffice/videos" method="post" class="mb-2">
+			<form action="backoffice/usuarios" method="post" class="mb-2 w-25">
 			
 				<input type="hidden" name="op" value="<%=UsuarioController.OP_GUARDAR%>">
 			
@@ -22,24 +24,21 @@
 				<div class="form-group">
 					<label for="nombre">Nombre:</label>
 					<input type="text" name="nombre" value="${usuario.nombre}"
-					       placeholder="Mínimio 3 máximo 150"
 					       class="form-control">
 				</div>
 				
 				<div class="form-group">
-					<label for="codigo">Contraseña:</label>
-					<input type="text" name="codigo" value="${usuario.codigo}"
-					       placeholder="Exactamente 11" 
+					<label for="contrasena">Contraseña:</label>
+					<input type="password" name="contrasena" value="${usuario.contrasena}"
 						   class="form-control">
 				</div>	
 			
-				<input type="submit" value="${(usuario.id != -1)?'Modificar':'Crear'}" class="btn btn-outline-primary  btn-block">
+				<input type="submit" value="${(usuario.id != -1)?'Modificar':'Crear'}" class="btn btn-outline-primary btn-block">
 			
 			</form>
 			
 			<c:if test="${usuario.id != -1}">
 			
-				
 				<!-- Button trigger modal -->
 				<button type="button" class="btn btn-outline-danger btn-block" data-toggle="modal" data-target="#exampleModal">
 				  Eliminar
@@ -50,7 +49,7 @@
 				  <div class="modal-dialog" role="document">
 				    <div class="modal-content">
 				      <div class="modal-header">
-				        <h5 class="modal-title" id="exampleModalLabel">¿Estas Seguro de ELIMINAR el registro?</h5>
+				        <h5 class="modal-title" id="exampleModalLabel">¿Estas Seguro de ELIMINAR el usuario?</h5>
 				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				          <span aria-hidden="true">&times;</span>
 				        </button>
@@ -60,7 +59,7 @@
 				      </div>
 				      <div class="modal-footer">
 				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-			        	<form action="backoffice/videos" method="post">	
+			        	<form action="backoffice/usuarios" method="post">	
 							<input type="hidden" name="op" value="<%=UsuarioController.OP_ELIMINAR%>">
 							<input type="hidden" name="id" value="${usuario.id}" readonly>			
 							<input type="submit" value="Eliminar" class="btn btn-danger btn-block">	

@@ -75,12 +75,6 @@ public class UsuarioDAO {
 				ResultSet rs = pst.executeQuery()) {
 
 			while (rs.next()) {
-				/*
-				Video v = new Video();
-				v.setId( rs.getInt("id") );
-				v.setNombre( rs.getString("nombre"));
-				v.setCodigo( rs.getString("codigo"));
-				*/
 				lista.add( mapper(rs) );
 			}
 		} catch (Exception e) {
@@ -90,7 +84,32 @@ public class UsuarioDAO {
 		return lista;
 	}
 	
-	public Usuario mapper(ResultSet rs) throws SQLException {
+	public ArrayList<Usuario> getAllByName(String nombre) {
+		
+		ArrayList<Usuario> lista = new ArrayList<Usuario>();
+		String sql = "SELECT id, nombre, contrasena FROM usuario WHERE nombre LIKE ? ORDER BY nombre DESC LIMIT 500;";
+
+		try (Connection con = ConnectionManager.getConnection(); 
+				PreparedStatement pst = con.prepareStatement(sql)) {
+			
+			pst.setString(1, "%" + nombre + "%");
+			
+			try (ResultSet rs = pst.executeQuery()) {
+				while (rs.next()) {
+					lista.add( mapper(rs) );
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return lista;
+	}
+		
+	private Usuario mapper(ResultSet rs) throws SQLException {
 		Usuario u = new Usuario();
 		u.setId(rs.getInt("id"));
 		u.setNombre(rs.getString("nombre"));
@@ -100,7 +119,7 @@ public class UsuarioDAO {
 	
 	public Usuario getById(int id) {
 		Usuario usuario = new Usuario();
-		String sql = "SELECT id, nombre, contrasena  FROM usuario WHERE id = ? ;";
+		String sql = "SELECT id, nombre, contrasena  FROM usuario WHERE id = ?;";
 
 		try (Connection con = ConnectionManager.getConnection(); 
 				PreparedStatement pst = con.prepareStatement(sql)) {
