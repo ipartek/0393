@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import com.ipartek.formacion.model.ConnectionManager;
@@ -85,6 +86,29 @@ public class UsuarioDAO {
 		return lista;
 	}
 
+	public ArrayList<Usuario> getAllByName(String nombre) {
+
+		ArrayList<Usuario> lista = new ArrayList<Usuario>();
+		String sql = "SELECT id, nombre, contrasenya FROM usuario WHERE nombre LIKE ? ORDER BY id ASC LIMIT 500";
+
+		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+
+			pst.setString(1, "%" + nombre + "%");
+
+			try (ResultSet rs = pst.executeQuery()) {
+				while (rs.next()) {
+
+					lista.add(mapper(rs));
+				}
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+		return lista;
+	}
+
 	public Usuario mapper(ResultSet rs) throws SQLException {
 		Usuario u = new Usuario();
 		u.setId(rs.getInt("id"));
@@ -134,23 +158,28 @@ public class UsuarioDAO {
 		return resultado;
 	}
 
-	public boolean crear(Usuario pojo) throws Exception {
-		boolean resultado = false;
+	public Usuario crear(Usuario pojo) throws Exception {
+		// boolean resultado = false;
 		String sql = "INSERT INTO usuario (nombre, contrasenya) VALUES (?,?);";
 
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
 			pst.setString(1, pojo.getNombre());
 			pst.setString(2, pojo.getContrasenya());
 
 			int affectedRows = pst.executeUpdate();
 			if (affectedRows == 1) {
-				resultado = true;
+				ResultSet rs = pst.getGeneratedKeys();
+				if (rs.next()) {
+					pojo.setId(rs.getInt(1));
+				}
+				// resultado = true;
 			}
 
 		}
 
-		return resultado;
+		return pojo;
 	}
 
 	public boolean delete(int id) {

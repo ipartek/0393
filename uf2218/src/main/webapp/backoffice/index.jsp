@@ -1,4 +1,5 @@
 <%@page import="com.ipartek.formacion.controller.listener.UsuariosLogeadosListener"%>
+<%@page import="com.ipartek.formacion.controller.backoffice.UsuariosController"%>
 
 <%@include file="../includes/header.jsp"%>
 <%@include file="../includes/navbar.jsp"%> 
@@ -18,7 +19,7 @@
                 </div>
                 <div class="mr-5">${numeroUsuarios} usuarios!</div>
               </div>
-              <a class="card-footer text-white clearfix small z-1" href="backoffice/usuarios">
+              <a class="card-footer text-white clearfix small z-1" href="backoffice/usuarios?op=${Usuarios.OP_LISTAR}">
                 <span class="float-left">Ver Usuarios</span>
                 <span class="float-right">
                   <i class="fas fa-angle-right"></i>
