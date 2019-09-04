@@ -8,7 +8,10 @@ SELECT id,nombre,contrasenya FROM usuario WHERE nombre LIKE '%cas%' ORDER BY nom
 
 
 -- eliminar un usuario por id
+DELETE FROM usuario WHERE id = ?;
 
 -- crear un usuario nuevo
+INSERT INTO usuario ( nombre, contrasenya) VALUES ( ? , ?);
 
 -- modificar un usuario
+UPDATE usuario SET nombre= ?, contrasenya= ? WHERE id = ?;
