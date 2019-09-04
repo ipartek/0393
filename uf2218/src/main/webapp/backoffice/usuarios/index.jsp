@@ -53,7 +53,7 @@
 			
 			<div class="form-group">	
 				<h3 class="text-info">Buscador usuarios</h3><hr>
-				<input type="text" name="nombre" placeholder="Usuario a buscar" class="form-control">
+				<input type="text" name="nombre" placeholder="Usuario a buscar" required class="form-control">
 			</div>
 			
 			<input type="submit" value="Buscar Usuario" class="btn btn-outline-primary  btn-block">
