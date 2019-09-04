@@ -5,6 +5,7 @@
 
 	<h1>Listado Videos</h1>
 	
+	<hr>
 	
 	<%@include file="../../includes/mensaje.jsp"%>
 			
@@ -21,7 +22,5 @@
 	  	</li>
 	  </c:forEach>	  	  
 	</ul>
-
-	
 	
 <%@include file="../../includes/footer.jsp"%>

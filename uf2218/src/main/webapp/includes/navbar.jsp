@@ -32,20 +32,21 @@
 			</c:if>
 			<li class="nav-item">
 				<a class="nav-link" href="backoffice/usuarios">
-					Usuarios
+					<fmt:message key="menu.usuarios" />
 				</a>
 			</li>
 			<li class="nav-item">
 				<a class="nav-link" href="backoffice/videos">
-					Videos
+					<fmt:message key="menu.videos" />
 				</a>
 			</li>
 			<li class="nav-item">
 				<div class="dropdown">
 					<button class="btn btn-secondary dropdown-toggle" type="button"
-						id="dropdownMenuButton" data-toggle="dropdown"
-						aria-haspopup="true" aria-expanded="false">Videos
-						Visualizados</button>
+							id="dropdownMenuButton" data-toggle="dropdown"
+							aria-haspopup="true" aria-expanded="false">
+						<fmt:message key="menu.videosvistos" />
+					</button>
 					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 						<c:forEach items="${videosVistos}" var="vv">
 							<a class="dropdown-item"

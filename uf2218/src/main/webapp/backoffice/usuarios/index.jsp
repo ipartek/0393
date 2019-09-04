@@ -4,6 +4,7 @@
 
 	<h1>Listado Usuarios</h1>
 	
+	<hr>
 	
 	<%@include file="../../includes/mensaje.jsp"%>
 

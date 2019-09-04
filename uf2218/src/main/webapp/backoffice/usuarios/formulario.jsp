@@ -2,35 +2,36 @@
 <%@include file="../../includes/header.jsp"%>
 <%@include file="../../includes/navbar.jsp"%>
 
-<h1>Detalle Usuario</h1>
-
-
-<%@include file="../../includes/mensaje.jsp"%>
-
-<div class="row">
-	<div class="col-4">
-		<form action="backoffice/usuarios" method="post" class="mb-2">
-			<input type="hidden" name="op" value="<%=UsuarioController.OP_GUARDAR%>">
-		
-			<div class="form-group">
-				<label for="id">Id:</label>
-				<input type="text" name="id" value="${usuario.id}" readonly class="form-control">
-			</div>
-		
-			<div class="form-group">
-				<label for="nombre">Nombre:</label>
-				<input type="text" name="nombre" value="${usuario.nombre}" placeholder="Mínimio 3 máximo 150" class="form-control">
-			</div>
-		
-			<div class="form-group">
-				<label for="contrasenya">Contraseña:</label>
-				<input type="text" name="contrasenya" value="${usuario.contrasenya}" class="form-control">
-			</div>
-		
-			<input type="submit" value="${(usuario.id != -1)?'Modificar':'Crear'}" class="btn btn-outline-primary  btn-block">
-		
-		</form>
-		<c:if test="${usuario.id != -1}"> <!-- Boton eliminar con confirmación -->
+	<h1>Detalle Usuario</h1>
+	
+	<hr>
+	
+	<%@include file="../../includes/mensaje.jsp"%>
+	
+	<div class="row">
+		<div class="col-4">
+			<form action="backoffice/usuarios" method="post" class="mb-2">
+				<input type="hidden" name="op" value="<%=UsuarioController.OP_GUARDAR%>">
+			
+				<div class="form-group">
+					<label for="id">Id:</label>
+					<input type="text" name="id" value="${usuario.id}" readonly class="form-control">
+				</div>
+			
+				<div class="form-group">
+					<label for="nombre">Nombre:</label>
+					<input type="text" name="nombre" value="${usuario.nombre}" placeholder="Mínimio 3 máximo 150" class="form-control">
+				</div>
+			
+				<div class="form-group">
+					<label for="contrasenya">Contraseña:</label>
+					<input type="text" name="contrasenya" value="${usuario.contrasenya}" class="form-control">
+				</div>
+			
+				<input type="submit" value="${(usuario.id != -1)?'Modificar':'Crear'}" class="btn btn-outline-primary  btn-block">
+			
+			</form>
+			<c:if test="${usuario.id != -1}"> <!-- Boton eliminar con confirmación -->
 				<!-- Button trigger modal -->
 				<button type="button" class="btn btn-outline-danger btn-block" data-toggle="modal" data-target="#exampleModal">
 					Eliminar
@@ -63,7 +64,7 @@
 					</div>
 				</div>
 			</c:if>
-	</div>
-</div>
+		</div><!-- End Col -->
+	</div><!-- End Row -->
 
 <%@include file="../../includes/footer.jsp"%>

@@ -16,10 +16,10 @@
 	  <li class="list-group-item"><a href="ejemplos/basico4.jsp">GET y POST</a></li>
 	  <li class="list-group-item"><a href="nombres">Listado Nombres</a></li>
 	  <li class="list-group-item">JSP</li>
-	  <li class="list-group-item"><a href="i18n">i18n - multiidoma</a></li>
+	  <li class="list-group-item"><a href="i18n">i18n - Multidioma</a></li>
 	  <li class="list-group-item"><a href="ejemplos/calculadora.jsp">Calculadora</a></li>
 	  <li class="list-group-item"><a href="ejemplos/el.jsp">EL - Expression Language</a></li>
-	  <li class="list-group-item"><a href="jstl">JSTL - JAva Server Tag Libraries</a></li>
+	  <li class="list-group-item"><a href="jstl">JSTL - Java Server Tag Libraries</a></li>
 	  <li class="list-group-item">Session</li>
 	  <li class="list-group-item">Cookies</li>
 	  <li class="list-group-item">Filtros</li>

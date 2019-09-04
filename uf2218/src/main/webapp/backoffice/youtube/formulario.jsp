@@ -1,10 +1,11 @@
-<%@page
-	import="com.ipartek.formacion.controller.backoffice.VideoController"%>
+<%@page import="com.ipartek.formacion.controller.backoffice.VideoController"%>
 
 <%@include file="../../includes/header.jsp"%>
 <%@include file="../../includes/navbar.jsp"%>
 
 	<h1>Detalle Video</h1>
+	
+	<hr>
 	
 	<div class="row">
 		<div class="col">
@@ -75,7 +76,7 @@
 					</div>
 				</div>
 			</c:if>
-		</div>
+		</div><!-- End Col -->
 		<div class="col">
 	
 			<div class="embed-responsive embed-responsive-16by9">
@@ -85,7 +86,7 @@
 					allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
 					allowfullscreen></iframe>
 			</div>
-		</div>
-	</div>
+		</div><!-- End Col -->
+	</div><!-- End Row -->
 
 <%@include file="../../includes/footer.jsp"%>
