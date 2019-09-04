@@ -38,7 +38,7 @@ public class VideoDAO {
 				/*
 				Video v = new Video();
 				v.setId( rs.getInt("id") );
-				v.setNombre( rs.getString("nombre"));
+				v.setNombre( rs.getString("nombre")); 
 				v.setCodigo( rs.getString("codigo"));
 				*/
 				lista.add( mapper(rs) );

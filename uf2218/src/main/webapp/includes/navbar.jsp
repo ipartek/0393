@@ -10,27 +10,32 @@
 	      <li class="nav-item">
 	        <a class="nav-link" href="index.jsp"><fmt:message key="menu.inicio" /></a>
 	      </li>
-	       <li class="nav-item">
-	        <a class="nav-link" href="backoffice/videos">Videos</a>
-	      </li>	 	      
-	       
+	      
+	     
+	          
+	      
+	      
+	      	    
+	    
+	      
 	       	<c:if test="${usuario == null}">
 	       		<li class="nav-item">
 	        		<a class="nav-link" href="login.jsp">Login</a>
 	        	</li>	
 	        </c:if>
         
+        
 	        <c:if test="${usuario != null}">
-	        	<li class="nav-item">	        		
-	        			${usuario.nombre}
-	        			<i class="fas fa-user"></i>	        		
-	        	</li>
-	        	<li class="nav-item">
-	        		<a class="nav-link" href="logout"><i class="fas fa-sign-out-alt"></i> Salir</a>
-	        	</li>
-	        </c:if>		       
-	          	    
-	      <li class="nav-item">
+	        
+	            <li class="nav-item">
+	        <a class="nav-link" href="backoffice/inicio">Dashboard</a>
+	      </li>	 	 
+	         
+	           <li class="nav-item">
+	        <a class="nav-link" href="backoffice/videos">Videos</a>
+	      </li>	 	
+	      
+	          <li class="nav-item">
 		      <div class="dropdown">
 				  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				    Videos Visualizados
@@ -42,7 +47,19 @@
 				  </div>
 				</div>
 	      </li>
-	      
+	        
+	        
+	        
+	        	<li class="nav-item  ml-2 pt-2">
+	        				        		
+	        			${usuario.nombre} 
+	        			<i class="fas fa-user"></i>	        		
+	        	</li>
+	        	<li class="nav-item">
+	        		<a class="nav-link" href="logout"><i class="fas fa-sign-out-alt"></i> Salir</a>
+	        	</li>
+	  
+	         </c:if>	
 	    </ul>	   
 	  </div>
 	</nav>
