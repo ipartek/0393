@@ -3,7 +3,7 @@
 <%@include file="../../includes/navbar.jsp"%>
 
 	<h1>Listado Usuarios</h1>
-	
+	Hola
 	<hr>
 	
 	<%@include file="../../includes/mensaje.jsp"%>
