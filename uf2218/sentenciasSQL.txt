@@ -17,3 +17,37 @@ UPDATE usuario SET nombre = ?, contrasena = ? WHERE  id = ?;
 
 --comparar tablas
 SELECT v.nombre, v.codigo, v.id, u.nombre FROM video v INNER JOIN usuario u ON v.id_usuario = u.id;
+
+Ejemplos de secuencias con el nuevo script de video/usuario/categoria/likes
+-- SELECT * FROM likes;
+-- numero de likes del fary
+-- SELECT COUNT(*) AS 'numero_likes' FROM likes WHERE video_id = 4;
+
+-- sacar al soso
+-- SELECT * from usuario where id=3;
+
+-- INNER JOIN explicita
+-- sacar los videos creados por el soso por su id
+ SELECT
+	u.nombre as 'usuario',
+    v.nombre as 'video',
+    c.nombre as 'categoria'
+ from 
+	usuario as u inner join video as v on u.id = v.usuario_id
+	inner join categoria as c on c.id = v.categoria_id
+ 
+ where u.id=3;
+ 
+ -- INNER JOIN implicita
+ SELECT
+	u.nombre as 'usuario',
+    v.nombre as 'video',
+    c.nombre as 'categoria'
+ from 
+	usuario as u,
+    video as v,
+    categoria as c
+ where 
+	u.id= v.usuario_id AND
+	v.categoria_id = c.id AND
+	u.id = 3;

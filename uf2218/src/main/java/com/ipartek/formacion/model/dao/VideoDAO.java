@@ -16,6 +16,12 @@ public class VideoDAO {
 
 	private static VideoDAO INSTANCE = null;
 
+	private static final String SQL_GET_ALL = "SELECT id,nombre,codigo FROM video ORDER BY id DESC LIMIT 500;";
+	private static final String SQL_GET_BY_ID = "SELECT id, nombre, codigo  FROM video WHERE id = ? ;";
+	private static final String SQL_INSERT = "INSERT INTO video (nombre, codigo, usuario_id) VALUES (?,?,?);";
+	private static final String SQL_UPDATE = "UPDATE video SET nombre = ?, codigo = ?, usuario_id = ? WHERE  id = ?;";
+	private static final String SQL_DELETE = "DELETE FROM video WHERE id = ?;";
+
 	private VideoDAO() {
 		super();
 	}
@@ -30,10 +36,9 @@ public class VideoDAO {
 	public ArrayList<Video> getAll() {
 
 		ArrayList<Video> lista = new ArrayList<Video>();
-		String sql = "SELECT `id`, `nombre`, `codigo` FROM `video` ORDER BY `id` DESC LIMIT 500";
 
 		try (Connection con = ConnectionManager.getConnection();
-				PreparedStatement pst = con.prepareStatement(sql);
+				PreparedStatement pst = con.prepareStatement(SQL_GET_ALL);
 				ResultSet rs = pst.executeQuery()) {
 
 			while (rs.next()) {
@@ -52,9 +57,9 @@ public class VideoDAO {
 
 	public Video getById(int id) {
 		Video video = new Video();
-		String sql = "SELECT id, nombre, codigo  FROM video WHERE id = ? ;";
 
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_GET_BY_ID)) {
 
 			// sustituyo la 1º ? por la variable id
 			pst.setInt(1, id);
@@ -103,11 +108,10 @@ public class VideoDAO {
 	public boolean modificar(Video pojo, HttpSession session) throws Exception {
 		boolean resultado = false;
 
-		String sql = "UPDATE video SET nombre = ?, codigo = ?, id_usuario = ? WHERE  id = ?;";
-
 		Usuario usuario = (Usuario) session.getAttribute("usuario");
 
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_UPDATE)) {
 
 			pst.setString(1, pojo.getNombre());
 			pst.setString(2, pojo.getCodigo());
@@ -125,11 +129,11 @@ public class VideoDAO {
 
 	public boolean crear(Video pojo, HttpSession session) throws Exception {
 		boolean resultado = false;
-		String sql = "INSERT INTO video (nombre, codigo, id_usuario) VALUES (?,?,?);";
 
 		Usuario usuario = (Usuario) session.getAttribute("usuario");
 
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_INSERT)) {
 
 			pst.setString(1, pojo.getNombre());
 			pst.setString(2, pojo.getCodigo());
@@ -164,9 +168,9 @@ public class VideoDAO {
 
 	public boolean delete(int id) {
 		boolean resultado = false;
-		String sql = "DELETE FROM video WHERE id = ?;";
 
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_DELETE);) {
 
 			pst.setInt(1, id);
 

@@ -32,9 +32,9 @@ public class VideoController extends HttpServlet {
 	public static String view = VIEW_INDEX;
 
 	public static final String OP_LISTAR = "0";
-	public static final String OP_GUARDAR = "23";
+	public static final String OP_GUARDAR = "2";
 	public static final String OP_NUEVO = "4";
-	public static final String OP_ELIMINAR = "hfd3";
+	public static final String OP_ELIMINAR = "3";
 	public static final String OP_DETALLE = "1";
 
 	private static VideoDAO videoDAO;
