@@ -7,11 +7,22 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.ipartek.formacion.model.ConnectionManager;
+import com.ipartek.formacion.model.pojo.Usuario;
 import com.ipartek.formacion.model.pojo.Video;
 
 public class VideoDAO {
 
 	private static VideoDAO INSTANCE = null;
+	
+	private static final String SQL_GET_ALL =   " SELECT " + 
+													" v.id as 'video_id', " + 
+													" v.nombre as 'video_nombre', " + 
+													" codigo, " + 
+													" u.id as 'usuario_id', " + 
+													" u.nombre as 'usuario_nombre' " + 
+												" FROM video as v, usuario as u " + 
+												" WHERE v.usuario_id = u.id " + 
+												" ORDER BY v.id DESC LIMIT 500;";
 
 	private VideoDAO() {
 		super();
@@ -27,17 +38,12 @@ public class VideoDAO {
 	public ArrayList<Video> getAll() {
 
 		ArrayList<Video> lista = new ArrayList<Video>();
-		String sql = "SELECT `id`, `nombre`, `codigo` FROM `video` ORDER BY `id` DESC LIMIT 500";
-
+		
 		try (Connection con = ConnectionManager.getConnection();
-				PreparedStatement pst = con.prepareStatement(sql);
+				PreparedStatement pst = con.prepareStatement(SQL_GET_ALL);
 				ResultSet rs = pst.executeQuery()) {
 
-			while (rs.next()) {
-				/*
-				 * Video v = new Video(); v.setId( rs.getInt("id") ); v.setNombre(
-				 * rs.getString("nombre")); v.setCodigo( rs.getString("codigo"));
-				 */
+			while (rs.next()) {				
 				lista.add(mapper(rs));
 			}
 		} catch (Exception e) {
@@ -182,9 +188,15 @@ public class VideoDAO {
 	 */
 	private Video mapper(ResultSet rs) throws SQLException {
 		Video v = new Video();
-		v.setId(rs.getInt("id"));
-		v.setNombre(rs.getString("nombre"));
+		v.setId(rs.getInt("video_id"));
+		v.setNombre(rs.getString("video_nombre"));
 		v.setCodigo(rs.getString("codigo"));
+		
+		Usuario u = new Usuario();
+		u.setId(rs.getInt("usuario_id"));
+		u.setNombre(rs.getString("usuario_nombre"));
+		
+		v.setUsuario(u);
 		return v;
 	}
 
