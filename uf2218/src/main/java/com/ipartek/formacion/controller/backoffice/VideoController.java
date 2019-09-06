@@ -16,6 +16,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 
 import com.ipartek.formacion.controller.pojo.Alert;
+import com.ipartek.formacion.model.dao.UsuarioDAO;
 import com.ipartek.formacion.model.dao.VideoDAO;
 import com.ipartek.formacion.model.pojo.Video;
 
@@ -38,6 +39,7 @@ public class VideoController extends HttpServlet {
 	public static final String OP_DETALLE = "13";
 
 	private static VideoDAO videoDAO;
+	private static UsuarioDAO usuarioDAO;
 
 	private Validator validator;
 
@@ -45,6 +47,7 @@ public class VideoController extends HttpServlet {
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		videoDAO = VideoDAO.getInstance();
+		usuarioDAO = UsuarioDAO.getInstance();
 		validator = Validation.buildDefaultValidatorFactory().getValidator();
 	}
 
@@ -122,14 +125,18 @@ public class VideoController extends HttpServlet {
 
 	private void guardar(HttpServletRequest request, HttpServletResponse response) {
 
-		String sid = request.getParameter("id");
+		
 		String nombre = request.getParameter("nombre");
 		String codigo = request.getParameter("codigo");
+		int idVideo = Integer.parseInt(request.getParameter("id"));
+		int idCategoria =  Integer.parseInt(request.getParameter("categoria_id"));
+		int idUsuario = Integer.parseInt(request.getParameter("usuario_id"));
 
 		Video v = new Video();
-		v.setId(Integer.parseInt(sid));
+		v.setId(idVideo);
 		v.setNombre(nombre);
 		v.setCodigo(codigo);
+		
 
 		Set<ConstraintViolation<Video>> violations = validator.validate(v);
 		if (violations.isEmpty()) {
@@ -139,7 +146,7 @@ public class VideoController extends HttpServlet {
 				if (v.getId() == -1) {
 					videoDAO.crear(v);
 				} else {
-					videoDAO.modificar(v);
+					videoDAO.modificar(v, idCategoria, idUsuario );
 				}
 				request.setAttribute("mensaje", new Alert("success", "Registro creado con exito"));
 
@@ -157,7 +164,9 @@ public class VideoController extends HttpServlet {
 			}
 			request.setAttribute("mensaje", new Alert("warning", mensaje));
 		}
-		request.setAttribute("video", v);
+		request.setAttribute("video", videoDAO.getById(idVideo));
+		request.setAttribute("usuarios", usuarioDAO.getAll() );
+		
 		view = VIEW_FORM;
 
 	}
@@ -176,8 +185,12 @@ public class VideoController extends HttpServlet {
 
 		Video v = videoDAO.getById(id);
 		request.setAttribute("video", v);
+		
+		request.setAttribute("usuarios", usuarioDAO.getAll() );
+		
 		view = VIEW_FORM;
 
+				
 		HttpSession session = request.getSession();
 		HashMap<Integer, Video> videosVistos = (HashMap<Integer, Video>) session.getAttribute("videosVistos");
 		if (videosVistos == null) {

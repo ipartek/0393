@@ -16,6 +16,8 @@ public class Video {
 	private String codigo;
 
 	private Usuario usuario;
+	
+	private Categoria categoria;
 
 	public Video() {
 		super();
@@ -23,6 +25,7 @@ public class Video {
 		this.nombre = "";
 		this.codigo = "";
 		this.usuario = new Usuario();
+		this.categoria = new Categoria();
 	}
 
 	public Usuario getUsuario() {
@@ -57,9 +60,20 @@ public class Video {
 		this.codigo = codigo;
 	}
 
+	public Categoria getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
+	}
+
 	@Override
 	public String toString() {
-		return "Video [id=" + id + ", nombre=" + nombre + ", codigo=" + codigo + ", usuario=" + usuario + "]";
+		return "Video [id=" + id + ", nombre=" + nombre + ", codigo=" + codigo + ", usuario=" + usuario + ", categoria="
+				+ categoria + "]";
 	}
+
+	
 
 }
