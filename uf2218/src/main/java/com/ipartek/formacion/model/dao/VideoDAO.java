@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpSession;
 
 import com.ipartek.formacion.model.ConnectionManager;
+import com.ipartek.formacion.model.pojo.Categoria;
 import com.ipartek.formacion.model.pojo.Usuario;
 import com.ipartek.formacion.model.pojo.Video;
 
@@ -16,10 +17,38 @@ public class VideoDAO {
 
 	private static VideoDAO INSTANCE = null;
 
-	private static final String SQL_GET_ALL = "SELECT id,nombre,codigo FROM video ORDER BY id DESC LIMIT 500;";
-	private static final String SQL_GET_BY_ID = "SELECT id, nombre, codigo  FROM video WHERE id = ? ;";
-	private static final String SQL_INSERT = "INSERT INTO video (nombre, codigo, usuario_id) VALUES (?,?,?);";
-	private static final String SQL_UPDATE = "UPDATE video SET nombre = ?, codigo = ?, usuario_id = ? WHERE  id = ?;";
+	private static final String SQL_GET_ALL = "SELECT" + 
+												"	v.id as 'video_id', " + 
+												"    v.nombre as 'video_nombre', " + 
+												"    codigo, " + 
+												"    u.id as 'usuario_id', " + 
+												"    u.nombre as 'usuario_nombre', " + 
+												"    c.id as 'categoria_id', " + 
+												"    c.nombre as 'categoria_nombre' " + 
+												"FROM video as v, " + 
+												"	usuario as u, " + 
+												"    categoria as c " + 
+												"WHERE " + 
+												"	v.usuario_id = u.id AND " + 
+												"    v.categoria_id = c.id " + 
+												"ORDER BY v.id DESC LIMIT 500;";
+	private static final String SQL_GET_BY_ID = "SELECT" + 
+												"	v.id as 'video_id', " + 
+												"    v.nombre as 'video_nombre', " + 
+												"    codigo, " + 
+												"    u.id as 'usuario_id', " + 
+												"    u.nombre as 'usuario_nombre', " + 
+												"    c.id as 'categoria_id', " + 
+												"    c.nombre as 'categoria_nombre' " + 
+												"FROM video as v, " + 
+												"	usuario as u, " + 
+												"    categoria as c " + 
+												"WHERE " + 
+												"	v.usuario_id = u.id AND " + 
+												"   v.categoria_id = c.id AND " +
+											    "   v.id = ?;";
+	private static final String SQL_INSERT = "INSERT INTO video (nombre, codigo, usuario_id, categoria_id) VALUES (?,?,?,?);";
+	private static final String SQL_UPDATE = "UPDATE video SET `nombre`= ?, `codigo`= ? , `usuario_id`= ? , `categoria_id`= ? WHERE `id` = ?;";
 	private static final String SQL_DELETE = "DELETE FROM video WHERE id = ?;";
 
 	private VideoDAO() {
@@ -42,10 +71,7 @@ public class VideoDAO {
 				ResultSet rs = pst.executeQuery()) {
 
 			while (rs.next()) {
-				/*
-				 * Video v = new Video(); v.setId( rs.getInt("id") ); v.setNombre(
-				 * rs.getString("nombre")); v.setCodigo( rs.getString("codigo"));
-				 */
+				
 				lista.add(mapper(rs));
 			}
 		} catch (Exception e) {
@@ -105,18 +131,17 @@ public class VideoDAO {
 	 * 
 	 */
 
-	public boolean modificar(Video pojo, HttpSession session) throws Exception {
+	public boolean modificar(Video pojo, int usuarioId, int categoriaId) throws Exception {
 		boolean resultado = false;
-
-		Usuario usuario = (Usuario) session.getAttribute("usuario");
 
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement pst = con.prepareStatement(SQL_UPDATE)) {
 
 			pst.setString(1, pojo.getNombre());
 			pst.setString(2, pojo.getCodigo());
-			pst.setInt(3, usuario.getId());
-			pst.setInt(3, pojo.getId());
+			pst.setInt(3, usuarioId);
+			pst.setInt(4, categoriaId);
+			pst.setInt(5, pojo.getId());
 
 			int affectedRows = pst.executeUpdate();
 			if (affectedRows == 1) {
@@ -127,10 +152,11 @@ public class VideoDAO {
 		return resultado;
 	}
 
-	public boolean crear(Video pojo, HttpSession session) throws Exception {
+	public boolean crear(Video pojo, HttpSession session, int categoriaId, int usuarioId) throws Exception {
 		boolean resultado = false;
 
 		Usuario usuario = (Usuario) session.getAttribute("usuario");
+		//Categoria categoria (Categoria) session.getAttribute("categoria");
 
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement pst = con.prepareStatement(SQL_INSERT)) {
@@ -138,6 +164,7 @@ public class VideoDAO {
 			pst.setString(1, pojo.getNombre());
 			pst.setString(2, pojo.getCodigo());
 			pst.setInt(3, usuario.getId());
+			pst.setInt(4, categoriaId);
 
 			int affectedRows = pst.executeUpdate();
 			if (affectedRows == 1) {
@@ -195,9 +222,21 @@ public class VideoDAO {
 	 */
 	private Video mapper(ResultSet rs) throws SQLException {
 		Video v = new Video();
-		v.setId(rs.getInt("id"));
-		v.setNombre(rs.getString("nombre"));
+		v.setId(rs.getInt("video_id"));
+		v.setNombre(rs.getString("video_nombre"));
 		v.setCodigo(rs.getString("codigo"));
+		
+		Usuario u = new Usuario();
+		u.setId(rs.getInt("usuario_id"));
+		u.setNombre(rs.getString("usuario_nombre"));
+		
+		Categoria c = new Categoria();
+		c.setId(rs.getInt("categoria_id"));
+		c.setNombre(rs.getString("categoria_nombre"));
+		
+		v.setUsuario(u);
+		v.setCategoria(c);
+		
 		return v;
 	}
 
