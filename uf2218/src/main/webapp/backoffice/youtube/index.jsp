@@ -1,4 +1,5 @@
 <%@page import="com.ipartek.formacion.controller.backoffice.VideoController"%>
+<%@page import="com.ipartek.formacion.controller.backoffice.UserController"%>
 
 <%@include file="../../includes/header.jsp"%>
 <%@include file="../../includes/navbar.jsp"%>
@@ -18,6 +19,10 @@
 	  			<img class="float-left mr-3" src="https://img.youtube.com/vi/${v.codigo}/default.jpg" alt="Imagen destacda del video ${v.nombre}"/>
 	  			<p class="h3">${v.nombre}</p>
 	  		</a>
+	  		<a href="backoffice/users?op=<%=UserController.OP_DETALLE%>&id=${v.usuario.id }">
+	  			<p>${v.usuario.nombre }</p>
+	  		</a>
+	  		<p>${v.categoria.nombre }</p>
 	  	</li>
 	  </c:forEach>	  	  
 	</ul>

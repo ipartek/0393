@@ -32,6 +32,20 @@
 					       placeholder="Exactamente 11" 
 						   class="form-control">
 				</div>	
+				
+				<div class="form-group">
+					<label for="codigo">Categoria:</label>
+					<input type="text" name="codigo" value="${video.categoria.nombre}"
+					       placeholder="categoria" 
+						   class="form-control">
+				</div>	
+				
+				<div class="form-group">
+					<label for="codigo">Creado por:</label>
+					<input type="text" name="codigo" value="${video.usuario.nombre}"
+					       placeholder="categoria" 
+						   class="form-control">
+				</div>	
 			
 				<input type="submit" value="${(video.id != -1)?'Modificar':'Crear'}" class="btn btn-outline-primary  btn-block">
 			
