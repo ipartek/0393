@@ -1,3 +1,33 @@
+USE videos;
+
+-- numero de likes
+SELECT COUNT(*) FROM likes WHERE video_id =4;
+
+-- INNER JOIN explicita
+-- mostrar los videos del usuario 'soso' por su id
+SELECT u.nombre AS 'usuario',
+		v.nombre AS 'video',
+        c.nombre AS 'categoria'
+FROM (usuario AS u INNER JOIN video AS v ON u.id = v.usuario_id) 
+		INNER JOIN categoria AS c ON v.categoria_id=c.id
+WHERE u.id=3;
+ 
+-- INNER JOIN implicita
+-- mostrar los videos del usuario 'soso' por su id
+SELECT u.nombre AS 'usuario',
+		v.nombre AS 'video',
+        c.nombre AS 'categoria'
+FROM usuario AS u,
+	 video AS v, 
+	 categoria AS c
+WHERE u.id = v.usuario_id AND v.categoria_id=c.id AND u.id=3;
+
+
+
+
+
+
+
 USE `v2019`;
 -- select * from video;
 
