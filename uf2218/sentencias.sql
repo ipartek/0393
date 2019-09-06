@@ -19,3 +19,9 @@ SELECT id, nombre, contrasena FROM usuario WHERE nombre LIKE '%a%' ORDER BY nomb
 			-- Y luego pst.setString(1, "%" + nombre + "%"); 
 
 SELECT id, nombre, contrasena FROM usuario WHERE nombre LIKE '__cas' ORDER BY nombre DESC LIMIT 500; -- '_' sólo 1 caracter.
+
+-- INNER JOIN
+SELECT u.nombre AS 'usuario', v.nombre AS 'video', c.nombre AS 'categoria'
+	FROM usuario AS u INNER JOIN video AS v ON u.id = v.id_usuario 
+		INNER JOIN categoria AS c ON v.id_categoria = c.id
+	WHERE u.id=3;
