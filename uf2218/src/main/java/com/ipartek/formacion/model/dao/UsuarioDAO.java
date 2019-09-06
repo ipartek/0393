@@ -13,9 +13,9 @@ public class UsuarioDAO {
 
 	private static UsuarioDAO INSTANCE = null;
 
-	private static final String SQL_GET_ALL = "SELECT id,nombre,contra FROM usuario ORDER BY id DESC LIMIT 500;";
-	private static final String SQL_GET_BY_ID = "SELECT id,nombre,contra FROM usuario WHERE id = ?;";
-	private static final String SQL_GET_ALL_BY_NOMBRE = "SELECT id,nombre,contra FROM usuario WHERE nombre LIKE ? ORDER BY nombre ASC LIMIT 500;";
+	private static final String SQL_GET_ALL = "SELECT idusuario,nombre,contra FROM usuario ORDER BY id DESC LIMIT 500;";
+	private static final String SQL_GET_BY_ID = "SELECT idusuario,nombre,contra FROM usuario WHERE id = ?;";
+	private static final String SQL_GET_ALL_BY_NOMBRE = "SELECT idusuario,nombre,contra FROM usuario WHERE nombre LIKE ? ORDER BY nombre ASC LIMIT 500;";
 	private static final String SQL_INSERT = "INSERT INTO usuario ( nombre, contra) VALUES ( ? , ?);";
 	private static final String SQL_UPDATE = "UPDATE usuario SET nombre= ?, contra= ? WHERE id = ?;";
 	private static final String SQL_DELETE = "DELETE FROM usuario WHERE id = ?;";
@@ -37,7 +37,7 @@ public class UsuarioDAO {
 	public ArrayList<Usuario> getAll() {
 
 		ArrayList<Usuario> listaUsuarios = new ArrayList<Usuario>();
-		String sql = "SELECT `id`, `nombre`, `contra` FROM `usuario`";
+		String sql = "SELECT `idusuario`, `nombre`, `contra` FROM `usuario`";
 
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement pst = con.prepareStatement(sql);
@@ -62,7 +62,8 @@ public class UsuarioDAO {
 
 		Usuario usuario = null;
 
-		String sql = "SELECT id, nombre, contra " + " FROM videos_manu.usuario " + " where nombre = ? and contra = ?";
+		String sql = "SELECT idusuario, nombre, contra " + " FROM videos_manuel.usuario "
+				+ " where nombre = ? and contra = ?";
 
 		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 			// sustituir ? por parámetros
