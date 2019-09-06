@@ -170,7 +170,6 @@ public class VideoController extends HttpServlet {
 
 		request.setAttribute("videos", videoDAO.getAll());
 		view = VIEW_INDEX;
-
 	}
 
 	private void detalle(HttpServletRequest request, HttpServletResponse response) {
@@ -189,6 +188,5 @@ public class VideoController extends HttpServlet {
 		}
 		videosVistos.put(v.getId(), v);
 		session.setAttribute("videosVistos", videosVistos);
-
 	}
 }

@@ -1,3 +1,4 @@
+<%@page import="com.ipartek.formacion.controller.backoffice.UsuarioController"%>
 <%@page import="com.ipartek.formacion.controller.backoffice.VideoController"%>
 
 <%@include file="../../includes/header.jsp"%>
@@ -13,14 +14,18 @@
 	<a href="backoffice/videos?op=<%=VideoController.OP_NUEVO%>" class="mb-3 btn btn-outline-primary">Nuevo Video</a>
 	
 	<ul class="list-group">
-	  <c:forEach items="${videos}" var="v">	
-	  	<li class="list-group-item">
-	  		<a href="backoffice/videos?op=<%=VideoController.OP_DETALLE%>&id=${v.id}">
-	  			<img class="float-left mr-3" src="https://img.youtube.com/vi/${v.codigo}/default.jpg" alt="Imagen destacda del video ${v.nombre}"/>
-	  			<p class="h3">${v.nombre}</p>
-	  		</a>
-	  	</li>
-	  </c:forEach>	  	  
+		<c:forEach items="${videos}" var="v">
+			<li class="list-group-item">
+				<a href="backoffice/videos?op=<%=VideoController.OP_DETALLE%>&id=${v.id}">
+					<img class="float-left mr-3" src="https://img.youtube.com/vi/${v.codigo}/default.jpg" alt="Imagen destacda del video ${v.nombre}" />
+					<p class="h3">${v.nombre}</p>
+				</a>
+				<a href="backoffice/usuarios?op=<%=UsuarioController.OP_DETALLE%>&id=${v.usuario.id}">
+					<p><i class="fas fa-user"></i> ${v.usuario.nombre}</p>
+				</a>
+				${v.categoria}
+			</li>
+		</c:forEach>
 	</ul>
 	
 <%@include file="../../includes/footer.jsp"%>

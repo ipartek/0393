@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.ipartek.formacion.model.ConnectionManager;
+import com.ipartek.formacion.model.pojo.Categoria;
+import com.ipartek.formacion.model.pojo.Usuario;
 import com.ipartek.formacion.model.pojo.Video;
 
 public class VideoDAO {
@@ -27,7 +29,10 @@ public class VideoDAO {
 	public ArrayList<Video> getAll() {
 
 		ArrayList<Video> lista = new ArrayList<Video>();
-		String sql = "SELECT `id`, `nombre`, `codigo` FROM `video` ORDER BY `id` DESC LIMIT 500";
+		String sql = "SELECT v.id as 'id_video', " + "v.nombre as 'nombre_video', " + "v.codigo as 'codigo', "
+				+ "u.id as 'id_usuario', " + "u.nombre as 'nombre_usuario', " + "c.id as 'id_categoria', "
+				+ "c.nombre as 'nombre_categoria' " + "FROM " + "video as v, usuario as u, categoria as c " + "WHERE "
+				+ "v.id_usuario = u.id AND v.id_categoria = c.id " + "ORDER BY 'id_video' DESC LIMIT 500;";
 
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement pst = con.prepareStatement(sql);
@@ -49,7 +54,10 @@ public class VideoDAO {
 
 	public Video getById(int id) {
 		Video video = new Video();
-		String sql = "SELECT id, nombre, codigo  FROM video WHERE id = ? ;";
+		String sql = "SELECT v.id as 'id_video', " + "v.nombre as 'nombre_video', " + "v.codigo as 'codigo', "
+				+ "u.id as 'id_usuario', " + "u.nombre as 'nombre_usuario' " + "c.id as 'id_categoria', "
+				+ "c.nombre as 'nombre_categoria' " + "FROM " + "video as v, usuario as u, categoria as c " + "WHERE "
+				+ "v.id_usuario = u.id AND v.id_categoria = c.id AND v.id = ?;";
 
 		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
 
@@ -86,7 +94,6 @@ public class VideoDAO {
 			if (affectedRows == 1) {
 				resultado = true;
 			}
-
 		}
 		return resultado;
 	}
@@ -105,9 +112,7 @@ public class VideoDAO {
 			if (affectedRows == 1) {
 				resultado = true;
 			}
-
 		}
-
 		return resultado;
 	}
 
@@ -127,15 +132,26 @@ public class VideoDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		return resultado;
 	}
 
 	private Video mapper(ResultSet rs) throws SQLException {
 		Video v = new Video();
-		v.setId(rs.getInt("id"));
-		v.setNombre(rs.getString("nombre"));
+		v.setId(rs.getInt("id_video"));
+		v.setNombre(rs.getString("nombre_video"));
 		v.setCodigo(rs.getString("codigo"));
+
+		Usuario u = new Usuario();
+		u.setId(rs.getInt("id_usuario"));
+		u.setNombre(rs.getString("nombre_usuario"));
+
+		Categoria c = new Categoria();
+		c.setId(rs.getInt("id_categoria"));
+		c.setNombre(rs.getString("nombre_categoria"));
+
+		v.setUsuario(u);
+		v.setCategoria(c);
+
 		return v;
 	}
 }
