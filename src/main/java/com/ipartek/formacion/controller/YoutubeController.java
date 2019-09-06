@@ -18,6 +18,8 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
 import com.ipartek.formacion.controller.pojo.Alert;
+import com.ipartek.formacion.model.dao.CategoriaDAO;
+import com.ipartek.formacion.model.dao.UsuarioDAO;
 import com.ipartek.formacion.model.dao.YoutubeDAO;
 import com.ipartek.formacion.model.pojo.Youtube;
 
@@ -44,6 +46,8 @@ public class YoutubeController extends HttpServlet {
 	public static final String OP_EDITAR = "2";
 
 	private static YoutubeDAO youtubeDAO;
+	private static UsuarioDAO usuarioDAO;
+	private static CategoriaDAO categoriaDAO;
 	private static String op;
 
 	private static ArrayList<Youtube> videos;
@@ -55,6 +59,8 @@ public class YoutubeController extends HttpServlet {
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		youtubeDAO = YoutubeDAO.getInstance();
+		usuarioDAO = UsuarioDAO.getInstance();
+		categoriaDAO = CategoriaDAO.getInstance();
 		factory = Validation.buildDefaultValidatorFactory();
 		validator = factory.getValidator();
 	}
@@ -128,6 +134,10 @@ public class YoutubeController extends HttpServlet {
 
 			Youtube v = youtubeDAO.getById(id);
 			request.setAttribute("video", v);
+
+			request.setAttribute("usuarios", usuarioDAO.getAll());
+			request.setAttribute("categorias", categoriaDAO.getAll());
+
 			request.setAttribute("op", op);
 
 			if (op.equals(OP_DETALLE)) {
@@ -170,6 +180,8 @@ public class YoutubeController extends HttpServlet {
 		String sid = request.getParameter("id");
 		String nombre = request.getParameter("nombre");
 		String codigo = request.getParameter("codigo");
+		int idUsuario = Integer.parseInt(request.getParameter("usuario_id"));
+		int idCategoria = Integer.parseInt(request.getParameter("categoria_id"));
 
 		Youtube v = new Youtube();
 		v.setId(Integer.parseInt(sid));
@@ -188,7 +200,7 @@ public class YoutubeController extends HttpServlet {
 					listar(request, response);
 					request.setAttribute("mensaje", new Alert("success", "Registro creado con exito"));
 				} else {
-					youtubeDAO.modificar(v, session);
+					youtubeDAO.modificar(v, session, idUsuario, idCategoria);
 					listar(request, response);
 					request.setAttribute("mensaje", new Alert("success", "Registro modificado con exito"));
 				}
@@ -211,6 +223,7 @@ public class YoutubeController extends HttpServlet {
 			request.setAttribute("mensaje", new Alert("warning", mensaje));
 		}
 		request.setAttribute("video", v);
+
 		view = VIEW_INDEX;
 	}
 }

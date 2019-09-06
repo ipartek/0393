@@ -9,12 +9,26 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpSession;
 
 import com.ipartek.formacion.model.ConnectionManager;
+import com.ipartek.formacion.model.pojo.Categoria;
 import com.ipartek.formacion.model.pojo.Usuario;
 import com.ipartek.formacion.model.pojo.Youtube;
 
 public class YoutubeDAO {
 
 	private static YoutubeDAO INSTANCE = null;
+
+	private static final String SQL_GET_ALL = "SELECT v.id AS 'video_id', v.nombre AS 'video_nombre', codigo, u.id AS 'usuario_id', "
+			+ "u.nombre AS 'usuario_nombre',c.id AS 'categoria_id', c.nombre AS 'categoria_nombre' "
+			+ "FROM video AS v, usuario AS u, categoria AS c "
+			+ "WHERE v.usuario_id = u.id AND v.categoria_id = c.id ORDER BY v.id DESC LIMIT 500";
+
+	private static final String SQL_GET_BY_ID = "SELECT v.id AS 'video_id', v.nombre AS 'video_nombre', codigo, u.id AS 'usuario_id', "
+			+ "u.nombre AS 'usuario_nombre',c.id AS 'categoria_id', c.nombre AS 'categoria_nombre' "
+			+ "FROM video AS v, usuario AS u, categoria AS c "
+			+ "WHERE v.usuario_id = u.id AND v.categoria_id = c.id AND v.id= ?";
+	private static final String SQL_UPDATE = "UPDATE video SET nombre= ?, codigo= ? , usuario_id= ? , categoria_id= ? WHERE id = ?;";
+	private static final String SQL_INSERT = "INSERT INTO video (nombre, codigo, usuario_id) VALUES (?,?,?);";
+	private static final String SQL_DELETE = "DELETE FROM video WHERE id = ?;";
 
 	private YoutubeDAO() {
 		super();
@@ -30,10 +44,9 @@ public class YoutubeDAO {
 	public ArrayList<Youtube> getAll() {
 
 		ArrayList<Youtube> lista = new ArrayList<Youtube>();
-		String sql = "SELECT `id`, `nombre`, `codigo` FROM `video` ORDER BY `id` DESC LIMIT 500";
 
 		try (Connection con = ConnectionManager.getConnection();
-				PreparedStatement pst = con.prepareStatement(sql);
+				PreparedStatement pst = con.prepareStatement(SQL_GET_ALL);
 				ResultSet rs = pst.executeQuery()) {
 
 			while (rs.next()) {
@@ -52,8 +65,9 @@ public class YoutubeDAO {
 
 	public Youtube getById(int id) {
 		Youtube video = new Youtube();
-		String sql = "SELECT id, nombre, codigo FROM video WHERE id = ?;";
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_GET_BY_ID)) {
 			// sustituyo la 1º ? por la variable id
 			pst.setInt(1, id);
 
@@ -88,19 +102,17 @@ public class YoutubeDAO {
 	 * (pojo.getId() == -1) { resultado = crear(pojo); } else { resultado =
 	 * modificar(pojo); } } return resultado; }
 	 */
-	public boolean modificar(Youtube pojo, HttpSession session) throws Exception {
+	public boolean modificar(Youtube pojo, HttpSession session, int usuarioId, int categoriaId) throws Exception {
 		boolean resultado = false;
-
-		String sql = "UPDATE video SET nombre = ?, codigo = ?, id_usuario = ? WHERE  id = ?;";
-
 		Usuario usuario = (Usuario) session.getAttribute("usuario");
-
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_UPDATE)) {
 
 			pst.setString(1, pojo.getNombre());
 			pst.setString(2, pojo.getCodigo());
-			pst.setInt(3, usuario.getId());
-			pst.setInt(4, pojo.getId());
+			pst.setInt(3, usuarioId);
+			pst.setInt(4, categoriaId);
+			pst.setInt(5, pojo.getId());
 
 			int affectedRows = pst.executeUpdate();
 			if (affectedRows == 1) {
@@ -115,11 +127,10 @@ public class YoutubeDAO {
 
 	public boolean crear(Youtube pojo, HttpSession session) throws Exception {
 		boolean resultado = false;
-		String sql = "INSERT INTO video (nombre, codigo, id_usuario) VALUES (?,?,?);";
-
 		Usuario usuario = (Usuario) session.getAttribute("usuario");
 
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_INSERT)) {
 			pst.setString(1, pojo.getNombre());
 			pst.setString(2, pojo.getCodigo());
 			pst.setInt(3, usuario.getId());
@@ -150,9 +161,9 @@ public class YoutubeDAO {
 	 */
 	public boolean eliminar(int id) {
 		boolean resultado = false;
-		String sql = "DELETE FROM video WHERE id = ?;";
 
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_DELETE);) {
 
 			pst.setInt(1, id);
 
@@ -170,9 +181,20 @@ public class YoutubeDAO {
 
 	public Youtube mapper(ResultSet rs) throws SQLException {
 		Youtube video = new Youtube();
-		video.setId(rs.getInt("id"));
-		video.setNombre(rs.getString("nombre"));
+		video.setId(rs.getInt("video_id"));
+		video.setNombre(rs.getString("video_nombre"));
 		video.setCodigo(rs.getString("codigo"));
+
+		Usuario u = new Usuario();
+		u.setId(rs.getInt("usuario_id"));
+		u.setNombre(rs.getString("usuario_nombre"));
+		video.setUsuario(u);
+
+		Categoria c = new Categoria();
+		c.setId(rs.getInt("categoria_id"));
+		c.setNombre(rs.getString("categoria_nombre"));
+		video.setCategoria(c);
+
 		return video;
 	}
 

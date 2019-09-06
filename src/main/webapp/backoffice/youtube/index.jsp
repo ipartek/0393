@@ -1,5 +1,7 @@
 <%@page import="com.ipartek.formacion.controller.YoutubeController"%>
+<%@page import="com.ipartek.formacion.controller.UsuarioController"%>
 <%@page import="com.ipartek.formacion.model.pojo.Youtube"%>
+<%@page import="com.ipartek.formacion.model.pojo.Usuario"%>
 <%@page import="java.util.ArrayList"%>
 <%@include file="../../includes/header.jsp"%>
 <%@include file="../../includes/navbar.jsp"%>
@@ -53,8 +55,12 @@
 			</div>
 		</td>
 		<td class="align-middle">
-			<a href="backoffice/videos?op=<%=YoutubeController.OP_DETALLE%>&id=<%=video.getId()%>"><span class=""><%=video.getNombre()%></span></a>
-		</td>	
+			<a href="backoffice/videos?op=<%=YoutubeController.OP_DETALLE%>&id=<%=video.getId()%>"><span class="h3"><%=video.getNombre()%></span></a>	
+			<p><i class="fas fa-user mr-1"></i><a href ="backoffice/usuario?op=<%=UsuarioController.OP_FORM%>&id=<%=video.getUsuario().getId()%>"><%=video.getUsuario().getNombre()%></p></a>	
+			<p><i class="fas fa-tag mr-1"></i> <%=video.getCategoria().getNombre()%></p>	
+		</td>
+		
+			
 		<td class="align-middle">
 		<a class="btn btn-success" href="backoffice/videos?op=<%=YoutubeController.OP_FORM%>&id=<%=video.getId()%>" role="button" title="editar"><i class="fas fa-edit"></i> Editar</a>
 		<!-- 
