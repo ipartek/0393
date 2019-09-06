@@ -27,7 +27,7 @@
 	  	           		<tr>
 	  	           		   <td class="text-center">
 	  	           		      ${usuario.nombre}
-	  	           			  <a href="backoffice/usuarios?op=5&id=${usuario.id}">
+	  	           			  <a href="backoffice/usuarios?op=<%=UsuarioController.OP_DETALLE%>&id=${usuario.id}">
 	  	           			      <i class="ml-3 fas fa-wrench"></i>
 	  	           			  </a>
 	  	           		  </td>

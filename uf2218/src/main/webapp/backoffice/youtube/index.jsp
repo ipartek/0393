@@ -18,6 +18,10 @@
 	  			<img class="float-left mr-3" src="https://img.youtube.com/vi/${v.codigo}/default.jpg" alt="Imagen destacda del video ${v.nombre}"/>
 	  			<p class="h3">${v.nombre}</p>
 	  		</a>
+	  		<a href="backoffice/usuarios?op=<%=UsuarioController.OP_DETALLE%>&id=${v.usuario.id}">
+	  			<p><i class="fas fa-user"></i> ${v.usuario.nombre}</p>
+	  		</a>
+	  		<p><i class="fas fa-tag"></i> ${v.categoria.nombre}</p>
 	  	</li>
 	  </c:forEach>	  	  
 	</ul>

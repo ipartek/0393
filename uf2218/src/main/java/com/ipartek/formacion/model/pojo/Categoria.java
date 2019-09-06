@@ -1,17 +1,20 @@
 package com.ipartek.formacion.model.pojo;
 
-public class Usuario {
-
+public class Categoria {
 	private int id;
 	private String nombre;
-	private String contrasenya;
 
-	public Usuario() {
+	public Categoria() {
 		super();
 
-		this.id = -1;
+		this.id = 0;
 		this.nombre = "";
-		this.contrasenya = "";
+	}
+
+	public Categoria(int id, String nombre) {
+		super();
+		this.id = id;
+		this.nombre = nombre;
 	}
 
 	public int getId() {
@@ -30,17 +33,9 @@ public class Usuario {
 		this.nombre = nombre;
 	}
 
-	public String getContrasenya() {
-		return contrasenya;
-	}
-
-	public void setContrasenya(String contrasenya) {
-		this.contrasenya = contrasenya;
-	}
-
 	@Override
 	public String toString() {
-		return "Usuario [id=" + id + ", nombre=" + nombre + ", contrasenya=" + contrasenya + "]";
+		return "Categoria [id=" + id + ", nombre=" + nombre + "]";
 	}
 
 }

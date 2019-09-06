@@ -7,11 +7,24 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.ipartek.formacion.model.ConnectionManager;
+import com.ipartek.formacion.model.pojo.Categoria;
+import com.ipartek.formacion.model.pojo.Usuario;
 import com.ipartek.formacion.model.pojo.Video;
 
 public class VideoDAO {
 
 	private static VideoDAO INSTANCE = null;
+	private static final String SQL_GET_ALL = " SELECT " + " v.id as 'video_id', " + " v.nombre as 'video_nombre', "
+			+ " codigo, " + " u.id as 'usuario_id', " + " u.nombre as 'usuario_nombre', " + " c.id as 'categoria_id', "
+			+ " c.nombre as 'categoria_nombre' " + " FROM video as v, usuario as u , categoria as c "
+			+ " WHERE v.id_usuario = u.id AND v.id_categoria = c.id " + " ORDER BY v.id DESC LIMIT 500;";
+
+	private static final String SQL_GET_BY_ID = " SELECT " + " v.id as 'video_id', " + " v.nombre as 'video_nombre', "
+			+ " codigo, " + " u.id as 'usuario_id', " + " u.nombre as 'usuario_nombre', " + " c.id as 'categoria_id', "
+			+ " c.nombre as 'categoria_nombre' " + " FROM video as v, usuario as u , categoria as c "
+			+ " WHERE v.id_usuario = u.id AND v.id_categoria = c.id AND v.id = ? " + " ORDER BY v.id DESC LIMIT 500;";
+
+	private static final String SQL_UPDATE = "UPDATE video SET `nombre`= ?, `codigo`= ? , `id_usuario`= ? , `id_categoria`= ? WHERE `id` = ?;";
 
 	private VideoDAO() {
 		super();
@@ -27,7 +40,7 @@ public class VideoDAO {
 	public ArrayList<Video> getAll() {
 
 		ArrayList<Video> lista = new ArrayList<Video>();
-		String sql = "SELECT `id`, `nombre`, `codigo` FROM `video` ORDER BY `id` DESC LIMIT 500";
+		String sql = SQL_GET_ALL;
 
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement pst = con.prepareStatement(sql);
@@ -49,9 +62,9 @@ public class VideoDAO {
 
 	public Video getById(int id) {
 		Video video = new Video();
-		String sql = "SELECT id, nombre, codigo  FROM video WHERE id = ? ;";
 
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_GET_BY_ID)) {
 
 			// sustituyo la 1º ? por la variable id
 			pst.setInt(1, id);
@@ -97,16 +110,18 @@ public class VideoDAO {
 	 * 
 	 */
 
-	public boolean modificar(Video pojo) throws Exception {
+	public boolean modificar(Video pojo, int categoriaId, int usuarioId) throws Exception {
 		boolean resultado = false;
 
-		String sql = "UPDATE video SET nombre = ?, codigo = ? WHERE  id = ?;";
-
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_UPDATE)) {
 
 			pst.setString(1, pojo.getNombre());
 			pst.setString(2, pojo.getCodigo());
 			pst.setInt(3, pojo.getId());
+			pst.setInt(3, usuarioId);
+			pst.setInt(4, categoriaId);
+			pst.setInt(5, pojo.getId());
 
 			int affectedRows = pst.executeUpdate();
 			if (affectedRows == 1) {
@@ -175,9 +190,16 @@ public class VideoDAO {
 
 	public Video mapper(ResultSet rs) throws SQLException {
 		Video v = new Video();
-		v.setId(rs.getInt("id"));
-		v.setNombre(rs.getString("nombre"));
+		v.setId(rs.getInt("video_id"));
+		v.setNombre(rs.getString("video_nombre"));
 		v.setCodigo(rs.getString("codigo"));
+
+		Usuario u = new Usuario();
+		u.setId(rs.getInt("usuario_id"));
+		u.setNombre(rs.getString("usuario_nombre"));
+
+		v.setCategoria(new Categoria(rs.getInt("categoria_id"), rs.getString("categoria_nombre")));
+		v.setUsuario(u);
 		return v;
 	}
 
