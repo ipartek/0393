@@ -1,8 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `v2019` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `v2019`;
+CREATE DATABASE  IF NOT EXISTS `videos` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `videos`;
 -- MySQL dump 10.13  Distrib 8.0.12, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: v2019
+-- Host: 127.0.0.1    Database: videos
 -- ------------------------------------------------------
 -- Server version	8.0.12
 
@@ -18,6 +18,31 @@ USE `v2019`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `categoria`
+--
+
+DROP TABLE IF EXISTS `categoria`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `categoria` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `nombre_UNIQUE` (`nombre`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `categoria`
+--
+
+LOCK TABLES `categoria` WRITE;
+/*!40000 ALTER TABLE `categoria` DISABLE KEYS */;
+INSERT INTO `categoria` VALUES (2,'broma'),(1,'musica'),(3,'surf');
+/*!40000 ALTER TABLE `categoria` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `usuario`
 --
 
@@ -30,7 +55,7 @@ CREATE TABLE `usuario` (
   `contrasenya` varchar(45) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre_UNIQUE` (`nombre`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,7 +64,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (1,'admin','admin'),(2,'pepe','pepe'),(3,'lucas','lucas'),(4,'borja','borja');
+INSERT INTO `usuario` VALUES (1,'admin','admin'),(2,'pepe','pepe'),(3,'soso','soso');
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -54,12 +79,15 @@ CREATE TABLE `video` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(150) NOT NULL,
   `codigo` varchar(11) NOT NULL,
-  `id_usuario` int(11) NOT NULL,
+  `usuario_id` int(11) NOT NULL,
+  `categoria_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `codigo_UNIQUE` (`codigo`),
-  KEY `FK_VIDEO_TIENE_USUARIO_idx` (`id_usuario`),
-  CONSTRAINT `FK_VIDEO_USUARIO` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
+  KEY `fk_video_usuario_idx` (`usuario_id`),
+  KEY `fk_video_categoria1_idx` (`categoria_id`),
+  CONSTRAINT `fk_video_categoria1` FOREIGN KEY (`categoria_id`) REFERENCES `categoria` (`id`),
+  CONSTRAINT `fk_video_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -68,12 +96,48 @@ CREATE TABLE `video` (
 
 LOCK TABLES `video` WRITE;
 /*!40000 ALTER TABLE `video` DISABLE KEYS */;
-INSERT INTO `video` VALUES (21,'Volbeat - Pearl Hart (HD With Lyrics)','jiiFzKfuPMk',4),(22,'Eddie Murphy - Red Light ft. Snoop Lion (Official Video)','GWOIDN-akrY',4),(23,'LA RESISTENCIA - Entrevista a María León','0ALt-O36bec',4),(25,'DJ Diesel | Tomorrowland Belgium 2019','w_qQLbzEW1o',4),(26,'Papaya','sYBoCIu4rlg',4);
+INSERT INTO `video` VALUES (3,'Redhot','YlUKcNNmywk',1,1),(4,'Fary','NFkI-zxZlHo',3,1);
 /*!40000 ALTER TABLE `video` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Dumping routines for database 'v2019'
+-- Table structure for table `likes`
+--
+
+DROP TABLE IF EXISTS `likes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `likes` (
+  `usuario_id` int(11) NOT NULL,
+  `video_id` int(11) NOT NULL,
+  `fecha` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`usuario_id`,`video_id`),
+  KEY `fk_usuario_has_video_video1_idx` (`video_id`),
+  CONSTRAINT `fk_usuario_likes_video` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_video_likes_usuario` FOREIGN KEY (`video_id`) REFERENCES `video` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `likes`
+--
+
+LOCK TABLES `likes` WRITE;
+/*!40000 ALTER TABLE `likes` DISABLE KEYS */;
+INSERT INTO `likes` VALUES (1,4,'2019-09-05 09:41:45'),(2,3,'2019-09-05 09:41:45'),(2,4,'2019-09-05 09:41:45');
+/*!40000 ALTER TABLE `likes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+
+
+
+--
+-- Dumping events for database 'videos'
+--
+
+--
+-- Dumping routines for database 'videos'
 --
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -85,4 +149,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-09-04 13:02:35
+-- Dump completed on 2019-09-05 10:11:02
