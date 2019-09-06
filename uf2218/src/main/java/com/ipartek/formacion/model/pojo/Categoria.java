@@ -4,6 +4,18 @@ public class Categoria {
 	private int id;
 	private String nombre;
 
+	public Categoria() {
+		super();
+		this.id = -1;
+		this.nombre = "";
+	}
+
+	public Categoria(int id, String nombre) {
+		super();
+		this.id = id;
+		this.nombre = nombre;
+	}
+
 	public int getId() {
 		return id;
 	}

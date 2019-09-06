@@ -22,6 +22,8 @@ public class Video {
 		this.id = -1;
 		this.nombre = "";
 		this.codigo = "";
+		this.usuario = new Usuario();
+		this.categoria = new Categoria();
 	}
 
 	public int getId() {

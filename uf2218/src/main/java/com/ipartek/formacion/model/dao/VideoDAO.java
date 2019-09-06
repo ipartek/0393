@@ -15,6 +15,7 @@ public class VideoDAO {
 
 	private static VideoDAO INSTANCE = null;
 	private static final String SQL_GET_ALL = "SELECT v.id as 'video_id', v.nombre as 'video_nombre', c.id as 'categoria_id', c.nombre as 'categoria_nombre', codigo, u.id as 'usuario_id', u.nombre as 'usuario_nombre'FROM video as v, usuario as u, categoria as c WHERE u.id=v.usuario_id AND v.categoria_id=c.id ORDER BY v.id DESC LIMIT 500";
+	private static final String SQL_GET_BY_ID = "SELECT v.id as 'video_id', v.nombre as 'video_nombre', c.id as 'categoria_id', c.nombre as 'categoria_nombre', codigo, u.id as 'usuario_id', u.nombre as 'usuario_nombre'FROM video as v, usuario as u, categoria as c WHERE u.id=v.usuario_id AND v.categoria_id=c.id AND v.id= ? ORDER BY v.id DESC LIMIT 500";
 
 	private VideoDAO() {
 		super();
@@ -53,9 +54,10 @@ public class VideoDAO {
 
 	public Video getById(int id) {
 		Video video = new Video();
-		String sql = "SELECT id, nombre, codigo  FROM video WHERE id = ? ;";
+		// String sql = "SELECT id, nombre, codigo FROM video WHERE id = ? ;";
 
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_GET_BY_ID)) {
 
 			// sustituyo la 1º ? por la variable id
 			pst.setInt(1, id);
@@ -104,13 +106,15 @@ public class VideoDAO {
 	public boolean modificar(Video pojo) throws Exception {
 		boolean resultado = false;
 
-		String sql = "UPDATE video SET nombre = ?, codigo = ? WHERE  id = ?;";
+		String sql = "UPDATE video SET nombre = ?, codigo = ?, usuario_id = ?, categoria_id = ? WHERE  id = ?;";
 
 		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
 
 			pst.setString(1, pojo.getNombre());
 			pst.setString(2, pojo.getCodigo());
-			pst.setInt(3, pojo.getId());
+			pst.setInt(3, pojo.getUsuario().getId());
+			pst.setInt(4, pojo.getCategoria().getId());
+			pst.setInt(5, pojo.getId());
 
 			int affectedRows = pst.executeUpdate();
 			if (affectedRows == 1) {

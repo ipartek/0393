@@ -18,7 +18,7 @@
 	  		<a href="backoffice/videos?op=<%=VideoController.OP_DETALLE%>&id=${v.id}">
 	  			<img class="float-left mr-3" src="https://img.youtube.com/vi/${v.codigo}/default.jpg" alt="Imagen destacda del video ${v.nombre}"/>
 	  			<p class="h3">${v.nombre}</p>
-	  			<p><a href="backoffice/usuarios?op=<%=UsuariosController.OP_DETALLE%>&id=${v.usuario.id}">${v.usuario.nombre}</a> - <a href="#">${v.categoria.nombre} (${v.categoria.id})</a></p>
+	  			<p><i class="fas fa-fire"></i><a href="backoffice/usuarios?op=<%=UsuariosController.OP_DETALLE%>&id=${v.usuario.id}"> ${v.usuario.nombre}</a> - <a href="#">${v.categoria.nombre} (${v.categoria.id})</a></p>
 	  		</a>
 	  	</li>
 	  </c:forEach>	  	  
