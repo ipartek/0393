@@ -39,7 +39,6 @@ public class CategoriaDAO {
 				lista.add(mapper(rs));
 			}
 		} catch (Exception e) {
-
 			e.printStackTrace();
 		}
 		return lista;
