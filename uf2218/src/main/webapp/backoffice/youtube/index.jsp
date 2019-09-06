@@ -23,7 +23,7 @@
 				<a href="backoffice/usuarios?op=<%=UsuarioController.OP_DETALLE%>&id=${v.usuario.id}">
 					<p><i class="fas fa-user"></i> ${v.usuario.nombre}</p>
 				</a>
-				${v.categoria}
+				<span>${v.categoria}</span>
 			</li>
 		</c:forEach>
 	</ul>

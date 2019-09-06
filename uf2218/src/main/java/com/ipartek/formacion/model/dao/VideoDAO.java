@@ -55,7 +55,7 @@ public class VideoDAO {
 	public Video getById(int id) {
 		Video video = new Video();
 		String sql = "SELECT v.id as 'id_video', " + "v.nombre as 'nombre_video', " + "v.codigo as 'codigo', "
-				+ "u.id as 'id_usuario', " + "u.nombre as 'nombre_usuario' " + "c.id as 'id_categoria', "
+				+ "u.id as 'id_usuario', " + "u.nombre as 'nombre_usuario', " + "c.id as 'id_categoria', "
 				+ "c.nombre as 'nombre_categoria' " + "FROM " + "video as v, usuario as u, categoria as c " + "WHERE "
 				+ "v.id_usuario = u.id AND v.id_categoria = c.id AND v.id = ?;";
 
