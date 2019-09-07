@@ -20,9 +20,9 @@
 	  			<p class="h3">${v.nombre}</p>
 	  		</a>
 	  		<a href="backoffice/users?op=<%=UserController.OP_DETALLE%>&id=${v.usuario.id }">
-	  			<p>${v.usuario.nombre }</p>
+	  			<p><i class="fas fa-user"></i> ${v.usuario.nombre }</p>
 	  		</a>
-	  		<p>${v.categoria.nombre }</p>
+	  		<p><i class="fas fa-tag"></i> ${v.categoria.nombre }</p>
 	  	</li>
 	  </c:forEach>	  	  
 	</ul>

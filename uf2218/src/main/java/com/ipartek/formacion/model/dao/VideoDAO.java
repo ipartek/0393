@@ -30,6 +30,12 @@ public class VideoDAO {
 			+ "c.nombre as categoria_nombre"
 			+ " FROM video as v, categoria as c, usuario as u"
 			+ " WHERE v.id = ? AND u.id = v.usuario_id AND v.categoria_id = c.id ;";
+	
+	private static final String SQL_UPDATE = "UPDATE video SET nombre = ?,"
+			+ " codigo = ?,"
+			+ " categoria_id = ?,"
+			+ " usuario_id= ?"
+			+ " WHERE  id = ?;";
 
 	private VideoDAO() {
 		super();
@@ -115,15 +121,16 @@ public class VideoDAO {
 	 */
 
 	public boolean modificar(Video pojo) throws Exception {
+		
 		boolean resultado = false;
 
-		String sql = "UPDATE video SET nombre = ?, codigo = ? WHERE  id = ?;";
-
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(SQL_UPDATE)) {
 
 			pst.setString(1, pojo.getNombre());
 			pst.setString(2, pojo.getCodigo());
-			pst.setInt(3, pojo.getId());
+			pst.setInt(3, pojo.getCategoria().getId());
+			pst.setInt(4, pojo.getUsuario().getId());
+			pst.setInt(5, pojo.getId());
 
 			int affectedRows = pst.executeUpdate();
 			if (affectedRows == 1) {
@@ -134,8 +141,10 @@ public class VideoDAO {
 		return resultado;
 	}
 
-	public boolean crear(Video pojo) throws Exception {
+	public boolean crear(Video pojo) throws Exception { //TODO insertar categoria_id, usuario_id
+		
 		boolean resultado = false;
+		
 		String sql = "INSERT INTO video (nombre, codigo) VALUES (?,?);";
 
 		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {

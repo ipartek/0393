@@ -140,7 +140,7 @@ public class UsuarioDAO {
 
 	}
 
-	public Usuario create(Usuario usuario) { // TODO revisar
+	public Usuario create(Usuario usuario) { 
 
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement pst = con.prepareStatement(SQL_NEW_USER, Statement.RETURN_GENERATED_KEYS)) {
