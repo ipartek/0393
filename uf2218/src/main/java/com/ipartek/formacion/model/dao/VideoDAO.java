@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import com.ipartek.formacion.model.ConnectionManager;
@@ -15,27 +16,35 @@ public class VideoDAO {
 
 	private static VideoDAO INSTANCE = null;
 
-	private static final String SQL_GET_ALL = "SELECT \n" + "	v.id as 'video_id',\n"
-			+ "    v.nombre as 'video_nombre',\n" + "    codigo, \n" + "    u.id as 'usuario_id',\n"
-			+ "    u.nombre as 'usuario_nombre',\n" + "    c.id as 'categoria_id',\n"
-			+ "    c.nombre as 'categoria_nombre'\n" + " FROM video as v, usuario as u, categoria as c\n"
-			+ "WHERE v.usuario_id = u.id AND c.id = v.categoria_id\n" + "ORDER BY v.id DESC LIMIT 500;";
+	private static final String SQL_GET_ALL = "SELECT v.id as 'video_id',"
+											+ " v.nombre as 'video_nombre',"
+											+ " codigo, u.id as 'usuario_id',"
+											+ " u.nombre as 'usuario_nombre',"
+											+ " c.id as 'categoria_id',"
+											+ " c.nombre as 'categoria_nombre'"
+											+ " FROM video as v, usuario as u, categoria as c"
+											+ " WHERE v.usuario_id = u.id"
+											+ " AND c.id = v.categoria_id"
+											+ " ORDER BY v.id DESC LIMIT 500;";
 
 	private static final String SQL_GET_BY_ID = "SELECT v.id as video_id,"
-			+ " v.nombre as video_nombre,"
-			+ " codigo,"
-			+ " u.id as usuario_id,"
-			+ "u.nombre as usuario_nombre,"
-			+ "c.id as categoria_id,"
-			+ "c.nombre as categoria_nombre"
-			+ " FROM video as v, categoria as c, usuario as u"
-			+ " WHERE v.id = ? AND u.id = v.usuario_id AND v.categoria_id = c.id ;";
+												+ " v.nombre as video_nombre,"
+												+ " codigo,"
+												+ " u.id as usuario_id,"
+												+ "u.nombre as usuario_nombre,"
+												+ "c.id as categoria_id,"
+												+ "c.nombre as categoria_nombre"
+												+ " FROM video as v, categoria as c, usuario as u"
+												+ " WHERE v.id = ? AND u.id = v.usuario_id AND v.categoria_id = c.id ;";
 	
 	private static final String SQL_UPDATE = "UPDATE video SET nombre = ?,"
-			+ " codigo = ?,"
-			+ " categoria_id = ?,"
-			+ " usuario_id= ?"
-			+ " WHERE  id = ?;";
+											+ " codigo = ?,"
+											+ " categoria_id = ?,"
+											+ " usuario_id= ?"
+											+ " WHERE  id = ?;";
+	
+	private static final String SQL_CREATE = "INSERT INTO video (nombre, codigo, categoria_id, usuario_id)"
+											+ " VALUES (?,?,?,?);";
 
 	private VideoDAO() {
 		super();
@@ -141,25 +150,28 @@ public class VideoDAO {
 		return resultado;
 	}
 
-	public boolean crear(Video pojo) throws Exception { //TODO insertar categoria_id, usuario_id
+	public Video crear(Video pojo) throws Exception { //TODO insertar categoria_id, usuario_id
 		
-		boolean resultado = false;
-		
-		String sql = "INSERT INTO video (nombre, codigo) VALUES (?,?);";
-
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_CREATE, Statement.RETURN_GENERATED_KEYS)) {
 
 			pst.setString(1, pojo.getNombre());
 			pst.setString(2, pojo.getCodigo());
+			pst.setInt(3, pojo.getUsuario().getId());
+			pst.setInt(4, pojo.getCategoria().getId());
 
 			int affectedRows = pst.executeUpdate();
 			if (affectedRows == 1) {
-				resultado = true;
+				ResultSet rs = pst.getGeneratedKeys();
+				
+				if(rs.next()) {
+					pojo.setId(rs.getInt(1));
+				}
 			}
 
 		}
 
-		return resultado;
+		return pojo;
 	}
 
 	/*

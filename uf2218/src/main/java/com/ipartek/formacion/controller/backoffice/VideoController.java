@@ -167,7 +167,7 @@ public class VideoController extends HttpServlet {
 			try {
 				
 				if ( v.getId() == -1 ) {				
-					videoDAO.crear(v);
+					v = videoDAO.crear(v);
 				}else {
 					videoDAO.modificar(v);
 				}
