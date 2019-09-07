@@ -157,8 +157,8 @@ public class VideoDAO {
 
 			pst.setString(1, pojo.getNombre());
 			pst.setString(2, pojo.getCodigo());
-			pst.setInt(3, pojo.getUsuario().getId());
-			pst.setInt(4, pojo.getCategoria().getId());
+			pst.setInt(3, pojo.getCategoria().getId());
+			pst.setInt(4, pojo.getUsuario().getId());
 
 			int affectedRows = pst.executeUpdate();
 			if (affectedRows == 1) {
