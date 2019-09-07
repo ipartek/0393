@@ -53,6 +53,17 @@ public class BackofficeController extends HttpServlet {
 
 		request.setAttribute("numeroVideos", listaVideos.size()); // videoDAO.getAll().size();
 		request.setAttribute("numeroUsuarios", listaUsuarios.size());
+		
+	
+		// TODO preguntar por la siguiente prueba
+		/* ¿Es una buena idea hacer aqui las consultas getAll 1 vez y recogerlas como ArrayList en VideoController?
+		 * Asi se ahorraria por ejemplo consultar 3 veces a la base de datos cada vez que el admin ve el detalle de 1 video,
+		 * en vez de eso se consultarian las categorias o los usuarios a traves de ArrayList disponibles en el controlador.
+		 * Al modificar, crear o borrar una fila, se podría hacer el cambio en la BD con el dao y modificar la ArrayList
+		 * que se mandará como atributo (pero sin conseguir/sobreescribir esta mediante un nuevo dao.getAll() ) 
+		 * 
+		 * */
+		
 
 		request.getRequestDispatcher("index.jsp").forward(request, response);
 	}
