@@ -28,8 +28,9 @@ public class IdiomaController extends HttpServlet {
 
 		String idiomaSeleccionado = request.getParameter("idiomaSeleccionado");
 
-		String ruta = request.getParameter("ruta");
-		ruta = ruta.split("uf2218/")[1];
+		/*String ruta = request.getParameter("ruta");
+		*ruta = ruta.split("uf2218/")[1];
+		*/
 
 		String language = "en";
 		String country = "EN";

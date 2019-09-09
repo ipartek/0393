@@ -21,7 +21,7 @@
 				</div>
 				
 				<div class="form-group">
-					<label for="nombre">Nombre:</label>
+					<label for="nombre"><fmt:message key="form.nombre" />:</label>
 					<input type="text" name="nombre" value="${video.nombre}"
 					       placeholder="Mínimio 3 máximo 150"
 					       class="form-control">
@@ -34,6 +34,22 @@
 						   class="form-control">
 				</div>
 				
+				
+					<div class="form-group">
+    					<label for="usuario_id">Creado por:</label>
+    					<select class="form-control" name="usuario_id" id="usuario_id">
+	    					<c:forEach items="${users}" var="u">
+	    						<c:if test="${video.id == -1 }"> <!-- para cuando se crea un nuevo video -->
+	    							<option value="${u.id}" ${(u.id == sessionScope.usuario.id)?"selected":"" }>${u.nombre}</option>
+	    						</c:if>
+	    						<c:if test="${video.id != -1 }">
+	    							<option value="${u.id}" ${(u.id == video.usuario.id)?"selected":"" }>${u.nombre}</option>
+	    						</c:if>	
+	    					</c:forEach>
+    					</select>
+  					</div>
+				
+				<!--  
 				<div class="form-group">
     				<label for="usuario_id">Creado por:</label>
     				<select class="form-control" name="usuario_id" id="usuario_id">
@@ -42,7 +58,7 @@
     					</c:forEach>
     				</select>
   				</div>
-				
+				-->
 				<div class="form-group">
     				<label for="categoria_id">Categoria:</label>
     				<select class="form-control" name="categoria_id" id="categoria_id">

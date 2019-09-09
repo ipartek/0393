@@ -148,6 +148,7 @@ public class VideoController extends HttpServlet {
 			try {
 				if (v.getId() == -1) {
 					videoDAO.crear(v, idCategoria, idUsuario);
+					idVideo = v.getId();
 				} else {
 					videoDAO.modificar(v, idUsuario, idCategoria);
 				}
