@@ -119,20 +119,22 @@ public class UsuarioDAO {
 		return usuario;
 	}
 
-	public Usuario getByName(String nombre) {
+	public ArrayList<Usuario> getByName(String nombre) {
+		ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
 		Usuario usuario = new Usuario();
 		String sql = "SELECT * FROM usuario WHERE nombre LIKE '%" + nombre + "%';";
 
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement pst = con.prepareStatement(sql);
 				ResultSet rs = pst.executeQuery()) {
-			if (rs.next()) {
+			while (rs.next()) {
 				usuario = mapper(rs);
+				usuarios.add(usuario);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return usuario;
+		return usuarios;
 	}
 
 	public boolean modificar(Usuario pojo) throws SQLException {

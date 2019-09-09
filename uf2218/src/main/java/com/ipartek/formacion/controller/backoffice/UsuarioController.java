@@ -105,7 +105,7 @@ public class UsuarioController extends HttpServlet {
 	public void buscar(HttpServletRequest request, HttpServletResponse response) {
 		String nombre = request.getParameter("nombreBuscar");
 
-		request.setAttribute("usuario", usuarioDAO.getByName(nombre));
+		request.setAttribute("usuarios", usuarioDAO.getByName(nombre));
 		view = VIEW_INDEX;
 	}
 
