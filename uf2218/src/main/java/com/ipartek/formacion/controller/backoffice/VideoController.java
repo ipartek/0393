@@ -141,18 +141,19 @@ private static CategoriaDAO categoriaDAO;
 		v.setId(idVideo);
 		v.setNombre(nombre);
 		v.setCodigo(codigo);
+		
 
 		Set<ConstraintViolation<Video>> violations = validator.validate(v);
 		if (violations.isEmpty()) {
-			HttpSession s = request.getSession();
-
-			
+		
 			try {
 
 				if (v.getId() == -1) {
-					videoDAO.crear(v, s);
+					
+					
+					videoDAO.crear(v, idUsuario,idCategoria);
 				} else {
-					videoDAO.modificar(v,idCategoria,idUsuario);
+					videoDAO.modificar(v,idUsuario,idCategoria);
 				}
 				request.setAttribute("mensaje", new Alert("success", "Registro creado con exito"));
 
@@ -170,7 +171,9 @@ private static CategoriaDAO categoriaDAO;
 			}
 			request.setAttribute("mensaje", new Alert("warning", mensaje));
 		}
-		request.setAttribute("video", v);
+		request.setAttribute("video", videoDAO.getById(v.getId()));
+		request.setAttribute("usuarios", usuarioDAO.getAll());
+		request.setAttribute("categorias", categoriaDAO.getAll());
 		view = VIEW_FORM;
 
 	}

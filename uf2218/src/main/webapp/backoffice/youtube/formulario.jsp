@@ -45,7 +45,7 @@
 			</div>
 				<div class="form-group">
 				<label >Categoria</label> 
-				<select class="form-control"  name="categoria_id "id="categoria_id">
+				<select class="form-control"  name="categoria_id" id="categoria_id">
 					<c:forEach items="${categorias}" var="c">
 					
 					<option value="${c.id}" ${(c.id == video.categoria.id)?"selected":"" }>${c.nombre}</option>

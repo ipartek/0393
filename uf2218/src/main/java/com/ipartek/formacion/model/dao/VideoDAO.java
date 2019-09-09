@@ -6,8 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import javax.servlet.http.HttpSession;
-
 import com.ipartek.formacion.model.ConnectionManager;
 import com.ipartek.formacion.model.pojo.Categoria;
 import com.ipartek.formacion.model.pojo.Usuario;
@@ -20,7 +18,7 @@ public class VideoDAO {
 	private static final String SQL_GET_ALL = "SELECT v.id as 'video_id', v.nombre as 'video_nombre', v.codigo as 'codigo', u.id as 'usuario_id', u.nombre as 'usuario_nombre', c.id as 'categoria_id', c.nombre as 'categoria_nombre' FROM video v, usuario u, categoria c WHERE v.usuario_id = u.id AND v.categoria_id = c.id ORDER BY v.id DESC LIMIT 500";
 	private static final String SQL_GET_BY_ID = "SELECT v.id as 'video_id', v.nombre as 'video_nombre', v.codigo as 'codigo', u.id as 'usuario_id', u.nombre as 'usuario_nombre', c.id as 'categoria_id', c.nombre as 'categoria_nombre' FROM video v, usuario u, categoria c WHERE v.usuario_id = u.id AND v.categoria_id = c.id AND v.id = ?";
 	private static final String SQL_UPDATE = "UPDATE video SET `nombre`= ?, `codigo`= ? , `usuario_id`= ? , `categoria_id`= ? WHERE `id` = ?;";
-	private static final String SQL_INSERT = "INSERT INTO video (nombre, codigo,usuario_id) VALUES (?,?,?)";
+	private static final String SQL_INSERT = "INSERT INTO video (nombre, codigo,usuario_id,categoria_id) VALUES (?,?,?,?)";
 	private static final String SQL_DELETE = "DELETE FROM video WHERE id = ?";
 
 	private VideoDAO() {
@@ -102,17 +100,18 @@ public class VideoDAO {
 		return resultado;
 	}
 
-	public boolean crear(Video pojo, HttpSession session) throws Exception {
+	public boolean crear(Video pojo, int usuarioId, int categoriId) throws Exception {
 		boolean resultado = false;
 
-		Usuario usuario = (Usuario) session.getAttribute("usuario");
+		
 
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement pst = con.prepareStatement(SQL_INSERT)) {
 
 			pst.setString(1, pojo.getNombre());
 			pst.setString(2, pojo.getCodigo());
-			pst.setInt(3, usuario.getId());
+			pst.setInt(3, usuarioId);
+			pst.setInt(4, categoriId);
 			int affectedRows = pst.executeUpdate();
 			if (affectedRows == 1) {
 				resultado = true;
