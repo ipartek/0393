@@ -16,7 +16,10 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 
 import com.ipartek.formacion.controller.pojo.Alert;
+import com.ipartek.formacion.model.dao.CategoriaDAO;
+import com.ipartek.formacion.model.dao.UsuarioDAO;
 import com.ipartek.formacion.model.dao.VideoDAO;
+import com.ipartek.formacion.model.pojo.Categoria;
 import com.ipartek.formacion.model.pojo.Usuario;
 import com.ipartek.formacion.model.pojo.Video;
 
@@ -39,6 +42,8 @@ public class VideoController extends HttpServlet {
 	public static final String OP_DETALLE = "13";
 
 	private static VideoDAO videoDAO;
+	private static UsuarioDAO usuarioDAO;
+	private static CategoriaDAO categoriaDAO;
 
 	private Validator validator;
 
@@ -46,6 +51,8 @@ public class VideoController extends HttpServlet {
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		videoDAO = VideoDAO.getInstance();
+		usuarioDAO = UsuarioDAO.getInstance();
+		categoriaDAO = CategoriaDAO.getInstance();
 		validator = Validation.buildDefaultValidatorFactory().getValidator();
 	}
 
@@ -103,6 +110,8 @@ public class VideoController extends HttpServlet {
 	private void nuevo(HttpServletRequest request, HttpServletResponse response) {
 
 		request.setAttribute("video", new Video());
+		request.setAttribute("usuarios", usuarioDAO.getAll());
+		request.setAttribute("categorias", categoriaDAO.getAll());
 		view = VIEW_FORM;
 	}
 
@@ -118,7 +127,6 @@ public class VideoController extends HttpServlet {
 		}
 
 		listar(request, response);
-
 	}
 
 	private void guardar(HttpServletRequest request, HttpServletResponse response) {
@@ -126,43 +134,51 @@ public class VideoController extends HttpServlet {
 		String sid = request.getParameter("id");
 		String nombre = request.getParameter("nombre");
 		String codigo = request.getParameter("codigo");
-
+		int categoria = Integer.parseInt(request.getParameter("categoria"));
+		int usuario = Integer.parseInt(request.getParameter("usuario"));
 		Video v = new Video();
-		v.setId(Integer.parseInt(sid));
-		v.setNombre(nombre);
-		v.setCodigo(codigo);
 
-		HttpSession session = request.getSession();
+		if (categoria == -1) {
+			request.setAttribute("nombre", nombre);
+			request.setAttribute("codigo", codigo);
+			request.setAttribute("mensaje", new Alert("warning", "Elija una categoría, por favor"));
+		} else {
+			v.setId(Integer.parseInt(sid));
+			v.setNombre(nombre);
+			v.setCodigo(codigo);
+			v.setUsuario(new Usuario(usuario));
+			v.setCategoria(new Categoria(categoria));
 
-		Usuario u = (Usuario) session.getAttribute("usuario");
+			Set<ConstraintViolation<Video>> violations = validator.validate(v);
+			if (violations.isEmpty()) {
 
-		Set<ConstraintViolation<Video>> violations = validator.validate(v);
-		if (violations.isEmpty()) {
+				try {
 
-			try {
+					if (v.getId() == -1) {
+						v = videoDAO.crear(v);
+					} else {
+						videoDAO.modificar(v);
+					}
+					request.setAttribute("mensaje", new Alert("success", "Registro creado con exito"));
 
-				if (v.getId() == -1) {
-					videoDAO.crear(v, u.getId());
-				} else {
-					videoDAO.modificar(v);
+				} catch (Exception e) {
+
+					request.setAttribute("mensaje", new Alert("danger", "Tenemos un problema, el codigo ya existe"));
 				}
-				request.setAttribute("mensaje", new Alert("success", "Registro creado con exito"));
 
-			} catch (Exception e) {
+			} else { // hay violaciones de las validaciones
 
-				request.setAttribute("mensaje", new Alert("danger", "Tenemos un problema, el codigo ya existe"));
+				String mensaje = "";
+
+				for (ConstraintViolation<Video> violation : violations) {
+					mensaje += violation.getPropertyPath() + ": " + violation.getMessage() + "<br>";
+				}
+				request.setAttribute("mensaje", new Alert("warning", mensaje));
 			}
-
-		} else { // hay violaciones de las validaciones
-
-			String mensaje = "";
-
-			for (ConstraintViolation<Video> violation : violations) {
-				mensaje += violation.getPropertyPath() + ": " + violation.getMessage() + "<br>";
-			}
-			request.setAttribute("mensaje", new Alert("warning", mensaje));
 		}
 		request.setAttribute("video", v);
+		request.setAttribute("usuarios", usuarioDAO.getAll());
+		request.setAttribute("categorias", categoriaDAO.getAll());
 		view = VIEW_FORM;
 	}
 
@@ -179,6 +195,8 @@ public class VideoController extends HttpServlet {
 
 		Video v = videoDAO.getById(id);
 		request.setAttribute("video", v);
+		request.setAttribute("usuarios", usuarioDAO.getAll());
+		request.setAttribute("categorias", categoriaDAO.getAll());
 		view = VIEW_FORM;
 
 		HttpSession session = request.getSession();

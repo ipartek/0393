@@ -29,6 +29,24 @@
 						value="${video.codigo}" placeholder="Exactamente 11"
 						class="form-control">
 				</div>
+				<label for="categoria">Categoria: </label>
+				<select class="custom-select mb-3" name="categoria" id="categoria">
+					<option value="-1">Elige una categoría...</option>
+					<c:forEach items="${categorias}" var="c">
+						<option value="${c.id}" ${(c.id == video.categoria.id)?"selected":""}>${c.nombre}</option>
+					</c:forEach>
+				</select>
+				<label for="usuario">Usuario: </label>
+				<select class="custom-select mb-4" name="usuario" id="usuario">
+					<c:forEach items="${usuarios}" var="u">
+						<c:if test="${video.id == -1}">
+							<option value="${u.id}" ${(u.id == sessionScope.usuario.id)?"selected":""}>${u.nombre}</option>
+						</c:if>
+						<c:if test="${video.id != -1}">
+							<option value="${u.id}" ${(u.id == video.usuario.id)?"selected":""}>${u.nombre}</option>
+						</c:if>
+					</c:forEach>
+				</select>
 				<input type="submit" value="${(video.id != -1)?'Modificar':'Crear'}"
 					class="btn btn-outline-primary  btn-block">
 			</form>

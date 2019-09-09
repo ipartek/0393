@@ -15,8 +15,10 @@ public class Video {
 	@Size(min = 11, max = 11, message = "Exactamente debe ser 11")
 	private String codigo;
 
+	@NotNull
 	private Categoria categoria;
 
+	@NotNull
 	private Usuario usuario;
 
 	public Video() {

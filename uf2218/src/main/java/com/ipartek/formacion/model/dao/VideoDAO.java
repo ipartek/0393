@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import com.ipartek.formacion.model.ConnectionManager;
@@ -39,10 +40,6 @@ public class VideoDAO {
 				ResultSet rs = pst.executeQuery()) {
 
 			while (rs.next()) {
-				/*
-				 * Video v = new Video(); v.setId( rs.getInt("id") ); v.setNombre(
-				 * rs.getString("nombre")); v.setCodigo( rs.getString("codigo"));
-				 */
 				lista.add(mapper(rs));
 			}
 		} catch (Exception e) {
@@ -66,10 +63,6 @@ public class VideoDAO {
 
 			try (ResultSet rs = pst.executeQuery()) {
 				if (rs.next()) {
-					/*
-					 * Video v = new Video(); v.setId( rs.getInt("id") ); v.setNombre(
-					 * rs.getString("nombre")); v.setCodigo( rs.getString("codigo"));
-					 */
 					video = mapper(rs);
 				}
 			}
@@ -82,13 +75,15 @@ public class VideoDAO {
 	public boolean modificar(Video pojo) throws Exception {
 		boolean resultado = false;
 
-		String sql = "UPDATE video SET nombre = ?, codigo = ? WHERE  id = ?;";
+		String sql = "UPDATE video SET nombre = ?, codigo = ?, id_usuario = ?, id_categoria = ? WHERE  id = ?;";
 
 		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
 
 			pst.setString(1, pojo.getNombre());
 			pst.setString(2, pojo.getCodigo());
-			pst.setInt(3, pojo.getId());
+			pst.setInt(3, pojo.getUsuario().getId());
+			pst.setInt(4, pojo.getCategoria().getId());
+			pst.setInt(5, pojo.getId());
 
 			int affectedRows = pst.executeUpdate();
 			if (affectedRows == 1) {
@@ -98,22 +93,26 @@ public class VideoDAO {
 		return resultado;
 	}
 
-	public boolean crear(Video pojo, int idUser) throws Exception {
-		boolean resultado = false;
-		String sql = "INSERT INTO video (nombre, codigo, id_usuario) VALUES (?,?,?);";
+	public Video crear(Video pojo) throws Exception {
+		String sql = "INSERT INTO video (nombre, codigo, id_usuario, id_categoria) VALUES (?,?,?,?);";
 
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
 			pst.setString(1, pojo.getNombre());
 			pst.setString(2, pojo.getCodigo());
-			pst.setInt(3, idUser);
+			pst.setInt(3, pojo.getUsuario().getId());
+			pst.setInt(4, pojo.getCategoria().getId());
 
 			int affectedRows = pst.executeUpdate();
 			if (affectedRows == 1) {
-				resultado = true;
+				ResultSet rs = pst.getGeneratedKeys();
+				if (rs.next()) {
+					pojo.setId(rs.getInt(1));
+				}
 			}
 		}
-		return resultado;
+		return pojo;
 	}
 
 	public boolean delete(int id) {

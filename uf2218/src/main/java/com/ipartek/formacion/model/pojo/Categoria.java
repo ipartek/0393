@@ -15,6 +15,11 @@ public class Categoria {
 		this.nombre = "";
 	}
 
+	public Categoria(int id) {
+		super();
+		this.id = id;
+	}
+
 	public Categoria(int id, String nombre) {
 		super();
 		setId(id);

@@ -1,19 +1,23 @@
 package com.ipartek.formacion.model.pojo;
 
-import org.apache.pdfbox.contentstream.operator.text.SetCharSpacing;
-
 public class Usuario {
-	
-	//Atributos
+
+	// Atributos
+
 	private int id;
 	private String nombre;
 	private String contrasenya;
-	
+
 	public Usuario() {
 		super();
 		this.id = -1;
 		this.nombre = "";
 		this.contrasenya = "";
+	}
+
+	public Usuario(int id) {
+		super();
+		this.id = id;
 	}
 
 	public Usuario(int pId, String pNombre, String pContrasenya) {

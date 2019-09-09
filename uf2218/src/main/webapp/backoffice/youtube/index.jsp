@@ -21,9 +21,9 @@
 					<p class="h3">${v.nombre}</p>
 				</a>
 				<a href="backoffice/usuarios?op=<%=UsuarioController.OP_DETALLE%>&id=${v.usuario.id}">
-					<p><i class="fas fa-user"></i> ${v.usuario.nombre}</p>
+					<p class="mb-1"><i class="fas fa-user"></i> ${v.usuario.nombre}</p>
 				</a>
-				<span>${v.categoria}</span>
+				<span><i class="fas fa-video"></i> ${v.categoria.nombre}</span>
 			</li>
 		</c:forEach>
 	</ul>
