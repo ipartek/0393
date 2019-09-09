@@ -16,8 +16,10 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 
 import com.ipartek.formacion.controller.pojo.Alert;
+import com.ipartek.formacion.model.dao.CategoriaDAO;
 import com.ipartek.formacion.model.dao.UsuarioDAO;
 import com.ipartek.formacion.model.dao.VideoDAO;
+import com.ipartek.formacion.model.pojo.Categoria;
 import com.ipartek.formacion.model.pojo.Video;
 
 /**
@@ -40,6 +42,7 @@ public class VideoController extends HttpServlet {
 
 	private static VideoDAO videoDAO;
 	private static UsuarioDAO usuarioDAO;
+	private static CategoriaDAO categoriaDAO;
 
 	private Validator validator;
 
@@ -48,6 +51,7 @@ public class VideoController extends HttpServlet {
 		super.init(config);
 		videoDAO = VideoDAO.getInstance();
 		usuarioDAO = UsuarioDAO.getInstance();
+		categoriaDAO = CategoriaDAO.getInstance();
 		validator = Validation.buildDefaultValidatorFactory().getValidator();
 	}
 
@@ -146,7 +150,7 @@ public class VideoController extends HttpServlet {
 				if (v.getId() == -1) {
 					videoDAO.crear(v);
 				} else {
-					videoDAO.modificar(v, idCategoria, idUsuario );
+					videoDAO.modificar(v, idUsuario, idCategoria );
 				}
 				request.setAttribute("mensaje", new Alert("success", "Registro creado con exito"));
 
@@ -166,6 +170,7 @@ public class VideoController extends HttpServlet {
 		}
 		request.setAttribute("video", videoDAO.getById(idVideo));
 		request.setAttribute("usuarios", usuarioDAO.getAll() );
+		request.setAttribute("categorias", categoriaDAO.getAll() );
 		
 		view = VIEW_FORM;
 
@@ -187,6 +192,7 @@ public class VideoController extends HttpServlet {
 		request.setAttribute("video", v);
 		
 		request.setAttribute("usuarios", usuarioDAO.getAll() );
+		request.setAttribute("categorias", categoriaDAO.getAll() );
 		
 		view = VIEW_FORM;
 
