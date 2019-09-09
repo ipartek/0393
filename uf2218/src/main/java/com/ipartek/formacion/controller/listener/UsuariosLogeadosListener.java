@@ -8,6 +8,8 @@ import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
+import com.ipartek.formacion.model.pojo.Usuario;
+
 /**
  * Application Lifecycle Listener implementation class UsuariosLogeadosListener
  *
@@ -16,7 +18,7 @@ import javax.servlet.http.HttpSessionListener;
 public class UsuariosLogeadosListener implements HttpSessionListener, HttpSessionAttributeListener {
 
 	
-	public static ArrayList<String> usuariosLogeados = new ArrayList<String>();
+	public static ArrayList<Usuario> usuariosLogeados = new ArrayList<Usuario>();
 	
 	
 	
@@ -49,7 +51,7 @@ public class UsuariosLogeadosListener implements HttpSessionListener, HttpSessio
     	System.out.println("attributeAdded " + event.getName() );
     	
     	if ( "usuario".equals(event.getName()) ) {
-    		usuariosLogeados.add( (String)event.getValue());
+    		usuariosLogeados.add( (Usuario)event.getValue());
     	}
     	
     	
@@ -63,7 +65,7 @@ public class UsuariosLogeadosListener implements HttpSessionListener, HttpSessio
     	System.out.println("attributeRemoved " + event.getName() );
     	
     	if ( "usuario".equals(event.getName()) ) {
-    		usuariosLogeados.remove( (String)event.getValue());
+    		usuariosLogeados.remove( (Usuario)event.getValue());
     	}
     	
     }
@@ -72,7 +74,7 @@ public class UsuariosLogeadosListener implements HttpSessionListener, HttpSessio
      * @see HttpSessionAttributeListener#attributeReplaced(HttpSessionBindingEvent)
      */
     public void attributeReplaced(HttpSessionBindingEvent event)  { 
-         // TODO Auto-generated method stub
+       
     }
 	
 }
