@@ -16,35 +16,21 @@ public class VideoDAO {
 
 	private static VideoDAO INSTANCE = null;
 
-	private static final String SQL_GET_ALL = "SELECT v.id as 'video_id',"
-											+ " v.nombre as 'video_nombre',"
-											+ " codigo, u.id as 'usuario_id',"
-											+ " u.nombre as 'usuario_nombre',"
-											+ " c.id as 'categoria_id',"
-											+ " c.nombre as 'categoria_nombre'"
-											+ " FROM video as v, usuario as u, categoria as c"
-											+ " WHERE v.usuario_id = u.id"
-											+ " AND c.id = v.categoria_id"
-											+ " ORDER BY v.id DESC LIMIT 500;";
+	private static final String SQL_GET_ALL = "SELECT v.id as 'video_id'," + " v.nombre as 'video_nombre',"
+			+ " codigo, u.id as 'usuario_id'," + " u.nombre as 'usuario_nombre'," + " c.id as 'categoria_id',"
+			+ " c.nombre as 'categoria_nombre'" + " FROM video as v, usuario as u, categoria as c"
+			+ " WHERE v.usuario_id = u.id" + " AND c.id = v.categoria_id" + " ORDER BY v.id DESC LIMIT 500;";
 
-	private static final String SQL_GET_BY_ID = "SELECT v.id as video_id,"
-												+ " v.nombre as video_nombre,"
-												+ " codigo,"
-												+ " u.id as usuario_id,"
-												+ "u.nombre as usuario_nombre,"
-												+ "c.id as categoria_id,"
-												+ "c.nombre as categoria_nombre"
-												+ " FROM video as v, categoria as c, usuario as u"
-												+ " WHERE v.id = ? AND u.id = v.usuario_id AND v.categoria_id = c.id ;";
-	
-	private static final String SQL_UPDATE = "UPDATE video SET nombre = ?,"
-											+ " codigo = ?,"
-											+ " categoria_id = ?,"
-											+ " usuario_id= ?"
-											+ " WHERE  id = ?;";
-	
+	private static final String SQL_GET_BY_ID = "SELECT v.id as video_id," + " v.nombre as video_nombre," + " codigo,"
+			+ " u.id as usuario_id," + "u.nombre as usuario_nombre," + "c.id as categoria_id,"
+			+ "c.nombre as categoria_nombre" + " FROM video as v, categoria as c, usuario as u"
+			+ " WHERE v.id = ? AND u.id = v.usuario_id AND v.categoria_id = c.id ;";
+
+	private static final String SQL_UPDATE = "UPDATE video SET nombre = ?," + " codigo = ?," + " categoria_id = ?,"
+			+ " usuario_id= ?" + " WHERE  id = ?;";
+
 	private static final String SQL_CREATE = "INSERT INTO video (nombre, codigo, categoria_id, usuario_id)"
-											+ " VALUES (?,?,?,?);";
+			+ " VALUES (?,?,?,?);";
 
 	private VideoDAO() {
 		super();
@@ -130,10 +116,11 @@ public class VideoDAO {
 	 */
 
 	public boolean modificar(Video pojo) throws Exception {
-		
+
 		boolean resultado = false;
 
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(SQL_UPDATE)) {
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_UPDATE)) {
 
 			pst.setString(1, pojo.getNombre());
 			pst.setString(2, pojo.getCodigo());
@@ -150,8 +137,10 @@ public class VideoDAO {
 		return resultado;
 	}
 
-	public Video crear(Video pojo) throws Exception { //TODO insertar categoria_id, usuario_id
-		
+	// Mejor pasar como parametro, video, int categoria.id, int usuario.id por que
+	// se entienda mejor
+	public Video crear(Video pojo) throws Exception { // TODO insertar categoria_id, usuario_id
+
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement pst = con.prepareStatement(SQL_CREATE, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -163,8 +152,8 @@ public class VideoDAO {
 			int affectedRows = pst.executeUpdate();
 			if (affectedRows == 1) {
 				ResultSet rs = pst.getGeneratedKeys();
-				
-				if(rs.next()) {
+
+				if (rs.next()) {
 					pojo.setId(rs.getInt(1));
 				}
 			}

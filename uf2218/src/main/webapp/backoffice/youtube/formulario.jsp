@@ -36,7 +36,7 @@
 				<div class="form-group">
 					<label for="categoria">Categoría:</label>
 					<select class="form-control" name="idCategoria">
-						<option>Elige una categoria...</option>
+						<option value="-1">Elige una categoria...</option>
 						<c:forEach items="${categorias }" var="categoria">
 							<option value="${categoria.id }" ${(categoria.id == video.categoria.id)?"selected":"" }>${categoria.nombre }</option>
 						</c:forEach>
@@ -47,9 +47,15 @@
 				<div class="form-group">
 					<label for="usuario">Creado por:</label>
 					<select class="form-control" name="idUsuario">
-						<option>Elije un creador...</option>
+						
 						<c:forEach items="${usuarios }" var="usuario">
-							<option value="${usuario.id }" ${(usuario.id == video.usuario.id)?"selected":"" }>${usuario.nombre }</option>
+							<c:if test="${(video.id != -1)}">
+								<option value="${usuario.id }" ${(usuario.id == video.usuario.id)?"selected":"" }>${usuario.nombre }</option>
+							</c:if>
+							
+							<c:if test="${(video.id == -1)}">
+								<option value="${usuario.id }" ${(sessionScope.usuario.id == usuario.id)?"selected":"" }>${usuario.nombre }</option>
+							</c:if>
 						</c:forEach>
 					
 					</select>
@@ -78,7 +84,7 @@
 				        </button>
 				      </div>
 				      <div class="modal-body">
-				        <p>Cuidado porque operación no es reversible</p>
+				        <p>Cuidado porque la operación no es reversible</p>
 				      </div>
 				      <div class="modal-footer">
 				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -94,14 +100,7 @@
 				
 				
 			</c:if>	
-			
-			
-			
-			
-			
-			
-			
-			
+		
 		</div>
 		<div class="col">	
 		
