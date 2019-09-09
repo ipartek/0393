@@ -100,7 +100,7 @@ public class UsuarioController extends HttpServlet {
 		
 		String nombre = request.getParameter("nombre");
 		
-		ArrayList<Usuario> listaUsuarios = usuarioDAO.getAllByName(nombre);
+		ArrayList<Usuario> listaUsuarios = usuarioDAO.getAllByNombre(nombre);
 		
 		request.setAttribute("listaUsuarios", listaUsuarios);
 		

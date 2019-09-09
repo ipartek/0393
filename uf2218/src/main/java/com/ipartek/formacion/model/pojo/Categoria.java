@@ -8,7 +8,13 @@ public class Categoria {
 	public Categoria() {
 		super();
 		this.id = -1;
-		this.nombre="SIN CATEGORÍA";
+		this.nombre = "";
+	}
+
+	public Categoria(int id, String nombre) {
+		super();
+		this.id = id;
+		this.nombre = nombre;
 	}
 
 	public int getId() {
@@ -31,6 +37,8 @@ public class Categoria {
 	public String toString() {
 		return "Categoria [id=" + id + ", nombre=" + nombre + "]";
 	}
+	
+	
 	
 	
 
