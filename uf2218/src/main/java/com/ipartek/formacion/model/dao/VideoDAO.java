@@ -6,8 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import javax.servlet.http.HttpSession;
-
 import com.ipartek.formacion.model.ConnectionManager;
 import com.ipartek.formacion.model.pojo.Categoria;
 import com.ipartek.formacion.model.pojo.Usuario;
@@ -152,10 +150,10 @@ public class VideoDAO {
 		return resultado;
 	}
 
-	public boolean crear(Video pojo, HttpSession session, int categoriaId, int usuarioId) throws Exception {
+	public boolean crear(Video pojo, int categoriaId, int usuarioId) throws Exception {
 		boolean resultado = false;
 
-		Usuario usuario = (Usuario) session.getAttribute("usuario");
+		
 		//Categoria categoria (Categoria) session.getAttribute("categoria");
 
 		try (Connection con = ConnectionManager.getConnection();
@@ -163,7 +161,7 @@ public class VideoDAO {
 
 			pst.setString(1, pojo.getNombre());
 			pst.setString(2, pojo.getCodigo());
-			pst.setInt(3, usuario.getId());
+			pst.setInt(3, usuarioId);
 			pst.setInt(4, categoriaId);
 
 			int affectedRows = pst.executeUpdate();

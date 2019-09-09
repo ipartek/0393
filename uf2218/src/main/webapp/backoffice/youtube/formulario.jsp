@@ -36,7 +36,7 @@
 				
 				<div class="form-group">
     				<label for="usuario_id">Creado por:</label>
-    				<select class="form-control" id="usuario_id">
+    				<select class="form-control" name="usuario_id" id="usuario_id">
     					<c:forEach items="${users}" var="u">
     						<option value="${u.id}" ${(u.id == video.usuario.id)?"selected":"" }>${u.nombre}</option>
     					</c:forEach>
@@ -45,7 +45,7 @@
 				
 				<div class="form-group">
     				<label for="categoria_id">Categoria:</label>
-    				<select class="form-control" id="categoria_id">
+    				<select class="form-control" name="categoria_id" id="categoria_id">
     					<c:forEach items="${categorias}" var="c">
     						<option value="${c.id}" ${(c.id == video.categoria.id)?"selected":"" }>${c.nombre}</option>
     					</c:forEach>

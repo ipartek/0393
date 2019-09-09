@@ -15,8 +15,8 @@
 	<ul class="list-group">
 	  <c:forEach items="${videos}" var="v">	
 	  	<li class="list-group-item">
-	  		<img class="float-left mr-3" src="https://img.youtube.com/vi/${v.codigo}/default.jpg" alt="Imagen destacda del video ${v.nombre}"/>
 	  		<a href="backoffice/videos?op=<%=VideoController.OP_DETALLE%>&id=${v.id}">
+	  			<img class="float-left mr-3" src="https://img.youtube.com/vi/${v.codigo}/default.jpg" alt="Imagen destacda del video ${v.nombre}"/>
 	  			<p class="h3">${v.nombre}</p>
 	  		</a>
 	  		<a href="backoffice/usuarios?op=<%=UsuarioController.OP_DETALLE%>&id=${v.usuario.id}">
