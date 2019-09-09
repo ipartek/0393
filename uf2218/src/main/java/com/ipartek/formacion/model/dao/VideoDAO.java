@@ -10,6 +10,7 @@ import com.ipartek.formacion.model.ConnectionManager;
 import com.ipartek.formacion.model.pojo.Categoria;
 import com.ipartek.formacion.model.pojo.Usuario;
 import com.ipartek.formacion.model.pojo.Video;
+import com.mysql.jdbc.Statement;
 
 public class VideoDAO {
 
@@ -41,6 +42,7 @@ public class VideoDAO {
 	
 	
 	private static final String SQL_UPDATE = "UPDATE video SET `nombre`= ?, `codigo`= ? , `usuario_id`= ? , `categoria_id`= ? WHERE `id` = ?;";
+	private static final String SQL_INSERT = "INSERT INTO video (nombre, codigo, usuario_id, categoria_id ) VALUES (?,?,?,?);";
 	
 	private VideoDAO() {
 		super();
@@ -143,18 +145,27 @@ public class VideoDAO {
 		return resultado;
 	}
 
-	public boolean crear(Video pojo) throws Exception {
+	public boolean crear(Video pojo, int usuarioId, int categoriaId ) throws Exception {
 		boolean resultado = false;
-		String sql = "INSERT INTO video (nombre, codigo) VALUES (?,?);";
+		
 
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+		try (Connection con = ConnectionManager.getConnection(); 
+				PreparedStatement pst = con.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS )) {
 
 			pst.setString(1, pojo.getNombre());
 			pst.setString(2, pojo.getCodigo());
+			pst.setInt(3, usuarioId);
+			pst.setInt(4, categoriaId);
 
 			int affectedRows = pst.executeUpdate();
 			if (affectedRows == 1) {
-				resultado = true;
+				// conseguir id generado de forma automatica
+				try( ResultSet rsKeys = pst.getGeneratedKeys() ){					
+					if ( rsKeys.next()) {
+						pojo.setId( rsKeys.getInt(1));
+						resultado = true;
+					}	
+				}
 			}
 
 		}

@@ -109,6 +109,9 @@ public class VideoController extends HttpServlet {
 	private void nuevo(HttpServletRequest request, HttpServletResponse response) {
 
 		request.setAttribute("video", new Video());
+		request.setAttribute("usuarios", usuarioDAO.getAll() );
+		request.setAttribute("categorias", categoriaDAO.getAll() );
+		
 		view = VIEW_FORM;
 	}
 
@@ -148,7 +151,8 @@ public class VideoController extends HttpServlet {
 			try {
 
 				if (v.getId() == -1) {
-					videoDAO.crear(v);
+					videoDAO.crear(v, idUsuario, idCategoria );
+					idVideo = v.getId();
 				} else {
 					videoDAO.modificar(v, idUsuario, idCategoria );
 				}
