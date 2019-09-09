@@ -107,6 +107,8 @@ public class VideoController extends HttpServlet {
 
 	private void nuevo(HttpServletRequest request, HttpServletResponse response) {
 
+		request.setAttribute("categorias", categoriaDAO.getAll());
+		request.setAttribute("usuarios", usuarioDAO.getAll());
 		request.setAttribute("video", new Video());
 		view = VIEW_FORM;
 	}

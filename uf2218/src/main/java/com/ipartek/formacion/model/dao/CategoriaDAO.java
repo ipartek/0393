@@ -30,7 +30,7 @@ public class CategoriaDAO {
 	public ArrayList<Categoria> getAll() {
 
 		ArrayList<Categoria> lista = new ArrayList<Categoria>();
-		String sql = "SELECT `id`, `nombre` FROM `Categoria` ORDER BY `id` ASC LIMIT 500";
+		String sql = "SELECT `id`, `nombre` FROM `Categoria` ORDER BY `nombre` ASC LIMIT 500";
 
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement pst = con.prepareStatement(sql);

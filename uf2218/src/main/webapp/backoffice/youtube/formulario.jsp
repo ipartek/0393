@@ -1,5 +1,7 @@
 <%@page import="com.ipartek.formacion.controller.backoffice.VideoController"%>
 
+
+
 <%@include file="../../includes/header.jsp"%>
 <%@include file="../../includes/navbar.jsp"%>
 
@@ -47,8 +49,7 @@
 					<label for="idUsuario">Usuarios:</label>
 					<select name="idUsuario" class="form-control">
 						<c:forEach items="${usuarios}" var="u">
-	
-							<option value="${u.id}" ${(u.id==video.usuario.id)?"selected":""}>${u.nombre}</option>
+							<option value="${u.id}" ${((u.id == video.usuario.id) || ( (video.id==-1) && (u.nombre eq sessionScope.usuario.nombre) ))?"selected":""}>${u.nombre}</option>
 						</c:forEach>
 					</select>
 				</div>	
