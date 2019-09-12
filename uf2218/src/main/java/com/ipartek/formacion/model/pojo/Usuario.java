@@ -1,16 +1,24 @@
 package com.ipartek.formacion.model.pojo;
 
 public class Usuario {
-	
+
 	private int id;
 	private String nombre;
 	private String contrasena;
-	
+
+	private String fechaCreacion;
+	private String fechaEliminacion; // TODO la BD devuelve String?
+
+	private Rol rol;
+
 	public Usuario() {
 		super();
 		this.id = -1;
 		this.nombre = "";
 		this.contrasena = "";
+		this.rol = new Rol();
+		this.fechaCreacion = "";
+		this.fechaCreacion = "";
 	}
 
 	public int getId() {
@@ -37,11 +45,34 @@ public class Usuario {
 		this.contrasena = contrasena;
 	}
 
+	public String getFechaCreacion() {
+		return fechaCreacion;
+	}
+
+	public void setFechaCreacion(String fechaCreacion) {
+		this.fechaCreacion = fechaCreacion;
+	}
+
+	public String getFechaEliminacion() {
+		return fechaEliminacion;
+	}
+
+	public void setFechaEliminacion(String fechaEliminacion) {
+		this.fechaEliminacion = fechaEliminacion;
+	}
+
+	public Rol getRol() {
+		return rol;
+	}
+
+	public void setRol(Rol rol) {
+		this.rol = rol;
+	}
+
 	@Override
 	public String toString() {
-		return "Usuario [id=" + id + ", nombre=" + nombre + ", contrasena=" + contrasena + "]";
+		return "Usuario [id=" + id + ", nombre=" + nombre + ", contrasena=" + contrasena + ", rol=" + rol
+				+ ", fechaCreacion=" + fechaCreacion + ", fechaEliminacion=" + fechaEliminacion + "]";
 	}
-	
-	
 
 }

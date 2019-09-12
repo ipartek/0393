@@ -14,17 +14,23 @@ public class UsuarioDAO {
 
 	private static UsuarioDAO INSTANCE = null;
 
-	private static final String SQL_GET_ALL = "SELECT `id`, `nombre`, `contrasena` FROM `usuario` ORDER BY `id` LIMIT 500;";
+	private static final String SQL_GET_ALL = "SELECT `id`, `nombre`, `contrasena`, `id_rol`, `fecha_creacion`, `fecha_eliminacion` FROM `usuario` ORDER BY `id` LIMIT 500;";
+
+	private static final String SQL_GET_ALL_ACTIVOS = "SELECT `id`, `nombre`, `contrasena`, `id_rol`, `fecha_creacion`, `fecha_eliminacion` FROM `usuario` WHERE fecha_eliminacion IS NULL ORDER BY `id` LIMIT 500;";
+
+	private static final String SQL_GET_ALL_ELIMINADOS = "SELECT `id`, `nombre`, `contrasena`, `id_rol`, `fecha_creacion`, `fecha_eliminacion` FROM `usuario` WHERE fecha_eliminacion IS NOT NULL ORDER BY `id` LIMIT 500;";
 
 	private static final String SQL_GET_ALL_NAME = "SELECT id, nombre, contrasena FROM usuario WHERE nombre LIKE ? ORDER BY nombre ASC LIMIT 500;";
 
+	private static final String SQL_GET_BY_ID = "SELECT `id`, `nombre`, `contrasena`, `id_rol`, `fecha_creacion`, `fecha_eliminacion` FROM usuario WHERE id = ? ;";
+
 	private static final String SQL_NEW_USER = "INSERT INTO usuario (nombre, contrasena) VALUES (?,?);";
 
-	private static final String SQL_DELETE = "DELETE FROM usuario WHERE id = ?;";
+	private static final String SQL_DELETE = "UPDATE usuario SET fecha_eliminacion = CURRENT_TIMESTAMP() WHERE id = ?; ";
+
+	// "DELETE FROM usuario WHERE id = ?;"; YA no se usara
 
 	private static final String SQL_UPDATE = "UPDATE usuario SET nombre = ?, contrasena = ? WHERE id = ?; ";
-
-	// TODO usar constante para getById
 
 	private UsuarioDAO() {
 		super();
@@ -92,11 +98,36 @@ public class UsuarioDAO {
 		return lista;
 	}
 
+	public ArrayList<Usuario> getAllVisible(boolean isVisible) {
+
+		ArrayList<Usuario> lista = new ArrayList<Usuario>();
+
+		String sql = SQL_GET_ALL_ELIMINADOS;
+
+		if (isVisible) {
+			sql = SQL_GET_ALL_ACTIVOS;
+		}
+
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(sql);
+				ResultSet rs = pst.executeQuery()) {
+
+			while (rs.next()) {
+
+				lista.add(mapper(rs));
+			}
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}
+		return lista;
+	}
+
 	public Usuario getById(int id) {
 		Usuario usuario = new Usuario();
-		String sql = "SELECT `id`, `nombre`, `contrasena`  FROM usuario WHERE id = ? ;";
 
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_GET_BY_ID)) {
 
 			// sustituyo la 1º ? por la variable id
 			pst.setInt(1, id);
@@ -140,7 +171,7 @@ public class UsuarioDAO {
 
 	}
 
-	public Usuario create(Usuario usuario) { 
+	public Usuario create(Usuario usuario) {
 
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement pst = con.prepareStatement(SQL_NEW_USER, Statement.RETURN_GENERATED_KEYS)) {
@@ -217,7 +248,25 @@ public class UsuarioDAO {
 		u.setId(rs.getInt("id"));
 		u.setNombre(rs.getString("nombre"));
 		u.setContrasena(rs.getString("contrasena"));
+
+		/*
+		 * Rol r = new Rol(); r.setId(rs.getInt("rol_id"));
+		 */
+
+		// u.setRol(rs.getS);
+
+		// TODO mirar meter rol
+		u.setFechaCreacion(rs.getString("fecha_creacion"));
+		u.setFechaEliminacion(rs.getString("fecha_eliminacion"));
 		return u;
 	}
+
+	// TODO Los usuarios eliminados no pueden loguearse
+
+	// TODO Detalle usuario, rol (poder cambiarlo), fecha_creacion,
+	// fecha-eliminacion
+
+	// TODO Al "eliminar" usuario, no debe hacer delete, si no ponerle una
+	// fecha_eliminacion
 
 }

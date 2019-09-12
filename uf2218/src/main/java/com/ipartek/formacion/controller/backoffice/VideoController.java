@@ -41,6 +41,8 @@ public class VideoController extends HttpServlet {
 	public static final String OP_NUEVO = "4";
 	public static final String OP_ELIMINAR = "hfd3";
 	public static final String OP_DETALLE = "13";
+	public static final String OP_VIDEOS_VISIBLES = "15";
+	public static final String OP_VIDEOS_NO_VISIBLES = "16";
 
 	private static VideoDAO videoDAO;
 	private static UsuarioDAO usuarioDAO;
@@ -83,7 +85,9 @@ public class VideoController extends HttpServlet {
 			op = OP_LISTAR;
 		}
 
+		// TODO sacar listado videos publicados y videos eliminados
 		switch (op) {
+
 		case OP_DETALLE:
 			detalle(request, response);
 			break;
@@ -200,7 +204,8 @@ public class VideoController extends HttpServlet {
 
 	private void listar(HttpServletRequest request, HttpServletResponse response) {
 
-		request.setAttribute("videos", videoDAO.getAll());
+		request.setAttribute("videosVisibles", videoDAO.getAllVisible(true));
+		request.setAttribute("videosNoVisibles", videoDAO.getAllVisible(false));
 		view = VIEW_INDEX;
 
 	}

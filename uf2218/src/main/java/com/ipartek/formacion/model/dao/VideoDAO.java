@@ -18,8 +18,20 @@ public class VideoDAO {
 
 	private static final String SQL_GET_ALL = "SELECT v.id as 'video_id'," + " v.nombre as 'video_nombre',"
 			+ " codigo, u.id as 'usuario_id'," + " u.nombre as 'usuario_nombre'," + " c.id as 'categoria_id',"
-			+ " c.nombre as 'categoria_nombre'" + " FROM video as v, usuario as u, categoria as c"
+			+ " c.nombre as 'categoria_nombre', u.fecha_eliminacion as 'usuario_eliminacion', u.fecha_creacion as 'usuario_creacion' FROM video as v, usuario as u, categoria as c"
 			+ " WHERE v.usuario_id = u.id" + " AND c.id = v.categoria_id" + " ORDER BY v.id DESC LIMIT 500;";
+
+	private static final String SQL_GET_ALL_VIDEOS_NO_VISIBLES = "SELECT \n" + "v.id as 'video_id',\n"
+			+ " v.nombre as 'video_nombre',\n" + " codigo, u.id as 'usuario_id',\n" + " u.nombre as 'usuario_nombre',\n"
+			+ " u.fecha_eliminacion as 'usuario_eliminacion', u.fecha_creacion as 'usuario_creacion', c.id as 'categoria_id',\n"
+			+ " c.nombre as 'categoria_nombre'\n" + " FROM video as v, usuario as u, categoria as c \n"
+			+ " WHERE v.usuario_id = u.id AND c.id = v.categoria_id AND u.fecha_eliminacion IS NOT NULL ORDER BY v.id DESC LIMIT 500;";
+
+	private static final String SQL_GET_ALL_VIDEOS_VISIBLES = "SELECT \n" + "v.id as 'video_id',\n"
+			+ " v.nombre as 'video_nombre',\n" + " codigo, u.id as 'usuario_id',\n" + " u.nombre as 'usuario_nombre',\n"
+			+ " u.fecha_eliminacion as 'usuario_eliminacion', u.fecha_creacion as 'usuario_creacion', c.id as 'categoria_id',\n"
+			+ " c.nombre as 'categoria_nombre'\n" + " FROM video as v, usuario as u, categoria as c \n"
+			+ " WHERE v.usuario_id = u.id AND c.id = v.categoria_id AND u.fecha_eliminacion IS NULL ORDER BY v.id DESC LIMIT 500;";
 
 	private static final String SQL_GET_BY_ID = "SELECT v.id as video_id," + " v.nombre as video_nombre," + " codigo,"
 			+ " u.id as usuario_id," + "u.nombre as usuario_nombre," + "c.id as categoria_id,"
@@ -49,6 +61,46 @@ public class VideoDAO {
 
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement pst = con.prepareStatement(SQL_GET_ALL);
+				ResultSet rs = pst.executeQuery()) {
+
+			while (rs.next()) {
+				/*
+				 * Video v = new Video(); v.setId( rs.getInt("id") ); v.setNombre(
+				 * rs.getString("nombre")); v.setCodigo( rs.getString("codigo"));
+				 */
+				lista.add(mapper(rs));
+			}
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+		return lista;
+	}
+
+	/**
+	 * Devuelve los videos dependiendo si son videos de usuarios activos o
+	 * eliminados Para saber si un usuario esta eliminado debe tener
+	 * fecha_eliminacion en la BD Si son usuarios activos su fecha_eliminacion es
+	 * null
+	 * 
+	 * @param visible true - > su fecha eliminacion es null / false -> su
+	 *                fecha_eliminacion no es null
+	 * @return ArrayList<video>
+	 */
+	public ArrayList<Video> getAllVisible(boolean visible) {
+
+		ArrayList<Video> lista = new ArrayList<Video>();
+
+		String sql = "";
+
+		if (visible) {
+			sql = SQL_GET_ALL_VIDEOS_VISIBLES;
+		} else {
+			sql = SQL_GET_ALL_VIDEOS_NO_VISIBLES;
+		}
+
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(sql);
 				ResultSet rs = pst.executeQuery()) {
 
 			while (rs.next()) {
@@ -209,6 +261,8 @@ public class VideoDAO {
 		Usuario u = new Usuario();
 		u.setId(rs.getInt("usuario_id"));
 		u.setNombre(rs.getString("usuario_nombre"));
+		u.setFechaCreacion(rs.getString("usuario_creacion"));
+		u.setFechaEliminacion(rs.getString("usuario_eliminacion"));
 
 		Categoria c = new Categoria();
 		c.setId(rs.getInt("categoria_id"));

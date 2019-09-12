@@ -32,7 +32,30 @@
 					<label for="codigo">Password:</label>
 					<input type="password" name="contrasena" value="${usuarioEditar.contrasena}"					      
 						   class="form-control">
+				</div>
+				
+				<div class="form-group">
+					<label for="categoria">Rol:</label>
+					<select class="form-control" name="idCategoria">
+						<option value="-1">Elige un rol...</option>
+						<c:forEach items="${roles }" var="rol">
+							<option value="${roles.id }" ${(rol.id == usuarioEditar.rol.id)?"selected":"" }>${categoria.nombre }</option>
+						</c:forEach>
+					
+					</select>
 				</div>	
+				
+				<div class="form-group">
+					<label for="codigo">Fecha Creación:</label>
+					<input type="password" name="contrasena" value="${usuarioEditar.fechaCreacion}"					      
+						   class="form-control">
+				</div>
+				
+				<div class="form-group">
+					<label for="codigo">Fecha Eliminación:</label>
+					<input type="password" name="contrasena" value="${usuarioEditar.fechaEliminacion}"					      
+						   class="form-control">
+				</div>
 			
 				<input type="submit" value="${(usuarioEditar.id != -1)?'Modificar':'Crear'}" class="btn btn-outline-primary  btn-block">
 			

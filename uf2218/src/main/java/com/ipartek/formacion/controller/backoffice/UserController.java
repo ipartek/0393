@@ -14,6 +14,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 
 import com.ipartek.formacion.controller.pojo.Alert;
+import com.ipartek.formacion.model.dao.RolDAO;
 import com.ipartek.formacion.model.dao.UsuarioDAO;
 import com.ipartek.formacion.model.pojo.Usuario;
 
@@ -35,8 +36,11 @@ public class UserController extends HttpServlet {
 	public static final String OP_NUEVO = "4";
 	public static final String OP_ELIMINAR = "hfd3";
 	public static final String OP_DETALLE = "13";
+	public static final String OP_USUARIOS_VISIBLES = "15";
+	public static final String OP_USUARIOS_NO_VISIBLES = "16";
 
 	private static final UsuarioDAO usuarioDAO = UsuarioDAO.getInstance();
+	private static final RolDAO rolDAO = RolDAO.getInstance();
 
 	private Validator validator;
 
@@ -92,12 +96,27 @@ public class UserController extends HttpServlet {
 			nuevo(request, response);
 			break;
 
+		case OP_USUARIOS_VISIBLES:
+			listarVisibles(request, response, true);
+			break;
+
+		case OP_USUARIOS_NO_VISIBLES:
+			listarVisibles(request, response, false);
+			break;
+
 		default:
 			listar(request, response);
 			break;
 		}
 
 		request.getRequestDispatcher(view).forward(request, response);
+	}
+
+	private void listarVisibles(HttpServletRequest request, HttpServletResponse response, boolean isVisible) {
+
+		request.setAttribute("usuarios", usuarioDAO.getAllVisible(isVisible));
+		view = VIEW_INDEX;
+
 	}
 
 	private void nuevo(HttpServletRequest request, HttpServletResponse response) {
@@ -185,6 +204,8 @@ public class UserController extends HttpServlet {
 
 		Usuario u = usuarioDAO.getById(id);
 		request.setAttribute("usuarioEditar", u);
+
+		request.setAttribute("roles", rolDAO.getAll());
 		view = VIEW_FORM;
 
 	}
