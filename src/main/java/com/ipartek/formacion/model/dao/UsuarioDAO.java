@@ -13,14 +13,17 @@ import com.ipartek.formacion.model.pojo.Usuario;
 public class UsuarioDAO {
 	private static UsuarioDAO INSTANCE = null;
 
-	private static final String SQL_EXISTE = "SELECT id, nombre, contrasenya " + " FROM usuario "
-			+ " WHERE nombre = ? AND contrasenya = ? ;";
-	private static final String SQL_GET_ALL = "SELECT id, nombre, contrasenya FROM usuario ORDER BY id ASC LIMIT 500;";
-	private static final String SQL_GET_BY_ID = "SELECT id, nombre, contrasenya FROM usuario WHERE id = ?;";
+	private static final String SQL_EXISTE = "SELECT id, nombre, contrasenya, id_rol, fecha_creacion, fecha_eliminacion"
+			+ " FROM usuario " + " WHERE nombre = ? AND contrasenya = ? ;";
+	private static final String SQL_GET_ALL = "SELECT id, nombre, contrasenya, id_rol, fecha_creacion, fecha_eliminacion FROM usuario ORDER BY id ASC LIMIT 500;";
+	private static final String SQL_GET_ALL_VISIBLE = "SELECT id, nombre, contrasenya, id_rol, fecha_creacion, fecha_eliminacion FROM usuario WHERE fecha_eliminacion IS NULL ORDER BY id ASC LIMIT 500;";
+	private static final String SQL_GET_ALL_NOT_VISIBLE = "SELECT id, nombre, contrasenya, id_rol, fecha_creacion, fecha_eliminacion FROM usuario WHERE fecha_eliminacion IS NOT NULL ORDER BY id ASC LIMIT 500;";
+	private static final String SQL_GET_BY_ID = "SELECT id, nombre, contrasenya, id_rol, fecha_creacion, fecha_eliminacion FROM usuario WHERE id = ?;";
 	private static final String SQL_UPDATE = "UPDATE usuario SET nombre = ?, contrasenya = ? WHERE  id = ?;";
 	private static final String SQL_DELETE = "DELETE FROM usuario WHERE id = ?;";
 	private static final String SQL_INSERT = "INSERT INTO usuario (nombre, contrasenya) VALUES (?,?);";
-	private static final String SQL_GET_BY_NAME = "SELECT id,nombre,contrasenya FROM usuario WHERE nombre LIKE ? ORDER BY id ASC LIMIT 500;";
+	private static final String SQL_GET_BY_NAME = "SELECT id, nombre, contrasenya, id_rol, fecha_creacion, fecha_eliminacion FROM usuario WHERE nombre LIKE ? ORDER BY id ASC LIMIT 500;";
+	private static String sql = "";
 
 	private UsuarioDAO() {
 		super();
@@ -60,6 +63,9 @@ public class UsuarioDAO {
 					usuario.setId(rs.getInt("id"));
 					usuario.setNombre(rs.getString("nombre"));
 					usuario.setContrasenya(rs.getString("contrasenya"));
+					usuario.setRol(rs.getInt("id_rol"));
+					usuario.setFecha_creacion(rs.getDate("fecha_creacion"));
+					usuario.setFecha_eliminacion(rs.getDate("fecha_eliminacion"));
 				}
 			}
 
@@ -73,6 +79,29 @@ public class UsuarioDAO {
 		ArrayList<Usuario> lista = new ArrayList<Usuario>();
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement pst = con.prepareStatement(SQL_GET_ALL);
+				ResultSet rs = pst.executeQuery()) {
+
+			while (rs.next()) {
+				lista.add(mapper(rs));
+			}
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+		return lista;
+	}
+
+	public ArrayList<Usuario> getAllVisible(Boolean isVisible) {
+
+		ArrayList<Usuario> lista = new ArrayList<Usuario>();
+
+		if (isVisible) {
+			sql = SQL_GET_ALL_VISIBLE;
+		} else {
+			sql = SQL_GET_ALL_NOT_VISIBLE;
+		}
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(sql);
 				ResultSet rs = pst.executeQuery()) {
 
 			while (rs.next()) {
@@ -188,6 +217,9 @@ public class UsuarioDAO {
 		usuario.setId(rs.getInt("id"));
 		usuario.setNombre(rs.getString("nombre"));
 		usuario.setContrasenya(rs.getString("contrasenya"));
+		usuario.setRol(rs.getInt("id_rol"));
+		usuario.setFecha_creacion(rs.getDate("fecha_creacion"));
+		usuario.setFecha_eliminacion(rs.getDate("fecha_eliminacion"));
 		return usuario;
 	}
 }

@@ -53,7 +53,10 @@ public class BackofficeController extends HttpServlet {
 			throws ServletException, IOException {
 		// llamar DAO de videos y DAO de users para saber cuantos hay de cada
 		request.setAttribute("numeroVideos", youtubeDAO.getAll().size());
-		request.setAttribute("numeroUsuarios", usuarioDAO.getAll().size());
+
+		// request.setAttribute("numeroUsuarios", usuarioDAO.getAll().size());
+		request.setAttribute("numeroUsuariosV", usuarioDAO.getAllVisible(true).size());
+		request.setAttribute("numeroUsuariosE", usuarioDAO.getAllVisible(false).size());
 
 		// request interna
 		request.getRequestDispatcher("/backoffice/index.jsp").forward(request, response);

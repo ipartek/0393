@@ -126,7 +126,10 @@ public class UsuarioController extends HttpServlet {
 	}
 
 	private void listar(HttpServletRequest request, HttpServletResponse response) {
-		request.setAttribute("usuarios", usuarioDAO.getAll());
+		Boolean isVisible = Boolean.parseBoolean(request.getParameter("isVisible"));
+
+		// request.setAttribute("usuarios", usuarioDAO.getAll());
+		request.setAttribute("usuarios", usuarioDAO.getAllVisible(isVisible));
 		view = VIEW_INDEX;
 	}
 
