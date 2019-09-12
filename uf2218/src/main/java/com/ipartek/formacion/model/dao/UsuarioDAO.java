@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import com.ipartek.formacion.model.ConnectionManager;
@@ -13,173 +14,89 @@ public class UsuarioDAO {
 
 	private static UsuarioDAO INSTANCE = null;
 
-	private static final String SQL_GET_ALL = "SELECT idusuario,nombre,contra FROM usuario ORDER BY id DESC LIMIT 500;";
-	private static final String SQL_GET_BY_ID = "SELECT idusuario,nombre,contra FROM usuario WHERE id = ?;";
+	private static final String SQL_GET_ALL = "SELECT idusuario,nombre,contra FROM usuario ORDER BY idusuario DESC LIMIT 500;";
+	private static final String SQL_GET_BY_ID = "SELECT idusuario,nombre,contra FROM usuario WHERE idusuario = ?;";
 	private static final String SQL_GET_ALL_BY_NOMBRE = "SELECT idusuario,nombre,contra FROM usuario WHERE nombre LIKE ? ORDER BY nombre ASC LIMIT 500;";
 	private static final String SQL_INSERT = "INSERT INTO usuario ( nombre, contra) VALUES ( ? , ?);";
-	private static final String SQL_UPDATE = "UPDATE usuario SET nombre= ?, contra= ? WHERE id = ?;";
-	private static final String SQL_DELETE = "DELETE FROM usuario WHERE id = ?;";
+	private static final String SQL_UPDATE = "UPDATE usuario SET nombre= ?, contra= ? WHERE idusuario = ?;";
+	private static final String SQL_DELETE = "DELETE FROM usuario WHERE idusuario = ?;";
 
 	private UsuarioDAO() {
 		super();
 	}
 
-	public static synchronized UsuarioDAO getInstance() { // syncronized para que varias ejecuciones no se ejecuten a la
-															// vez
+	public static synchronized UsuarioDAO getInstance() {
 
 		if (INSTANCE == null) {
 			INSTANCE = new UsuarioDAO();
-
 		}
+
 		return INSTANCE;
+
 	}
 
-	public ArrayList<Usuario> getAll() {
-
-		ArrayList<Usuario> listaUsuarios = new ArrayList<Usuario>();
-		String sql = "SELECT `idusuario`, `nombre`, `contra` FROM `usuario`";
-
-		try (Connection con = ConnectionManager.getConnection();
-				PreparedStatement pst = con.prepareStatement(sql);
-				ResultSet rs = pst.executeQuery()) {
-
-			while (rs.next()) {
-				/*
-				 * Video v = new Video(); v.setId( rs.getInt("id") ); v.setNombre(
-				 * rs.getString("nombre")); v.setCodigo( rs.getString("codigo"));
-				 */
-				listaUsuarios.add(mapper(rs));
-			}
-		} catch (Exception e) {
-
-			e.printStackTrace();
-		}
-		return listaUsuarios;
-	}
-
-	// metodo para comprobar si un usuario existe
-	public Usuario existe(String nombre, String contra) {
+	/**
+	 * Compruab si existe el usuario en la base datos, lo busca por su nombre y
+	 * conetrsenya
+	 * 
+	 * @param nombre
+	 * @param contrasenya
+	 * @return Usuario con datos si existe, null en caso de no existir
+	 */
+	public Usuario existe(String nombre, String contrasenya) {
 
 		Usuario usuario = null;
 
-		String sql = "SELECT idusuario, nombre, contra " + " FROM videos_manuel.usuario "
-				+ " where nombre = ? and contra = ?";
+		String sql = " SELECT idusuario, nombre, contra " + " FROM usuario "
+				+ " WHERE nombre = ? AND contra = ? AND fecha_eliminacion IS NULL ;";
 
 		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
-			// sustituir ? por parámetros
+
+			// sustituir ? por parametros
 			pst.setString(1, nombre);
-			pst.setString(2, contra);
+			pst.setString(2, contrasenya);
 
-			// ejecutar sql y obtener resultado
-
+			// ejecutar sentencia SQL y obtener Resultado
 			try (ResultSet rs = pst.executeQuery()) {
-				if (rs.next()) {
 
+				if (rs.next()) {
 					usuario = new Usuario();
-					usuario.setId(rs.getInt("id"));
+					usuario.setId(rs.getInt("idusuario"));
 					usuario.setNombre(rs.getString("nombre"));
 					usuario.setContra(rs.getString("contra"));
 				}
 			}
-		}
 
-		catch (Exception e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+
 		return usuario;
 	}
 
-	public Usuario getById(int id) {
-		Usuario resul = new Usuario();
+	public ArrayList<Usuario> getAll() {
+
+		ArrayList<Usuario> lista = new ArrayList<Usuario>();
 
 		try (Connection con = ConnectionManager.getConnection();
-				PreparedStatement pst = con.prepareStatement(SQL_GET_BY_ID)) {
+				PreparedStatement pst = con.prepareStatement(SQL_GET_ALL);
+				ResultSet rs = pst.executeQuery()) {
 
-			pst.setInt(1, id);
+			while (rs.next()) {
+				/*
+				 * Usuario u = new Usuario(); u.setId(rs.getInt("id"));
+				 * u.setNombre(rs.getString("nombre"));
+				 * u.setContrasenya(rs.getString("contrasenya")); lista.add(u);
+				 */
+				lista.add(mapper(rs));
 
-			try (ResultSet rs = pst.executeQuery()) {
-				if (rs.next()) {
-					resul = mapper(rs);
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return resul;
-	}
-
-	public boolean crear(Usuario pojo) throws Exception {
-		boolean resultado = false;
-		String sql = "INSERT INTO usuario (nombre, contra) VALUES (?,?);";
-
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
-
-			pst.setString(1, pojo.getNombre());
-			pst.setString(2, pojo.getContra());
-
-			int affectedRows = pst.executeUpdate();
-			if (affectedRows == 1) {
-				resultado = true;
 			}
 
-		}
-
-		return resultado;
-	}
-
-	public boolean modificar(Usuario pojo) throws Exception {
-		boolean resultado = false;
-
-		String sql = "UPDATE usuario SET nombre = ?, contra = ? WHERE  id = ?;";
-
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
-
-			pst.setString(1, pojo.getNombre());
-			pst.setString(2, pojo.getContra());
-			pst.setInt(3, pojo.getId());
-
-			int affectedRows = pst.executeUpdate();
-			if (affectedRows == 1) {
-				resultado = true;
-			}
-
-		}
-		return resultado;
-	}
-
-	public boolean delete(int id) {
-		boolean resultado = false;
-		String sql = "DELETE FROM usuario WHERE id = ?;";
-
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
-
-			pst.setInt(1, id);
-
-			int affetedRows = pst.executeUpdate();
-			if (affetedRows == 1) {
-				resultado = true;
-			}
-
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
-		return resultado;
-	}
-
-	/**
-	 * Convierte un resultado de la BD a un POJO
-	 * 
-	 * @param rs
-	 * @return
-	 * @throws SQLException
-	 */
-	public Usuario mapper(ResultSet rs) throws SQLException {
-		Usuario us = new Usuario();
-		us.setId(rs.getInt("id"));
-		us.setNombre(rs.getString("nombre"));
-		us.setContra(rs.getString("contra"));
-		return us;
+		return lista;
 	}
 
 	public ArrayList<Usuario> getAllByNombre(String nombre) {
@@ -203,4 +120,94 @@ public class UsuarioDAO {
 
 		return lista;
 	}
+
+	public Usuario getById(int id) {
+		Usuario resul = new Usuario();
+
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_GET_BY_ID)) {
+
+			pst.setInt(1, id);
+
+			try (ResultSet rs = pst.executeQuery()) {
+				if (rs.next()) {
+					resul = mapper(rs);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return resul;
+	}
+
+	public boolean delete(int id) {
+		boolean resultado = false;
+
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_DELETE);) {
+
+			pst.setInt(1, id);
+
+			int affetedRows = pst.executeUpdate();
+			if (affetedRows == 1) {
+				resultado = true;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return resultado;
+	}
+
+	public boolean modificar(Usuario pojo) throws Exception {
+		boolean resultado = false;
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_UPDATE)) {
+
+			pst.setString(1, pojo.getNombre());
+			pst.setString(2, pojo.getContra());
+			pst.setInt(3, pojo.getId());
+
+			int affectedRows = pst.executeUpdate();
+			if (affectedRows == 1) {
+				resultado = true;
+			}
+
+		}
+		return resultado;
+	}
+
+	public Usuario crear(Usuario pojo) throws Exception {
+
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS)) {
+
+			pst.setString(1, pojo.getNombre());
+			pst.setString(2, pojo.getContra());
+
+			int affectedRows = pst.executeUpdate();
+			if (affectedRows == 1) {
+				// conseguimos el ID que acabamos de crear
+				ResultSet rs = pst.getGeneratedKeys();
+				if (rs.next()) {
+					pojo.setId(rs.getInt(1));
+				}
+
+			}
+
+		}
+
+		return pojo;
+	}
+
+	private Usuario mapper(ResultSet rs) throws SQLException {
+		Usuario u = new Usuario();
+		u.setId(rs.getInt("idusuario"));
+		u.setNombre(rs.getString("nombre"));
+		u.setContra(rs.getString("contra"));
+
+		return u;
+	}
+
 }

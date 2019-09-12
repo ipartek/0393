@@ -28,9 +28,29 @@
 				
 				<div class="form-group">
 					<label for="codigo">Contraseña:</label>
-					<input type="text" name="codigo" value="${usuarioEditar.contra}"
+					<input type="text" name="contra" value="${usuarioEditar.contra}"
 					       placeholder="Exactamente 11" 
 						   class="form-control">
+				</div>	
+								<div class="form-group">
+					<label for="codigo">Fecha creación:</label>
+					<input type="text" name="fecha_creacion" value="${usuarioEditar.fecha_creacion}"
+					       placeholder="Exactamente 11" 
+						   class="form-control">
+				</div>	
+								<div class="form-group">
+					<label for="codigo">Fecha eliminación:</label>
+					<input type="text" name="fecha_eliminacion" value="${usuarioEditar.fecha_eliminacion}"
+					       placeholder="Exactamente 11" 
+						   class="form-control">
+				</div>	
+				<div class="form-group">
+					<label for="categoria_id">Rol:</label>
+					<select name="rol_id" id="rol_id">
+					  <c:forEach items="${roles}" var="r">				  
+					  	<option value="${r.id}" ${(r.id == video.rol.id)?"selected":"" }> ${r.nombre}</option>
+					  </c:forEach>				  
+					</select>
 				</div>	
 			
 				<input type="submit" value="${(usuarioEditar.id != -1)?'Modificar':'Crear'}" class="btn btn-outline-primary  btn-block">

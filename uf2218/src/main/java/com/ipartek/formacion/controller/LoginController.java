@@ -18,16 +18,10 @@ import com.ipartek.formacion.model.pojo.Usuario;
  */
 @WebServlet("/login")
 public class LoginController extends HttpServlet {
+
 	private static final long serialVersionUID = 1L;
-	private static UsuarioDAO usuarioDAO;
 
-	@Override
-	public void init() throws ServletException {
-		// TODO Auto-generated method stub
-		super.init();
-		usuarioDAO = UsuarioDAO.getInstance();
-
-	}
+	private static UsuarioDAO usuarioDAO = UsuarioDAO.getInstance();
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
@@ -45,10 +39,10 @@ public class LoginController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		String usuarioNombre = request.getParameter("nombre");
-		String usuarioContra = request.getParameter("contra");
+		String nombre = request.getParameter("nombre");
+		String contrasenya = request.getParameter("contra");
 
-		Usuario usuario = usuarioDAO.existe(usuarioNombre, usuarioContra);
+		Usuario usuario = usuarioDAO.existe(nombre, contrasenya);
 
 		if (usuario != null) {
 
@@ -57,13 +51,16 @@ public class LoginController extends HttpServlet {
 
 			session.setAttribute("usuario", usuario);
 
-			request.setAttribute("mensaje", new Alert("success", "Ongi Etorri " + usuarioNombre));
+			request.setAttribute("mensaje", new Alert("success", "Ongi Etorri " + usuario.getNombre()));
 
 			String callback = (String) session.getAttribute("callback");
 
 			if (callback == null) {
 
+				// redireccion para cambiar la url de "/login" a "/backoffice/inicio"
+
 				response.sendRedirect("backoffice/inicio");
+
 			} else {
 				session.removeAttribute("callback");
 				response.sendRedirect(callback);
