@@ -101,6 +101,37 @@ public class UsuarioDAO {
 		return lista;
 	}
 	
+	public ArrayList<Usuario> getAllVisible(boolean isVisible) {
+
+		ArrayList<Usuario> lista = new ArrayList<Usuario>();
+		
+		String sql = SQL_GET_ALL_VISIBLE;
+		
+		if (!isVisible) {
+			sql = SQL_GET_ALL_INVISIBLE;
+		}
+
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(sql);
+				ResultSet rs = pst.executeQuery()) {
+
+			while (rs.next()) {
+				/*
+				 * Usuario u = new Usuario(); u.setId(rs.getInt("id"));
+				 * u.setNombre(rs.getString("nombre"));
+				 * u.setcontrasena(rs.getString("contrasena")); lista.add(u);
+				 */
+				lista.add(mapper(rs));
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return lista;
+	}
+	
 	
 	
 	
@@ -213,7 +244,7 @@ public class UsuarioDAO {
 		u.setNombre(rs.getString("nombre"));
 		u.setContrasena(rs.getString("contrasena"));
 		u.setRol(rs.getInt("id_rol"));
-		u.setFecha_eliminacion(rs.getDate("fecha_eliminacion"));
+		//u.setFecha_eliminacion(rs.getDate("fecha_eliminacion"));
 		return u;
 	}
 

@@ -49,9 +49,11 @@ public class BackofficeController extends HttpServlet {
 			throws ServletException, IOException {
 
 		ArrayList<Video> listaVideos = videoDAO.getAll();
-		ArrayList<Usuario> listaUsuarios = usuarioDAO.getAll();
+		ArrayList<Usuario> listaUsuariosVisible = usuarioDAO.getAllVisible(true);
+		ArrayList<Usuario> listaUsuariosEliminados = usuarioDAO.getAllVisible(false);
 
-		request.setAttribute("totalUsuarios", listaUsuarios.size());
+		request.setAttribute("totalUsuariosVisibles", listaUsuariosVisible.size());
+		request.setAttribute("totalUsuariosEliminados", listaUsuariosEliminados.size());
 		request.setAttribute("totalVideos", listaVideos.size());
 
 		// request interna

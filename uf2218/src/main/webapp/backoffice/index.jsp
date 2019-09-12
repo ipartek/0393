@@ -11,18 +11,18 @@
 	<div class="row d-flex justify-content-between text-info">
 	
 		<div class="col-3 bg-dark text-center p-2">
-			<a href="backoffice/usuarios"><i class="fas fa-users fa-10x"></i></a>
-			<h2>${ totalUsuarios } Usuarios</h2>
-		</div>
-		<div class="col-3 bg-dark text-center p-2">
 			<a href="backoffice/videos"><i class="fab fa-youtube fa-10x"></i></a>
 			<h2>${ totalVideos } Vídeos</h2>
-			
-		</div>		
+		</div>
+		
 		<div class="col-3 bg-dark text-center p-2">
-			<a href="backoffice/videos"><i class="fas fa-times-circle fa-10x"></i></a>
-			<h2>Próximamente</h2>
-			
+			<a href="backoffice/usuarios?activo=1"><i class="fas fa-users fa-10x"></i></a>
+			<h2>${ totalUsuariosVisibles } Usuarios Activos</h2>
+		</div>
+		
+		<div class="col-3 bg-dark text-center p-2">
+			<a href="backoffice/usuarios?activo=0"><i class="fas fa-users fa-10x"></i></a>
+			<h2>${ totalUsuariosEliminados } Usuarios Desactivados</h2>
 		</div>
 	</div>
 

@@ -62,6 +62,7 @@ public class UsuarioController extends HttpServlet {
 	protected void doProcess (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String op = request.getParameter("op");
+		
 		if ( op == null ) {
 			op = OP_LISTAR;	
 		}
@@ -109,7 +110,17 @@ public class UsuarioController extends HttpServlet {
 	}
 
 	private void listar(HttpServletRequest request, HttpServletResponse response) {
-		ArrayList<Usuario> listaUsuarios = usuarioDAO.getAll();
+		ArrayList<Usuario> listaUsuarios = new ArrayList<Usuario>();
+		
+		String activo = request.getParameter("activo");
+		
+		if ("1".equals(activo)) {
+			listaUsuarios = usuarioDAO.getAllVisible(true);
+		}else if ("0".equals(activo)) {
+			listaUsuarios = usuarioDAO.getAllVisible(false);
+		}else {
+			listaUsuarios = usuarioDAO.getAll();
+		}	
 		
 		request.setAttribute("listaUsuarios", listaUsuarios);
 		
