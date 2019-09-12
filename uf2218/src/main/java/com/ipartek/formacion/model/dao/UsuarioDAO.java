@@ -13,6 +13,8 @@ import com.ipartek.formacion.model.pojo.Usuario;
 public class UsuarioDAO {
 
 	private static UsuarioDAO INSTANCE = null;
+	private static String SQL_VER_USUARIOS_VISIBLES = "SELECT id, nombre, contrasenya FROM usuario WHERE fecha_eliminacion is null  ORDER BY id ASC LIMIT 500";
+	private static String SQL_VER_USUARIOS_NO_VISIBLES = "SELECT id, nombre, contrasenya FROM usuario WHERE fecha_eliminacion is not null  ORDER BY id ASC LIMIT 500";
 
 	private UsuarioDAO() {
 		super();
@@ -40,7 +42,9 @@ public class UsuarioDAO {
 
 		Usuario usuario = null;
 
-		String sql = " SELECT id, nombre, contrasenya " + " FROM usuario " + " WHERE nombre = ? AND contrasenya = ? ;";
+		// String sql = " SELECT id, nombre, contrasenya " + " FROM usuario " + " WHERE
+		// nombre = ? AND contrasenya = ? ;";
+		String sql = "SELECT u.id, u.nombre, u.contrasenya, r.id AS 'rol' FROM usuario AS u, rol AS r WHERE u.id_rol=r.id AND u.nombre = ? AND u.contrasenya = ? ;";
 
 		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 
@@ -56,6 +60,7 @@ public class UsuarioDAO {
 					usuario.setId(rs.getInt("id"));
 					usuario.setNombre(rs.getString("nombre"));
 					usuario.setContrasenya(rs.getString("contrasenya"));
+					usuario.setRol(rs.getInt("rol"));
 				}
 			}
 
@@ -64,6 +69,30 @@ public class UsuarioDAO {
 		}
 
 		return usuario;
+	}
+
+	public ArrayList<Usuario> getAllVisible(boolean isVisible) {
+
+		ArrayList<Usuario> lista = new ArrayList<Usuario>();
+
+		String sql = SQL_VER_USUARIOS_VISIBLES;
+		if (!isVisible) {
+			sql = SQL_VER_USUARIOS_NO_VISIBLES;
+		}
+
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(sql);
+				ResultSet rs = pst.executeQuery()) {
+
+			while (rs.next()) {
+
+				lista.add(mapper(rs));
+			}
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+		return lista;
 	}
 
 	public ArrayList<Usuario> getAll() {

@@ -7,9 +7,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.ipartek.formacion.model.dao.UsuarioDAO;
 import com.ipartek.formacion.model.dao.VideoDAO;
+import com.ipartek.formacion.model.pojo.Usuario;
 
 /**
  * Servlet implementation class BackOfficeController
@@ -44,8 +46,16 @@ public class BackOfficeController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		request.setAttribute("numeroVideos", videoDAO.getAll().size());
-		request.setAttribute("numeroUsuarios", usuarioDAO.getAll().size());
+		HttpSession session = request.getSession();
+		Usuario usuario = (Usuario) session.getAttribute("usuario");
+
+		if (usuario.getRol() == 1) {
+			request.setAttribute("numeroVideosNoVisibles", videoDAO.getAllVisible(false).size());
+			request.setAttribute("usuariosNoVisibles", usuarioDAO.getAllVisible(false).size());
+		}
+
+		request.setAttribute("numeroVideos", videoDAO.getAllVisible(true).size());
+		request.setAttribute("numeroUsuarios", usuarioDAO.getAllVisible(true).size());
 
 		request.getRequestDispatcher("index.jsp").forward(request, response);
 

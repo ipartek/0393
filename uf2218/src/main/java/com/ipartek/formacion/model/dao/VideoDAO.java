@@ -16,6 +16,8 @@ public class VideoDAO {
 	private static VideoDAO INSTANCE = null;
 	private static final String SQL_GET_ALL = "SELECT v.id as 'video_id', v.nombre as 'video_nombre', c.id as 'categoria_id', c.nombre as 'categoria_nombre', codigo, u.id as 'usuario_id', u.nombre as 'usuario_nombre'FROM video as v, usuario as u, categoria as c WHERE u.id=v.usuario_id AND v.categoria_id=c.id ORDER BY v.id DESC LIMIT 500";
 	private static final String SQL_GET_BY_ID = "SELECT v.id as 'video_id', v.nombre as 'video_nombre', c.id as 'categoria_id', c.nombre as 'categoria_nombre', codigo, u.id as 'usuario_id', u.nombre as 'usuario_nombre'FROM video as v, usuario as u, categoria as c WHERE u.id=v.usuario_id AND v.categoria_id=c.id AND v.id= ? ORDER BY v.id DESC LIMIT 500";
+	private static final String SQL_GET_ALL_VISIBLE = "SELECT v.id as 'video_id', v.nombre as 'video_nombre', c.id as 'categoria_id', c.nombre as 'categoria_nombre', codigo, u.id as 'usuario_id', u.nombre as 'usuario_nombre'FROM video as v, usuario as u, categoria as c WHERE u.id=v.usuario_id AND v.categoria_id=c.id AND u.fecha_eliminacion is null ORDER BY v.id DESC LIMIT 500";
+	private static final String SQL_GET_ALL_INVISIBLE = "SELECT v.id as 'video_id', v.nombre as 'video_nombre', c.id as 'categoria_id', c.nombre as 'categoria_nombre', codigo, u.id as 'usuario_id', u.nombre as 'usuario_nombre'FROM video as v, usuario as u, categoria as c WHERE u.id=v.usuario_id AND v.categoria_id=c.id AND u.fecha_eliminacion is not null ORDER BY v.id DESC LIMIT 500";
 
 	private VideoDAO() {
 		super();
@@ -36,6 +38,43 @@ public class VideoDAO {
 
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement pst = con.prepareStatement(SQL_GET_ALL);
+				ResultSet rs = pst.executeQuery()) {
+
+			while (rs.next()) {
+				/*
+				 * Video v = new Video(); v.setId( rs.getInt("id") ); v.setNombre(
+				 * rs.getString("nombre")); v.setCodigo( rs.getString("codigo"));
+				 */
+				lista.add(mapper(rs));
+			}
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+		return lista;
+	}
+
+	/**
+	 * public ArrayList<Video> getAllVisible(boolean isVisible)
+	 * 
+	 * @param isVisible - true devuelve todos los videos de los usuarios que no
+	 *                  estan eliminados, false los de los eliminador¡s
+	 * @return lista de videos disponibles según el parámetro
+	 */
+
+	public ArrayList<Video> getAllVisible(boolean isVisible) {
+
+		ArrayList<Video> lista = new ArrayList<Video>();
+
+		String SQL;
+		if (isVisible) {
+			SQL = SQL_GET_ALL_VISIBLE;
+		} else {
+			SQL = SQL_GET_ALL_INVISIBLE;
+		}
+
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL);
 				ResultSet rs = pst.executeQuery()) {
 
 			while (rs.next()) {
