@@ -26,7 +26,7 @@ public class UsuarioDAO {
 
 	/**
 	 * Comprueba si existe el usuario en la base de datos, lo busca por su nombre y
-	 * su contraseña
+	 * su contraseña y comprueba que no este eliminado (fecha_eliminacion IS NULL)
 	 * 
 	 * @param nombre
 	 * @param contrasenya
@@ -37,7 +37,7 @@ public class UsuarioDAO {
 
 		Usuario usuario = null;
 
-		String sql = "SELECT * FROM usuario WHERE nombre = ? AND contrasenya = ?;";
+		String sql = "SELECT * FROM usuario WHERE nombre = ? AND contrasenya = ? AND fecha_eliminacion IS NULL;";
 
 		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 
@@ -52,6 +52,9 @@ public class UsuarioDAO {
 					usuario.setId(rs.getInt("id"));
 					usuario.setNombre(rs.getString("nombre"));
 					usuario.setContrasenya(rs.getString("contrasenya"));
+					usuario.setIdRol(rs.getInt("id_rol"));
+					usuario.setfCreacion(rs.getString("fecha_creacion"));
+					usuario.setfBaja(rs.getString("fecha_eliminacion"));
 				}
 			}
 
@@ -65,7 +68,35 @@ public class UsuarioDAO {
 	public ArrayList<Usuario> getAll() {
 
 		ArrayList<Usuario> lista = new ArrayList<Usuario>();
-		String sql = "SELECT `id`, `nombre`, `contrasenya` FROM `usuario` ORDER BY `id` DESC LIMIT 500";
+		String sql = "SELECT * FROM usuario ORDER BY id DESC LIMIT 500";
+
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(sql);
+				ResultSet rs = pst.executeQuery()) {
+
+			while (rs.next()) {
+				lista.add(mapper(rs));
+			}
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+		return lista;
+	}
+
+	/**
+	 * Metodo que devuelve la lista de usuarios activos y usuarios elimiandos
+	 * 
+	 * @param isVisible boolean que determina si se obtienen los usuarios activos o
+	 *                  los usuarios eliminados
+	 * 
+	 * @return lista de usuarios activos o eliminados
+	 */
+
+	public ArrayList<Usuario> getAllVisible(boolean isVisible) {
+
+		ArrayList<Usuario> lista = new ArrayList<Usuario>();
+		String sql = "SELECT * FROM usuario ORDER BY id DESC LIMIT 500";
 
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement pst = con.prepareStatement(sql);
@@ -83,12 +114,13 @@ public class UsuarioDAO {
 
 	public boolean crear(Usuario pojo) throws SQLException {
 		boolean resultado = false;
-		String sql = "INSERT INTO usuario (nombre, contrasenya) VALUES (?,?);";
+		String sql = "INSERT INTO usuario (nombre, contrasenya, id_rol) VALUES (?,?,?);";
 
 		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
 
 			pst.setString(1, pojo.getNombre());
 			pst.setString(2, pojo.getContrasenya());
+			pst.setInt(3, pojo.getIdRol());
 
 			int affectedRows = pst.executeUpdate();
 			if (affectedRows == 1) {
@@ -140,13 +172,16 @@ public class UsuarioDAO {
 	public boolean modificar(Usuario pojo) throws SQLException {
 		boolean resultado = false;
 
-		String sql = "UPDATE usuario SET nombre = ?, contrasenya = ? WHERE id = ?;";
+		String sql = "UPDATE usuario SET nombre = ?, contrasenya = ?, id_rol = ?, fecha_creacion = ?, fecha_eliminacion = ? WHERE id = ?;";
 
 		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
 
 			pst.setString(1, pojo.getNombre());
 			pst.setString(2, pojo.getContrasenya());
-			pst.setInt(3, pojo.getId());
+			pst.setString(3, pojo.getContrasenya());
+			pst.setString(4, pojo.getContrasenya());
+			pst.setString(5, pojo.getContrasenya());
+			pst.setInt(6, pojo.getId());
 
 			int affectedRows = pst.executeUpdate();
 			if (affectedRows == 1) {
@@ -159,7 +194,7 @@ public class UsuarioDAO {
 
 	public boolean delete(int id) {
 		boolean resultado = false;
-		String sql = "DELETE FROM usuario WHERE id = ?;";
+		String sql = "UPDATE usuario SET fecha_eliminacion = CURRENT_TIMESTAMP WHERE id = ?;";
 
 		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 
@@ -181,6 +216,9 @@ public class UsuarioDAO {
 		u.setId(rs.getInt("id"));
 		u.setNombre(rs.getString("nombre"));
 		u.setContrasenya(rs.getString("contrasenya"));
+		u.setIdRol(rs.getInt("id_rol"));
+		u.setfCreacion(rs.getString("fecha_creacion"));
+		u.setfBaja(rs.getString("fecha_eliminacion"));
 		return u;
 	}
 }

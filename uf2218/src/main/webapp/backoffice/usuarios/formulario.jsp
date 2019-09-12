@@ -12,23 +12,35 @@
 		<div class="col-4">
 			<form action="backoffice/usuarios" method="post" class="mb-2">
 				<input type="hidden" name="op" value="<%=UsuarioController.OP_GUARDAR%>">
-			
 				<div class="form-group">
 					<label for="id">Id:</label>
 					<input type="text" name="id" value="${usuario.id}" readonly class="form-control">
 				</div>
-			
 				<div class="form-group">
 					<label for="nombre">Nombre:</label>
 					<input type="text" name="nombre" value="${usuario.nombre}" placeholder="Mínimio 3 máximo 150" class="form-control">
 				</div>
-			
 				<div class="form-group">
 					<label for="contrasenya">Contraseña:</label>
 					<input type="text" name="contrasenya" value="${usuario.contrasenya}" class="form-control">
 				</div>
+				<label for="categoria">Rol: </label>
+				<select class="custom-select mb-3" name="categoria" id="categoria">
+					<option value="-1">Elige un rol...</option>
+					<c:forEach items="${roles}" var="r">
+						<option value="${r.id}" ${(r.id == video.usuario.idRol)?"selected":""}>${r.nombre}</option>
+					</c:forEach>
+				</select>
+				<div class="form-group">
+					<label for="fCreacion">Fecha creación del Usuario:</label>
+					<input type="text" name="fCreacion" value="${usuario.fCreacion}" readonly class="form-control">
+				</div>
+				<div class="form-group">
+					<label for="fBaja">Fecha baja del Usuario:</label>
+					<input type="text" name="fBaja" value="${usuario.fBaja}" readonly class="form-control">
+				</div>
 			
-				<input type="submit" value="${(usuario.id != -1)?'Modificar':'Crear'}" class="btn btn-outline-primary  btn-block">
+				<input type="submit" value="${(usuario.id != -1)?'Modificar':'Crear'}" class="btn btn-outline-primary btn-block">
 			
 			</form>
 			<c:if test="${usuario.id != -1}"> <!-- Boton eliminar con confirmación -->

@@ -132,14 +132,16 @@ public class UsuarioController extends HttpServlet {
 
 	private void guardar(HttpServletRequest request, HttpServletResponse response) {
 
-		String sid = request.getParameter("id");
+		String id = request.getParameter("id");
 		String nombre = request.getParameter("nombre");
 		String contrasenya = request.getParameter("contrasenya");
+		String idRol = request.getParameter("rol");
 
 		Usuario u = new Usuario();
-		u.setId(Integer.parseInt(sid));
+		u.setId(Integer.parseInt(id));
 		u.setNombre(nombre);
 		u.setContrasenya(contrasenya);
+		u.setIdRol(Integer.parseInt(idRol));
 
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(u);
 		if (violations.isEmpty()) {
