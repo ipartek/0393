@@ -61,7 +61,7 @@
 		%>
 		<tr>
 			<td class="align-middle"><span class=""><%=user.getId()%></span></td>
-			<td class="align-middle"><span class=""><%=user.getNombre()%></span></td>
+			<td class="align-middle"><a href="backoffice/usuario?op=<%=UsuarioController.OP_DETALLE%>&id=<%=user.getId()%>"><span class=""><%=user.getNombre()%></span></a></td>
 			<!-- 
 			<td class="align-middle"><span
 					class=""><%=user.getContrasenya()%></span></td>

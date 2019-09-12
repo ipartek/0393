@@ -71,7 +71,6 @@
 				 		<option value="${c.id}" ${(c.id==video.categoria.id)?'selected':''}>${c.nombre}</option>
 				 	</c:forEach>
 				</select>
-	   
 			 </div>
 		    
 			<div class="form-group row">

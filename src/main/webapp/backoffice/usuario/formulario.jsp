@@ -35,7 +35,7 @@
    			
    			<div class="form-group">
    			 	<label for="inputId" class="col-sm-3 col-form-label col-form-label-lg">Id</label>
-   				<input type="text" readonly="" class="form-control" name="id" id="id" placeholder="" value="${usuario.id}">
+   				<input type="text" readonly class="form-control" name="id" id="id" placeholder="" value="${usuario.id}">
   			</div>
    			
 			<div class="form-group">
@@ -47,6 +47,27 @@
 			    <label for="inputCodigo" class="col-sm-3 col-form-label col-form-label-lg">Contraseña</label>
 			    <input type="password" class="form-control" name="contrasenya" id="inputTitulo" placeholder="" value="${usuario.contrasenya}">
 			 </div>
+			 
+			<div class="form-group">
+			    <label for="inputRol" class="col-sm-3 col-form-label col-form-label-lg">Rol</label>
+			    <select class="form-control" name="id_rol">
+  					<c:forEach items="${roles}" var="r">
+				 		<option value="${r.id}" >${r.nombre}</option>
+				 	</c:forEach>
+				</select>
+			 </div>
+			 
+			 <div class="form-group">
+			    <label for="inputFechaCreacion" class="col-sm-3 col-form-label col-form-label-lg">Fecha Creacion</label>
+			    <input type="text" readonly class="form-control" name="fechaCreacion" id="inputFechaCreacion" value="<fmt:formatDate value="${usuario.fecha_creacion}" pattern="dd-MM-yyyy HH:mm:ss"/>">
+			 </div>
+			 
+			 <div class="form-group">
+			   <label for="inputFechaEliminacion" class="col-sm-3 col-form-label col-form-label-lg">Fecha Eliminacion</label>
+			    <input type="text" readonly class="form-control" name="fechaEliminacion" id="inputFechaEliminacion" value="<fmt:formatDate value="${usuario.fecha_eliminacion}" pattern="dd-MM-yyyy HH:mm:ss"/>">
+			 </div>
+			 
+			 
 		    
 			<div class="form-group row">
 				<%

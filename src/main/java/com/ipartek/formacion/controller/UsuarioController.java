@@ -16,6 +16,7 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
 import com.ipartek.formacion.controller.pojo.Alert;
+import com.ipartek.formacion.model.dao.RolDAO;
 import com.ipartek.formacion.model.dao.UsuarioDAO;
 import com.ipartek.formacion.model.pojo.Usuario;
 
@@ -42,6 +43,7 @@ public class UsuarioController extends HttpServlet {
 	public static final String OP_EDITAR = "2";
 
 	private static UsuarioDAO usuarioDAO;
+	private static RolDAO rolDAO;
 	private static String op;
 
 	private static ArrayList<Usuario> Usuarios;
@@ -53,6 +55,7 @@ public class UsuarioController extends HttpServlet {
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		usuarioDAO = UsuarioDAO.getInstance();
+		rolDAO = RolDAO.getInstance();
 		factory = Validation.buildDefaultValidatorFactory();
 		validator = factory.getValidator();
 	}
@@ -140,6 +143,9 @@ public class UsuarioController extends HttpServlet {
 
 			Usuario u = usuarioDAO.getById(id);
 			request.setAttribute("usuario", u);
+
+			request.setAttribute("roles", rolDAO.getAll());
+
 			request.setAttribute("op", op);
 
 		} else {
