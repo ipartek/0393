@@ -4,9 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
-
-import javax.servlet.http.HttpSession;
 
 import com.ipartek.formacion.model.ConnectionManager;
 import com.ipartek.formacion.model.pojo.Categoria;
@@ -27,7 +26,7 @@ public class YoutubeDAO {
 			+ "FROM video AS v, usuario AS u, categoria AS c "
 			+ "WHERE v.usuario_id = u.id AND v.categoria_id = c.id AND v.id= ?";
 	private static final String SQL_UPDATE = "UPDATE video SET nombre= ?, codigo= ? , usuario_id= ? , categoria_id= ? WHERE id = ?;";
-	private static final String SQL_INSERT = "INSERT INTO video (nombre, codigo, usuario_id) VALUES (?,?,?);";
+	private static final String SQL_INSERT = "INSERT INTO video (nombre, codigo, usuario_id, categoria_id) VALUES (?,?,?,?);";
 	private static final String SQL_DELETE = "DELETE FROM video WHERE id = ?;";
 
 	private YoutubeDAO() {
@@ -102,9 +101,9 @@ public class YoutubeDAO {
 	 * (pojo.getId() == -1) { resultado = crear(pojo); } else { resultado =
 	 * modificar(pojo); } } return resultado; }
 	 */
-	public boolean modificar(Youtube pojo, HttpSession session, int usuarioId, int categoriaId) throws Exception {
+	public boolean modificar(Youtube pojo, int usuarioId, int categoriaId) throws Exception {
 		boolean resultado = false;
-		Usuario usuario = (Usuario) session.getAttribute("usuario");
+		// Usuario usuario = (Usuario) session.getAttribute("usuario");
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement pst = con.prepareStatement(SQL_UPDATE)) {
 
@@ -125,19 +124,27 @@ public class YoutubeDAO {
 		return resultado;
 	}
 
-	public boolean crear(Youtube pojo, HttpSession session) throws Exception {
+	public boolean crear(Youtube pojo, int usuarioId, int categoriaId) throws Exception {
 		boolean resultado = false;
-		Usuario usuario = (Usuario) session.getAttribute("usuario");
+		// Usuario usuario = (Usuario) session.getAttribute("usuario");
+		// Categoria categoria = (Categoria) session.getAttribute("categoria");
 
 		try (Connection con = ConnectionManager.getConnection();
-				PreparedStatement pst = con.prepareStatement(SQL_INSERT)) {
+				PreparedStatement pst = con.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS)) {
 			pst.setString(1, pojo.getNombre());
 			pst.setString(2, pojo.getCodigo());
-			pst.setInt(3, usuario.getId());
+			pst.setInt(3, usuarioId);
+			pst.setInt(4, categoriaId);
 
 			int affectedRows = pst.executeUpdate();
 			if (affectedRows == 1) {
-				resultado = true;
+				// conseguir id generado de forma automatica
+				try (ResultSet rsKeys = pst.getGeneratedKeys()) {
+					if (rsKeys.next()) {
+						pojo.setId(rsKeys.getInt(1));
+						resultado = true;
+					}
+				}
 			}
 
 		} catch (Exception e) {

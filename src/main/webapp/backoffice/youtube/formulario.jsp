@@ -52,7 +52,14 @@
 			    <label for="inputUsuario" class="col-sm-3 col-form-label col-form-label-lg">Usuario</label>		
 			    <select class="form-control" name="usuario_id">
 				 	<c:forEach items="${usuarios}" var="u">
-				 		<option value="${u.id}" ${(u.id==video.usuario.id)?'selected':''}>${u.nombre}</option>
+				 	<!-- Modificar video -->
+				 		<c:if test="${video.id !=-1 }">
+				 			<option value="${u.id}" ${(u.id==video.usuario.id)?'selected':''}>${u.nombre}</option>
+				 		</c:if>
+				 	<!-- crear video, te deja seleccionado el usuario de session -->
+				 		<c:if test="${video.id == -1 }">
+				 			<option value="${u.id}" ${(u.id==sessionScope.usuario.id)?'selected':''}>${u.nombre}</option>
+				 		</c:if>
 				 	</c:forEach>
 			 	</select>
 			 </div>

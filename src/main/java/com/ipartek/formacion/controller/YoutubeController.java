@@ -153,6 +153,10 @@ public class YoutubeController extends HttpServlet {
 
 		} else {
 			request.setAttribute("video", new Youtube());
+
+			request.setAttribute("usuarios", usuarioDAO.getAll());
+			request.setAttribute("categorias", categoriaDAO.getAll());
+
 			request.setAttribute("op", op);
 		}
 
@@ -177,14 +181,15 @@ public class YoutubeController extends HttpServlet {
 	}
 
 	private void guardar(HttpServletRequest request, HttpServletResponse response) {
-		String sid = request.getParameter("id");
+
 		String nombre = request.getParameter("nombre");
 		String codigo = request.getParameter("codigo");
 		int idUsuario = Integer.parseInt(request.getParameter("usuario_id"));
 		int idCategoria = Integer.parseInt(request.getParameter("categoria_id"));
+		int idVideo = Integer.parseInt(request.getParameter("id"));
 
 		Youtube v = new Youtube();
-		v.setId(Integer.parseInt(sid));
+		v.setId(idVideo);
 		v.setNombre(nombre);
 		v.setCodigo(codigo);
 
@@ -196,11 +201,12 @@ public class YoutubeController extends HttpServlet {
 			HttpSession session = request.getSession();
 			try {
 				if (v.getId() == -1) {
-					youtubeDAO.crear(v, session);
+					youtubeDAO.crear(v, idUsuario, idCategoria);
+					idVideo = v.getId();
 					listar(request, response);
 					request.setAttribute("mensaje", new Alert("success", "Registro creado con exito"));
 				} else {
-					youtubeDAO.modificar(v, session, idUsuario, idCategoria);
+					youtubeDAO.modificar(v, idUsuario, idCategoria);
 					listar(request, response);
 					request.setAttribute("mensaje", new Alert("success", "Registro modificado con exito"));
 				}
@@ -222,8 +228,9 @@ public class YoutubeController extends HttpServlet {
 			}
 			request.setAttribute("mensaje", new Alert("warning", mensaje));
 		}
-		request.setAttribute("video", v);
-
+		request.setAttribute("video", youtubeDAO.getById(v.getId()));
+		request.setAttribute("usuarios", usuarioDAO.getAll());
+		request.setAttribute("categorias", categoriaDAO.getAll());
 		view = VIEW_INDEX;
 	}
 }
