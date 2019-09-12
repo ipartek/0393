@@ -8,17 +8,27 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import com.ipartek.formacion.model.ConnectionManager;
+import com.ipartek.formacion.model.pojo.Rol;
 import com.ipartek.formacion.model.pojo.Usuario;
 
 public class UsuarioDAO {
 
 	private static UsuarioDAO INSTANCE = null;
 
-	private static final String SQL_GET_ALL = "SELECT `id`, `nombre`, `contrasena`, `id_rol`, `fecha_creacion`, `fecha_eliminacion` FROM `usuario` ORDER BY `id` LIMIT 500;";
+	private static final String SQL_GET_ALL = "SELECT `u.id`, `u.nombre`, `u.contrasena`, `r.id` as rol_id, r.nombre as rol_nombre, `fecha_creacion`, `fecha_eliminacion`"
+			+ " FROM `usuario` as u, rol as r" + " WHERE u.rol_id = r.id AND  ORDER BY `id` LIMIT 500;";
 
-	private static final String SQL_GET_ALL_ACTIVOS = "SELECT `id`, `nombre`, `contrasena`, `id_rol`, `fecha_creacion`, `fecha_eliminacion` FROM `usuario` WHERE fecha_eliminacion IS NULL ORDER BY `id` LIMIT 500;";
+	private static final String SQL_GET_ALL_ACTIVOS = "SELECT `u.id`, `u.nombre`, `u.contrasena`, `r.id` as rol_id, r.nombre as rol_nombre, `fecha_creacion`, `fecha_eliminacion`"
+			+ " FROM `usuario` as u, rol as r"
+			+ " WHERE u.rol_id = r.id AND fecha_eliminacion IS NULL  ORDER BY `id` LIMIT 500;";
 
-	private static final String SQL_GET_ALL_ELIMINADOS = "SELECT `id`, `nombre`, `contrasena`, `id_rol`, `fecha_creacion`, `fecha_eliminacion` FROM `usuario` WHERE fecha_eliminacion IS NOT NULL ORDER BY `id` LIMIT 500;";
+	// "SELECT `id`, `nombre`, `contrasena`, `id_rol`, `fecha_creacion`,
+	// `fecha_eliminacion` FROM `usuario` WHERE fecha_eliminacion IS NULL ORDER BY
+	// `id` LIMIT 500;";
+
+	private static final String SQL_GET_ALL_ELIMINADOS = "SELECT `u.id`, `u.nombre`, `u.contrasena`, `r.id` as rol_id, r.nombre as rol_nombre, `fecha_creacion`, `fecha_eliminacion`"
+			+ " FROM `usuario` as u, rol as r"
+			+ " WHERE u.rol_id = r.id AND fecha_eliminacion IS NOT NULL  ORDER BY `id` LIMIT 500;";
 
 	private static final String SQL_GET_ALL_NAME = "SELECT id, nombre, contrasena FROM usuario WHERE nombre LIKE ? ORDER BY nombre ASC LIMIT 500;";
 
@@ -249,11 +259,11 @@ public class UsuarioDAO {
 		u.setNombre(rs.getString("nombre"));
 		u.setContrasena(rs.getString("contrasena"));
 
-		/*
-		 * Rol r = new Rol(); r.setId(rs.getInt("rol_id"));
-		 */
+		Rol r = new Rol();
+		r.setId(rs.getInt("rol_id"));
+		r.setNombre(rs.getString("rol_nombre"));
 
-		// u.setRol(rs.getS);
+		u.setRol(r);
 
 		// TODO mirar meter rol
 		u.setFechaCreacion(rs.getString("fecha_creacion"));
