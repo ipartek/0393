@@ -14,8 +14,10 @@ public class UsuarioDAO {
 
 	private static UsuarioDAO INSTANCE = null;
 
-	private static final String SQL_GET_ALL = "SELECT id,nombre,contrasena FROM usuario ORDER BY id DESC LIMIT 500;";
-	private static final String SQL_GET_BY_ID = "SELECT id,nombre,contrasena FROM usuario WHERE id = ?;";
+	private static final String SQL_GET_ALL = "SELECT id,nombre,contrasena,fecha_creacion, fecha_eliminacion, id_rol FROM usuario ORDER BY id DESC LIMIT 500;";
+	private static final String SQL_GET_ALL_VISIBLE = "SELECT id,nombre,contrasena, id_rol FROM usuario WHERE fecha_eliminacion is NULL ORDER BY id DESC LIMIT 500;";
+	private static final String SQL_GET_ALL_INVISIBLE = "SELECT id,nombre,contrasena, id_rol FROM usuario WHERE fecha_eliminacion is not NULL ORDER BY id DESC LIMIT 500;";
+	private static final String SQL_GET_BY_ID = "SELECT id,nombre,contrasena,fecha_creacion,fecha_eliminacion, id_rol FROM usuario WHERE id = ?;";
 	private static final String SQL_GET_ALL_BY_NOMBRE = "SELECT id,nombre,contrasena FROM usuario WHERE nombre LIKE ? ORDER BY nombre ASC LIMIT 500;";
 	private static final String SQL_INSERT = "INSERT INTO usuario ( nombre, contrasena) VALUES ( ? , ?);";
 	private static final String SQL_UPDATE = "UPDATE usuario SET nombre= ?, contrasena= ? WHERE id = ?;";
@@ -47,7 +49,7 @@ public class UsuarioDAO {
 
 		Usuario usuario = null;
 
-		String sql = " SELECT id, nombre, contrasena " + " FROM usuario " + " WHERE nombre = ? AND contrasena = ? ;";
+		String sql = " SELECT id, nombre, contrasena, id_rol " + " FROM usuario " + " WHERE nombre = ? AND contrasena = ? ;";
 
 		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 
@@ -63,6 +65,7 @@ public class UsuarioDAO {
 					usuario.setId(rs.getInt("id"));
 					usuario.setNombre(rs.getString("nombre"));
 					usuario.setContrasena(rs.getString("contrasena"));
+					usuario.setRol(rs.getInt("id_rol"));
 				}
 			}
 
@@ -97,6 +100,10 @@ public class UsuarioDAO {
 
 		return lista;
 	}
+	
+	
+	
+	
 
 	public ArrayList<Usuario> getAllByNombre(String nombre) {
 		ArrayList<Usuario> lista = new ArrayList<Usuario>();
@@ -205,6 +212,8 @@ public class UsuarioDAO {
 		u.setId(rs.getInt("id"));
 		u.setNombre(rs.getString("nombre"));
 		u.setContrasena(rs.getString("contrasena"));
+		u.setRol(rs.getInt("id_rol"));
+		u.setFecha_eliminacion(rs.getDate("fecha_eliminacion"));
 		return u;
 	}
 

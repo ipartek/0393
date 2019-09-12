@@ -52,6 +52,8 @@ public class LoginController extends HttpServlet {
 		
 		Usuario usuario = usuarioDAO.existe(nombre, contrasena);
 		
+		
+		
 		if ( usuario != null) {
 			
 			
@@ -60,6 +62,7 @@ public class LoginController extends HttpServlet {
 			
 			
 			session.setAttribute("usuario", usuario);
+			//session.setAttribute("rol", rol);
 			
 			request.setAttribute("mensaje", new Alert("success","Ongi Etorri " + usuario.getNombre() ) );
 			

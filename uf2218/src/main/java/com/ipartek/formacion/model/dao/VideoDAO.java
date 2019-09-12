@@ -27,6 +27,30 @@ public class VideoDAO {
 												" FROM video as v, usuario as u , categoria as c " + 
 												" WHERE v.id_usuario = u.id AND v.id_categoria = c.id " + 
 												" ORDER BY v.id DESC LIMIT 500;";
+	
+	private static final String SQL_GET_ALL_VISIBLE =   " SELECT " + 
+															" v.id as 'video_id', " + 
+															" v.nombre as 'video_nombre', " + 
+															" codigo, " + 
+															" u.id as 'usuario_id', " +
+															" u.nombre as 'usuario_nombre', " + 
+															" c.id as 'categoria_id', " + 
+															" c.nombre as 'categoria_nombre' " +													
+														" FROM video as v, usuario as u , categoria as c " + 
+														" WHERE v.id_usuario = u.id AND v.id_categoria = c.id AND u.fecha_eliminacion is NULL " + 
+														" ORDER BY v.id DESC LIMIT 500;";
+	
+	private static final String SQL_GET_ALL_INVISIBLE =   " SELECT " + 
+																" v.id as 'video_id', " + 
+																" v.nombre as 'video_nombre', " + 
+																" codigo, " + 
+																" u.id as 'usuario_id', " +
+																" u.nombre as 'usuario_nombre', " + 
+																" c.id as 'categoria_id', " + 
+																" c.nombre as 'categoria_nombre' " +													
+															" FROM video as v, usuario as u , categoria as c " + 
+															" WHERE v.id_usuario = u.id AND v.id_categoria = c.id AND u.fecha_eliminacion is not NULL " + 
+															" ORDER BY v.id DESC LIMIT 500;";
 
 	private static final String SQL_GET_BY_ID =   " SELECT " + 
 													" v.id as 'video_id', " + 
@@ -71,6 +95,37 @@ public class VideoDAO {
 
 			e.printStackTrace();
 		}
+		return lista;
+	}
+	
+	/**
+	 * Saca un listado de los videos publicados o eliminados según el parámetro de búsqueda
+	 * @param isVisible (boolean) TRUE si queremos los visibles, FALSE si queremos los invisibles.
+	 * @return
+	 */
+	public ArrayList<Video> getAllVisible(boolean isVisible) {
+
+		ArrayList<Video> lista = new ArrayList<Video>();
+		
+		String sql = SQL_GET_ALL_VISIBLE;
+		
+		if (isVisible) {
+			sql = SQL_GET_ALL_INVISIBLE;	
+		}
+		
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(sql);
+				ResultSet rs = pst.executeQuery()) {
+
+			while (rs.next()) {				
+				lista.add(mapper(rs));
+			}
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+		
+		
 		return lista;
 	}
 

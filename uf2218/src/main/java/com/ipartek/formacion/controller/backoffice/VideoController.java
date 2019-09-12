@@ -1,6 +1,7 @@
 package com.ipartek.formacion.controller.backoffice;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -19,6 +20,7 @@ import com.ipartek.formacion.controller.pojo.Alert;
 import com.ipartek.formacion.model.dao.CategoriaDAO;
 import com.ipartek.formacion.model.dao.UsuarioDAO;
 import com.ipartek.formacion.model.dao.VideoDAO;
+import com.ipartek.formacion.model.pojo.Usuario;
 import com.ipartek.formacion.model.pojo.Video;
 
 /**
@@ -179,8 +181,15 @@ public class VideoController extends HttpServlet {
 	}
 
 	private void listar(HttpServletRequest request, HttpServletResponse response) {
-
-		request.setAttribute("videos", videoDAO.getAll());
+		
+		HttpSession session = request.getSession();
+		Usuario usuario = (Usuario) session.getAttribute("usuario");
+		
+		if (usuario.getRol()==1) {
+			request.setAttribute("videosEliminados", videoDAO.getAllVisible(true));
+		}
+		
+		request.setAttribute("videosVisibles", videoDAO.getAllVisible(false));
 		view = VIEW_INDEX;
 
 	}
