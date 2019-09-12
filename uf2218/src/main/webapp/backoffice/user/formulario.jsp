@@ -30,7 +30,26 @@
 					<input type="password" name="contrasena" value="${usuarioEditar.contrasena}"
 					       placeholder="" 
 						   class="form-control">
-				</div>	
+				</div>
+				
+				<div class="form-group">
+    				<label for="id_rol">Rol:</label>
+    				<select class="form-control" name="id_rol" id="id_rol">
+    					<c:forEach items="${roles}" var="r">
+    						<option value="${r.id}" ${(r.id == usuario.rol.id)?"selected":"" }>${r.nombre}</option>
+    					</c:forEach>
+    				</select>
+  				</div>
+				
+				
+				<div class="form-group">	
+					<label for="fecha_creacion">Fecha de Creacion:</label>
+					<input type="text" name="fecha_creacion" value="<fmt:formatDate value="${usuarioEditar.fecha_creacion}" pattern="dd-MM-yyyy HH:mm:ss" />" readonly class="form-control">
+				</div>
+				<div class="form-group">	
+					<label for="fecha_eliminacion">Fecha de Eliminacion:</label>
+					<input type="text" name="fecha_eliminacion" value="<fmt:formatDate value="${usuarioEditar.fecha_eliminacion}" pattern="dd-MM-yyyy HH:mm:ss" />" readonly class="form-control">
+				</div>
 			
 				<input type="submit" value="${(usuarioEditar.id != -1)?'Modificar':'Crear'}" class="btn btn-outline-primary  btn-block">
 			

@@ -38,8 +38,34 @@ CREATE TABLE `categoria` (
 
 LOCK TABLES `categoria` WRITE;
 /*!40000 ALTER TABLE `categoria` DISABLE KEYS */;
-INSERT INTO `categoria` VALUES (2,'bromas'),(3,'caidas'),(1,'musica');
+INSERT INTO `categoria` VALUES (2,'bromas'),(1,'musica'),(3,'surf');
 /*!40000 ALTER TABLE `categoria` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+--
+-- Table structure for table `rol`
+--
+
+DROP TABLE IF EXISTS `rol`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `rol` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `nombre_UNIQUE` (`nombre`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='1: Administrador\n2: Usuario';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `rol`
+--
+
+LOCK TABLES `rol` WRITE;
+/*!40000 ALTER TABLE `rol` DISABLE KEYS */;
+INSERT INTO `rol` VALUES (1,'Adminstrador'),(2,'Usuario');
+/*!40000 ALTER TABLE `rol` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -53,9 +79,14 @@ CREATE TABLE `usuario` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) NOT NULL,
   `contrasena` varchar(45) NOT NULL,
+  `id_rol` int(11) NOT NULL DEFAULT '2' COMMENT 'por defecto es Usuario y no Administrador',
+  `fecha_creacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `fecha_eliminacion` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `nombre_UNIQUE` (`nombre`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+  UNIQUE KEY `nombre_UNIQUE` (`nombre`),
+  KEY `FK_usuario_rol_idx` (`id_rol`),
+  CONSTRAINT `FK_usuario_rol` FOREIGN KEY (`id_rol`) REFERENCES `rol` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -64,7 +95,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (1,'admin','admin'),(2,'pepe','pepe'),(3,'soso','soso');
+INSERT INTO `usuario` VALUES (1,'admin','admin',1,'2019-09-12 08:46:58',NULL),(2,'pepe','pepe',2,'2019-09-12 08:46:58',NULL),(3,'soso','soso',2,'2019-09-12 08:46:58',NULL),(4,'eliminado','123',2,'2019-09-11 08:46:58','2019-09-12 08:46:58');
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -87,7 +118,7 @@ CREATE TABLE `video` (
   KEY `fk_video_categoria1_idx` (`categoria_id`),
   CONSTRAINT `fk_video_categoria1` FOREIGN KEY (`categoria_id`) REFERENCES `categoria` (`id`),
   CONSTRAINT `fk_video_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -96,29 +127,9 @@ CREATE TABLE `video` (
 
 LOCK TABLES `video` WRITE;
 /*!40000 ALTER TABLE `video` DISABLE KEYS */;
-INSERT INTO `video` VALUES (1,'Su Ta Gar - Mari  Su Ta Gar 20 Urte','5oi2WTPAHcs',1,1),(2,'Clasicos del Rock','BWcmD_de99g',1,1),(3,'Red Hot Chili Peppers - Dark Necessities','Q0oIoR9mLwc',1,1),(4,'El Fary - Apatrullando La Ciudad','Y4Dn0daVEYA',3,1),(5,'The Black Eyed Peas - Where Is The Love? (Official Music Video)','WpYeekQkAdc',1,1),(6,'Bob Marley - redemption song','kOFu6b3w6c0',1,1),(7,'El Where','i_cVJgIz_Cs',1,1);
+INSERT INTO `video` VALUES (1,'Su Ta Gar - Mari  Su Ta Gar 20 Urte','5oi2WTPAHcs',1,1),(2,'Clasicos del Rock','BWcmD_de99g',1,1),(3,'Red Hot Chili Peppers - Dark Necessities','Q0oIoR9mLwc',1,1),(4,'El Fary - Apatrullando La Ciudad','Y4Dn0daVEYA',3,1),(5,'The Black Eyed Peas - Where Is The Love? (Official Music Video)','WpYeekQkAdc',1,1),(6,'Bob Marley - redemption song','kOFu6b3w6c0',1,1),(7,'El Where','i_cVJgIz_Cs',4,1),(9,'Travis - Idlewild ','WLKBOJ9jyQg',2,1),(10,'Travis - 3 Miles High','w45_dsXLHNg',2,1);
 /*!40000 ALTER TABLE `video` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Dumping events for database 'videos'
---
-
---
--- Dumping routines for database 'videos'
---
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
-
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2019-09-05  9:52:44
-
 
 --
 -- Table structure for table `likes`
@@ -149,3 +160,22 @@ INSERT INTO `likes` VALUES (1,4,'2019-09-05 09:44:19'),(2,3,'2019-09-05 09:44:19
 /*!40000 ALTER TABLE `likes` ENABLE KEYS */;
 UNLOCK TABLES;
 
+
+--
+-- Dumping events for database 'videos'
+--
+
+--
+-- Dumping routines for database 'videos'
+--
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2019-09-12  9:10:57

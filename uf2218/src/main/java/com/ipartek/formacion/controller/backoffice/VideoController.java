@@ -178,7 +178,8 @@ public class VideoController extends HttpServlet {
 
 	private void listar(HttpServletRequest request, HttpServletResponse response) {
 
-		request.setAttribute("videos", videoDAO.getAll());
+		request.setAttribute("videosVisibles", videoDAO.getAllVisible(true));
+		request.setAttribute("videosEliminados", videoDAO.getAllVisible(false));
 		view = VIEW_INDEX;
 
 	}

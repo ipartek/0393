@@ -45,11 +45,13 @@ public class BackofficeController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		int numeroUsuarios = usuarioDAO.getAll().size();
+		int numeroUsuariosReal = usuarioDAO.getAllVisible(true).size();
+		int numeroUsuariosDelete = usuarioDAO.getAllVisible(false).size();
 		int numeroVideos = videoDAO.getAll().size();
 
 		request.setAttribute("numeroVideos", numeroVideos);
-		request.setAttribute("numeroUsuarios", numeroUsuarios);
+		request.setAttribute("numeroUsuariosActivos", numeroUsuariosReal);
+		request.setAttribute("numeroUsuariosEliminados", numeroUsuariosDelete);
 		// request interna
 		request.getRequestDispatcher("index.jsp").forward(request, response);
 

@@ -14,6 +14,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 
 import com.ipartek.formacion.controller.pojo.Alert;
+import com.ipartek.formacion.model.dao.RolDAO;
 import com.ipartek.formacion.model.dao.UsuarioDAO;
 import com.ipartek.formacion.model.pojo.Usuario;
 
@@ -36,6 +37,7 @@ public class UsuarioController extends HttpServlet {
 	public static final String OP_BUSCAR = "5";
 
 	private static UsuarioDAO usuarioDAO;
+	private static RolDAO rolDAO;
 
 	private Validator validator;
 
@@ -43,6 +45,7 @@ public class UsuarioController extends HttpServlet {
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		usuarioDAO = UsuarioDAO.getInstance();
+		rolDAO = RolDAO.getInstance();
 		validator = Validation.buildDefaultValidatorFactory().getValidator();
 	}
 
@@ -130,6 +133,7 @@ public class UsuarioController extends HttpServlet {
 		String sid = request.getParameter("id");
 		String nombre = request.getParameter("nombre");
 		String contrasena = request.getParameter("contrasena");
+		int idRol = Integer.parseInt(request.getParameter("id_rol"));
 
 		Usuario u = new Usuario();
 		u.setId(Integer.parseInt(sid));
@@ -142,9 +146,9 @@ public class UsuarioController extends HttpServlet {
 			try {
 
 				if (u.getId() == -1) {
-					usuarioDAO.crear(u);
+					usuarioDAO.crear(u, idRol);
 				} else {
-					usuarioDAO.modificar(u);
+					usuarioDAO.modificar(u, idRol);
 				}
 				request.setAttribute("mensaje", new Alert("success", "Registro creado con exito"));
 
@@ -174,13 +178,15 @@ public class UsuarioController extends HttpServlet {
 
 		Usuario u = usuarioDAO.getById(id);
 		request.setAttribute("usuarioEditar", u);
+		request.setAttribute("roles", rolDAO.getAll());
 		view = VIEW_FORM;
 
 	}
 
 	private void listar(HttpServletRequest request, HttpServletResponse response) {
-
-		request.setAttribute("usuarios", usuarioDAO.getAll());
+		
+		Boolean visible = Boolean.parseBoolean(request.getParameter("visible"));
+		request.setAttribute("usuarios", usuarioDAO.getAllVisible(visible));
 		view = VIEW_INDEX;
 
 	}
