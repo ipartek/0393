@@ -123,7 +123,9 @@ public class YoutubeController extends HttpServlet {
 	}
 
 	private void listar(HttpServletRequest request, HttpServletResponse response) {
-		request.setAttribute("videos", youtubeDAO.getAll());
+		// request.setAttribute("videos", youtubeDAO.getAll());
+		request.setAttribute("videosVisibles", youtubeDAO.getAllVisible(true));
+		request.setAttribute("videosEliminados", youtubeDAO.getAllVisible(false));
 		view = VIEW_INDEX;
 	}
 

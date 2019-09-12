@@ -21,6 +21,18 @@ public class YoutubeDAO {
 			+ "FROM video AS v, usuario AS u, categoria AS c "
 			+ "WHERE v.usuario_id = u.id AND v.categoria_id = c.id ORDER BY v.id DESC LIMIT 500";
 
+	private static final String SQL_GET_ALL_VISIBLE = "SELECT v.id AS 'video_id', v.nombre AS 'video_nombre', codigo, u.id AS 'usuario_id', "
+			+ "u.nombre AS 'usuario_nombre',c.id AS 'categoria_id', c.nombre AS 'categoria_nombre' "
+			+ "FROM video AS v, usuario AS u, categoria AS c "
+			+ "WHERE v.usuario_id = u.id AND v.categoria_id = c.id AND u.fecha_eliminacion IS NULL "
+			+ "ORDER BY v.id DESC LIMIT 500";
+
+	private static final String SQL_GET_ALL_NOT_VISIBLE = "SELECT v.id AS 'video_id', v.nombre AS 'video_nombre', codigo, u.id AS 'usuario_id', "
+			+ "u.nombre AS 'usuario_nombre',c.id AS 'categoria_id', c.nombre AS 'categoria_nombre' "
+			+ "FROM video AS v, usuario AS u, categoria AS c "
+			+ "WHERE v.usuario_id = u.id AND v.categoria_id = c.id AND u.fecha_eliminacion IS NOT NULL "
+			+ "ORDER BY v.id DESC LIMIT 500";
+
 	private static final String SQL_GET_BY_ID = "SELECT v.id AS 'video_id', v.nombre AS 'video_nombre', codigo, u.id AS 'usuario_id', "
 			+ "u.nombre AS 'usuario_nombre',c.id AS 'categoria_id', c.nombre AS 'categoria_nombre' "
 			+ "FROM video AS v, usuario AS u, categoria AS c "
@@ -28,6 +40,7 @@ public class YoutubeDAO {
 	private static final String SQL_UPDATE = "UPDATE video SET nombre= ?, codigo= ? , usuario_id= ? , categoria_id= ? WHERE id = ?;";
 	private static final String SQL_INSERT = "INSERT INTO video (nombre, codigo, usuario_id, categoria_id) VALUES (?,?,?,?);";
 	private static final String SQL_DELETE = "DELETE FROM video WHERE id = ?;";
+	private static String sql = "";
 
 	private YoutubeDAO() {
 		super();
@@ -53,6 +66,38 @@ public class YoutubeDAO {
 				 * Youtube v = new Youtube(); v.setId( rs.getInt("id") ); v.setNombre(
 				 * rs.getString("nombre")); v.setCodigo( rs.getString("codigo"));
 				 */
+				lista.add(mapper(rs));
+			}
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+		return lista;
+	}
+
+	/**
+	 * Listado de videos visibles o no visibles <b>Visible</b> : Son los videos que
+	 * el usuario tenga fecha_eliminacion = null <b>no Visible</b> : Son los videos
+	 * que el usuario tenga fecha_eliminacion = not null
+	 * 
+	 * @param isVisible is true visibles, false los no visibles
+	 * @return
+	 */
+
+	public ArrayList<Youtube> getAllVisible(Boolean isVisible) {
+
+		ArrayList<Youtube> lista = new ArrayList<Youtube>();
+
+		if (isVisible) {
+			sql = SQL_GET_ALL_VISIBLE;
+		} else {
+			sql = SQL_GET_ALL_NOT_VISIBLE;
+		}
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(sql);
+				ResultSet rs = pst.executeQuery()) {
+
+			while (rs.next()) {
 				lista.add(mapper(rs));
 			}
 		} catch (Exception e) {
