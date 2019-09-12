@@ -15,32 +15,35 @@ public class UsuarioDAO {
 
 	private static UsuarioDAO INSTANCE = null;
 
-	private static final String SQL_GET_ALL = "SELECT `u.id`, `u.nombre`, `u.contrasena`, `r.id` as rol_id, r.nombre as rol_nombre, `fecha_creacion`, `fecha_eliminacion`"
-			+ " FROM `usuario` as u, rol as r" + " WHERE u.rol_id = r.id AND  ORDER BY `id` LIMIT 500;";
+	private static final String SQL_GET_ALL = "SELECT u.id, u.nombre, u.contrasena, u.rol as rol_id, r.nombre as rol_nombre, u.fecha_creacion, u.fecha_eliminacion"
+			+ " FROM usuario as u, rol as r"
+			+ " WHERE u.rol = r.id ORDER BY `id` LIMIT 500;";
 
-	private static final String SQL_GET_ALL_ACTIVOS = "SELECT `u.id`, `u.nombre`, `u.contrasena`, `r.id` as rol_id, r.nombre as rol_nombre, `fecha_creacion`, `fecha_eliminacion`"
-			+ " FROM `usuario` as u, rol as r"
-			+ " WHERE u.rol_id = r.id AND fecha_eliminacion IS NULL  ORDER BY `id` LIMIT 500;";
+	private static final String SQL_GET_ALL_ACTIVOS = "SELECT u.id, u.nombre, u.contrasena, u.rol as rol_id, r.nombre as rol_nombre, u.fecha_creacion, u.fecha_eliminacion"
+			+ " FROM usuario as u, rol as r"
+			+ " WHERE u.rol = r.id AND fecha_eliminacion IS NULL ORDER BY `id` LIMIT 500;";
 
-	// "SELECT `id`, `nombre`, `contrasena`, `id_rol`, `fecha_creacion`,
-	// `fecha_eliminacion` FROM `usuario` WHERE fecha_eliminacion IS NULL ORDER BY
-	// `id` LIMIT 500;";
 
-	private static final String SQL_GET_ALL_ELIMINADOS = "SELECT `u.id`, `u.nombre`, `u.contrasena`, `r.id` as rol_id, r.nombre as rol_nombre, `fecha_creacion`, `fecha_eliminacion`"
-			+ " FROM `usuario` as u, rol as r"
-			+ " WHERE u.rol_id = r.id AND fecha_eliminacion IS NOT NULL  ORDER BY `id` LIMIT 500;";
+	private static final String SQL_GET_ALL_ELIMINADOS = "SELECT u.id, u.nombre, u.contrasena, u.rol as rol_id, r.nombre as rol_nombre, u.fecha_creacion, u.fecha_eliminacion"
+			+ " FROM usuario as u, rol as r"
+			+ " WHERE u.rol = r.id AND fecha_eliminacion IS NOT NULL ORDER BY `id` LIMIT 500;";
 
 	private static final String SQL_GET_ALL_NAME = "SELECT id, nombre, contrasena FROM usuario WHERE nombre LIKE ? ORDER BY nombre ASC LIMIT 500;";
 
-	private static final String SQL_GET_BY_ID = "SELECT `id`, `nombre`, `contrasena`, `id_rol`, `fecha_creacion`, `fecha_eliminacion` FROM usuario WHERE id = ? ;";
+	private static final String SQL_GET_BY_ID = "SELECT u.id, u.nombre, u.contrasena, u.rol as rol_id, r.nombre as rol_nombre, u.fecha_creacion, u.fecha_eliminacion"
+			+ " FROM usuario as u, rol as r"
+			+ " WHERE u.rol = r.id AND u.id = ?";
 
 	private static final String SQL_NEW_USER = "INSERT INTO usuario (nombre, contrasena) VALUES (?,?);";
 
 	private static final String SQL_DELETE = "UPDATE usuario SET fecha_eliminacion = CURRENT_TIMESTAMP() WHERE id = ?; ";
 
 	// "DELETE FROM usuario WHERE id = ?;"; YA no se usara
-
-	private static final String SQL_UPDATE = "UPDATE usuario SET nombre = ?, contrasena = ? WHERE id = ?; ";
+	private static final String SQL_EXISTE = " SELECT id, nombre, contrasena"
+			+ " FROM usuario"
+			+ " WHERE nombre = ? AND contrasena = ? AND fecha_eliminacion IS NULL ;";
+	
+	private static final String SQL_UPDATE = "UPDATE usuario SET nombre = ?, contrasena = ?, rol = ? WHERE id = ?; ";
 
 	private UsuarioDAO() {
 		super();
@@ -64,9 +67,7 @@ public class UsuarioDAO {
 
 		Usuario usuario = null;
 
-		String sql = " SELECT id, nombre, contrasena " + " FROM usuario " + " WHERE nombre = ? AND contrasena = ? ;";
-
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(SQL_EXISTE);) {
 
 			// sustituir ? por parametros
 			pst.setString(1, nombre);
@@ -89,6 +90,10 @@ public class UsuarioDAO {
 		return usuario;
 	}
 
+	/**
+	 * Devuelve todos los usuarios, tanto los activos, como los "eliminados"
+	 * @return
+	 */
 	public ArrayList<Usuario> getAll() {
 
 		ArrayList<Usuario> lista = new ArrayList<Usuario>();
@@ -108,6 +113,12 @@ public class UsuarioDAO {
 		return lista;
 	}
 
+	/**
+	 * Devuelve una lista de usuarios en funcion de si tienen fecha_eliminacion establecida en la BD<br>
+	 * Si fecha_eliminacion es null, son usuarios activos. Si la fecha_eliminacion esta establecida son usuarios inactivos
+	 * @param isVisible true -> fecha_eliminacion es null (Usuarios activos) / false -> fecha eliminacion != null (usuarios eliminados)
+	 * @return ArrayList<Usuario> lista de usuarios activos o eliminados
+	 */
 	public ArrayList<Usuario> getAllVisible(boolean isVisible) {
 
 		ArrayList<Usuario> lista = new ArrayList<Usuario>();
@@ -214,6 +225,13 @@ public class UsuarioDAO {
 		return usuario;
 	}
 
+	/**
+	 * Actualiza en la BD el registro estableciendo la fecha_eliminacion a la fecha en que se ejecuta la update<br>
+	 * De esta forma con fecha_eliminacion sera "no visible" en getAllVisible()
+	 * @see UsuarioDAO.getAllVisible()
+	 * @param id el identificador que sera actualizado
+	 * @return
+	 */
 	public boolean delete(int id) {
 		boolean resultado = false;
 
@@ -242,7 +260,8 @@ public class UsuarioDAO {
 
 			pst.setString(1, pojo.getNombre());
 			pst.setString(2, pojo.getContrasena());
-			pst.setInt(3, pojo.getId());
+			pst.setInt(3, pojo.getRol().getId());
+			pst.setInt(4, pojo.getId());
 
 			int affectedRows = pst.executeUpdate();
 			if (affectedRows == 1) {
@@ -265,7 +284,6 @@ public class UsuarioDAO {
 
 		u.setRol(r);
 
-		// TODO mirar meter rol
 		u.setFechaCreacion(rs.getString("fecha_creacion"));
 		u.setFechaEliminacion(rs.getString("fecha_eliminacion"));
 		return u;

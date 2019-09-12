@@ -35,16 +35,16 @@
 				</div>
 				
 				<div class="form-group">
-					<label for="categoria">Rol:</label>
-					<select class="form-control" name="idCategoria">
+					<label for="rol">Rol:</label>
+					<select class="form-control" name="idRol">
 						<option value="-1">Elige un rol...</option>
 						<c:forEach items="${roles }" var="rol">
-							<option value="${roles.id }" ${(rol.id == usuarioEditar.rol.id)?"selected":"" }>${rol.nombre }</option>
+							<option value="${rol.id }" ${(rol.id == usuarioEditar.rol.id)?"selected":"" }>${rol.nombre }</option>
 						</c:forEach>
 					
 					</select>
 				</div>	
-				
+				<!-- 
 				<div class="form-group">
 					<label for="codigo">Fecha Creación:</label>
 					<input type="password" name="contrasena" value="${usuarioEditar.fechaCreacion}"					      
@@ -56,7 +56,7 @@
 					<input type="password" name="contrasena" value="${usuarioEditar.fechaEliminacion}"					      
 						   class="form-control">
 				</div>
-			
+				 -->
 				<input type="submit" value="${(usuarioEditar.id != -1)?'Modificar':'Crear'}" class="btn btn-outline-primary  btn-block">
 			
 			</form>

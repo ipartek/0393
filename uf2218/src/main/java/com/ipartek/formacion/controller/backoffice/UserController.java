@@ -16,6 +16,7 @@ import javax.validation.Validator;
 import com.ipartek.formacion.controller.pojo.Alert;
 import com.ipartek.formacion.model.dao.RolDAO;
 import com.ipartek.formacion.model.dao.UsuarioDAO;
+import com.ipartek.formacion.model.pojo.Rol;
 import com.ipartek.formacion.model.pojo.Usuario;
 
 /**
@@ -152,12 +153,16 @@ public class UserController extends HttpServlet {
 		String sid = request.getParameter("id");
 		String nombre = request.getParameter("nombre");
 		String contrasena = request.getParameter("contrasena");
+		String rol = request.getParameter("idRol");
 
 		// Revisar
 		Usuario u = new Usuario();
 		u.setId(Integer.parseInt(sid));
 		u.setNombre(nombre);
 		u.setContrasena(contrasena);
+		Rol r = new Rol();
+		r.setId(Integer.parseInt(rol));
+		u.setRol(r);
 
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(u);
 		if (violations.isEmpty()) {
@@ -165,7 +170,7 @@ public class UserController extends HttpServlet {
 			try {
 
 				if (u.getId() == -1) {
-					usuarioDAO.create(u);
+					u = usuarioDAO.create(u);
 				} else {
 					usuarioDAO.modificar(u);
 				}
@@ -186,6 +191,7 @@ public class UserController extends HttpServlet {
 			request.setAttribute("mensaje", new Alert("warning", mensaje));
 		}
 		request.setAttribute("usuarioEditar", u);
+		request.setAttribute("roles", rolDAO.getAll());
 		view = VIEW_FORM;
 
 	}
