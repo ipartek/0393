@@ -33,10 +33,10 @@ public class VideoDAO {
 			+ " c.nombre as 'categoria_nombre'\n" + " FROM video as v, usuario as u, categoria as c \n"
 			+ " WHERE v.usuario_id = u.id AND c.id = v.categoria_id AND u.fecha_eliminacion IS NULL ORDER BY v.id DESC LIMIT 500;";
 
-	private static final String SQL_GET_BY_ID = "SELECT v.id as video_id," + " v.nombre as video_nombre," + " codigo,"
-			+ " u.id as usuario_id," + "u.nombre as usuario_nombre," + "c.id as categoria_id,"
-			+ "c.nombre as categoria_nombre" + " FROM video as v, categoria as c, usuario as u"
-			+ " WHERE v.id = ? AND u.id = v.usuario_id AND v.categoria_id = c.id ;";
+	private static final String SQL_GET_BY_ID = "SELECT v.id as 'video_id',   v.nombre as 'video_nombre',\n" + 
+			"			  codigo, u.id as 'usuario_id',   u.nombre as 'usuario_nombre',   c.id as 'categoria_id',\n" + 
+			"			  c.nombre as 'categoria_nombre', u.fecha_eliminacion as 'usuario_eliminacion', u.fecha_creacion as 'usuario_creacion' FROM video as v, usuario as u, categoria as c\n" + 
+			"			  WHERE v.usuario_id = u.id   AND c.id = v.categoria_id AND v.id = ?;";
 
 	private static final String SQL_UPDATE = "UPDATE video SET nombre = ?," + " codigo = ?," + " categoria_id = ?,"
 			+ " usuario_id= ?" + " WHERE  id = ?;";
