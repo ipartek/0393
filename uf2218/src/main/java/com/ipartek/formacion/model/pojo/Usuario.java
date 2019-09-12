@@ -7,24 +7,27 @@ public class Usuario {
 	private int id;
 	private String nombre;
 	private String contrasena;
-	private Date fecha_eliminacion;
 	private int rol;
+	private Date fecha_creacion;
+	private Date fecha_eliminacion;	
 
 	public Usuario() {
 		super();
 		this.id = -1;
 		this.nombre = "";
 		this.contrasena = "";
+		this.fecha_creacion = null;
 		this.fecha_eliminacion = null;
-		this.setRol(0);
+		this.setRol(-1);
+		
 	}
 
 	public Date getFecha_eliminacion() {
 		return fecha_eliminacion;
 	}
 
-	public void setFecha_eliminacion(Date fecha_eliminado) {
-		this.fecha_eliminacion = fecha_eliminado;
+	public void setFecha_eliminacion(Date fecha_eliminacion) {
+		this.fecha_eliminacion = fecha_eliminacion;
 	}
 
 	public int getId() {
@@ -53,10 +56,19 @@ public class Usuario {
 
 	
 
+
 	@Override
 	public String toString() {
-		return "Usuario [id=" + id + ", nombre=" + nombre + ", contrasena=" + contrasena + ", fecha_eliminado="
-				+ fecha_eliminacion + ", rol=" + rol + "]";
+		return "Usuario [id=" + id + ", nombre=" + nombre + ", contrasena=" + contrasena + ", rol=" + rol
+				+ ", fecha_creacion=" + fecha_creacion + ", fecha_eliminacion=" + fecha_eliminacion + "]";
+	}
+
+	public Date getFecha_creacion() {
+		return fecha_creacion;
+	}
+
+	public void setFecha_creacion(Date fecha_creacion) {
+		this.fecha_creacion = fecha_creacion;
 	}
 
 	public int getRol() {

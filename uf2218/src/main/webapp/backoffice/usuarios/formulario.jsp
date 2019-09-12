@@ -31,7 +31,20 @@
 					<label for="contrasena">Contraseña:</label>
 					<input type="password" name="contrasena" value="${usuario.contrasena}"
 						   class="form-control">
-				</div>	
+				</div>
+				
+				<div class="form-group">
+					<label for="rol">Rol:</label>
+					<input type="text" name="rol" value="${usuario.rol}" class="form-control">
+				</div>
+				
+				
+					<div class="form-group">
+						<label for="fecha_eliminacion">Fecha Eliminación:</label>
+						<input type="text" name="fecha_eliminacion" value="${usuario.fecha_eliminacion}" class="form-control">
+					</div>
+				<c:if test="${not empty usuario.fecha_eliminacion}"></c:if>
+					
 			
 				<input type="submit" value="${(usuario.id != -1)?'Modificar':'Crear'}" class="btn btn-outline-primary btn-block">
 			

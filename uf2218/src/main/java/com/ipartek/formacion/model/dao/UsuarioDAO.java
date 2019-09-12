@@ -13,15 +13,15 @@ import com.ipartek.formacion.model.pojo.Usuario;
 public class UsuarioDAO {
 
 	private static UsuarioDAO INSTANCE = null;
-
-	private static final String SQL_GET_ALL = "SELECT id,nombre,contrasena,fecha_creacion, fecha_eliminacion, id_rol FROM usuario ORDER BY id DESC LIMIT 500;";
-	private static final String SQL_GET_ALL_VISIBLE = "SELECT id,nombre,contrasena, id_rol FROM usuario WHERE fecha_eliminacion is NULL ORDER BY id DESC LIMIT 500;";
-	private static final String SQL_GET_ALL_INVISIBLE = "SELECT id,nombre,contrasena, id_rol FROM usuario WHERE fecha_eliminacion is not NULL ORDER BY id DESC LIMIT 500;";
-	private static final String SQL_GET_BY_ID = "SELECT id,nombre,contrasena,fecha_creacion,fecha_eliminacion, id_rol FROM usuario WHERE id = ?;";
-	private static final String SQL_GET_ALL_BY_NOMBRE = "SELECT id,nombre,contrasena FROM usuario WHERE nombre LIKE ? ORDER BY nombre ASC LIMIT 500;";
+	private static final String SQL_GET_ALL = "SELECT id, nombre, contrasena, id_rol, fecha_creacion, fecha_eliminacion FROM usuario ORDER BY id DESC LIMIT 500;";
+	private static final String SQL_GET_ALL_VISIBLE = "SELECT id, nombre, contrasena, id_rol, fecha_creacion, fecha_eliminacion FROM usuario WHERE fecha_eliminacion is NULL ORDER BY id DESC LIMIT 500;";
+	private static final String SQL_GET_ALL_INVISIBLE = "SELECT id, nombre, contrasena, id_rol, fecha_creacion, fecha_eliminacion FROM usuario WHERE fecha_eliminacion is not NULL ORDER BY id DESC LIMIT 500;";
+	private static final String SQL_GET_BY_ID = "SELECT id, nombre, contrasena, id_rol, fecha_creacion, fecha_eliminacion FROM usuario FROM usuario WHERE id = ?;";
+	private static final String SQL_GET_ALL_BY_NOMBRE = "SELECT id, nombre, contrasena, id_rol, fecha_creacion, fecha_eliminacion FROM usuario WHERE nombre LIKE ? ORDER BY nombre ASC LIMIT 500;";
 	private static final String SQL_INSERT = "INSERT INTO usuario ( nombre, contrasena) VALUES ( ? , ?);";
 	private static final String SQL_UPDATE = "UPDATE usuario SET nombre= ?, contrasena= ? WHERE id = ?;";
 	private static final String SQL_DELETE = "DELETE FROM usuario WHERE id = ?;";
+	private static final String SQL_EXISTE = "SELECT id, nombre, contrasena, id_rol, fecha_creacion, fecha_eliminacion FROM usuario WHERE nombre = ? AND contrasena = ? ;"; 
 
 	private UsuarioDAO() {
 		super();
@@ -49,9 +49,7 @@ public class UsuarioDAO {
 
 		Usuario usuario = null;
 
-		String sql = " SELECT id, nombre, contrasena, id_rol " + " FROM usuario " + " WHERE nombre = ? AND contrasena = ? ;";
-
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(SQL_EXISTE);) {
 
 			// sustituir ? por parametros
 			pst.setString(1, nombre);
@@ -66,6 +64,8 @@ public class UsuarioDAO {
 					usuario.setNombre(rs.getString("nombre"));
 					usuario.setContrasena(rs.getString("contrasena"));
 					usuario.setRol(rs.getInt("id_rol"));
+					usuario.setFecha_creacion(rs.getDate("fecha_creacion"));
+					usuario.setFecha_eliminacion(rs.getDate("fecha_eliminacion"));
 				}
 			}
 
@@ -244,7 +244,8 @@ public class UsuarioDAO {
 		u.setNombre(rs.getString("nombre"));
 		u.setContrasena(rs.getString("contrasena"));
 		u.setRol(rs.getInt("id_rol"));
-		//u.setFecha_eliminacion(rs.getDate("fecha_eliminacion"));
+		u.setFecha_eliminacion(rs.getDate("fecha_eliminacion"));
+		u.setFecha_creacion(rs.getDate("fecha_creacion"));
 		return u;
 	}
 
