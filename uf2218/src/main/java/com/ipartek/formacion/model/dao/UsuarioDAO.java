@@ -14,11 +14,11 @@ public class UsuarioDAO {
 
 	private static UsuarioDAO INSTANCE = null;
 
-	private static final String SQL_GET_ALL = "SELECT id,nombre,contrasenya FROM usuario ORDER BY id DESC LIMIT 500;";
-	private static final String SQL_GET_BY_ID = "SELECT id,nombre,contrasenya FROM usuario WHERE id = ?;";
-	private static final String SQL_GET_ALL_BY_NOMBRE = "SELECT id,nombre,contrasenya FROM usuario WHERE nombre LIKE ? ORDER BY nombre ASC LIMIT 500;";
-	private static final String SQL_INSERT = "INSERT INTO usuario ( nombre, contrasenya) VALUES ( ? , ?);";
-	private static final String SQL_UPDATE = "UPDATE usuario SET nombre= ?, contrasenya= ? WHERE id = ?;";
+	private static final String SQL_GET_ALL = "SELECT id,nombre,contrasena FROM usuario ORDER BY id DESC LIMIT 500;";
+	private static final String SQL_GET_BY_ID = "SELECT id,nombre,contrasena FROM usuario WHERE id = ?;";
+	private static final String SQL_GET_ALL_BY_NOMBRE = "SELECT id,nombre,contrasena FROM usuario WHERE nombre LIKE ? ORDER BY nombre ASC LIMIT 500;";
+	private static final String SQL_INSERT = "INSERT INTO usuario ( nombre, contrasena) VALUES ( ? , ?);";
+	private static final String SQL_UPDATE = "UPDATE usuario SET nombre= ?, contrasena= ? WHERE id = ?;";
 	private static final String SQL_DELETE = "DELETE FROM usuario WHERE id = ?;";
 
 	private UsuarioDAO() {
@@ -40,20 +40,20 @@ public class UsuarioDAO {
 	 * conetrsenya
 	 * 
 	 * @param nombre
-	 * @param contrasenya
+	 * @param contrasena
 	 * @return Usuario con datos si existe, null en caso de no existir
 	 */
-	public Usuario existe(String nombre, String contrasenya) {
+	public Usuario existe(String nombre, String contrasena) {
 
 		Usuario usuario = null;
 
-		String sql = " SELECT id, nombre, contrasenya " + " FROM usuario " + " WHERE nombre = ? AND contrasenya = ? ;";
+		String sql = " SELECT id, nombre, contrasena " + " FROM usuario " + " WHERE nombre = ? AND contrasena = ? ;";
 
 		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 
 			// sustituir ? por parametros
 			pst.setString(1, nombre);
-			pst.setString(2, contrasenya);
+			pst.setString(2, contrasena);
 
 			// ejecutar sentencia SQL y obtener Resultado
 			try (ResultSet rs = pst.executeQuery()) {
@@ -62,7 +62,7 @@ public class UsuarioDAO {
 					usuario = new Usuario();
 					usuario.setId(rs.getInt("id"));
 					usuario.setNombre(rs.getString("nombre"));
-					usuario.setContrasena(rs.getString("contrasenya"));
+					usuario.setContrasena(rs.getString("contrasena"));
 				}
 			}
 
@@ -85,7 +85,7 @@ public class UsuarioDAO {
 				/*
 				 * Usuario u = new Usuario(); u.setId(rs.getInt("id"));
 				 * u.setNombre(rs.getString("nombre"));
-				 * u.setContrasenya(rs.getString("contrasenya")); lista.add(u);
+				 * u.setcontrasena(rs.getString("contrasena")); lista.add(u);
 				 */
 				lista.add(mapper(rs));
 
@@ -204,7 +204,7 @@ public class UsuarioDAO {
 		Usuario u = new Usuario();
 		u.setId(rs.getInt("id"));
 		u.setNombre(rs.getString("nombre"));
-		u.setContrasena(rs.getString("contrasenya"));
+		u.setContrasena(rs.getString("contrasena"));
 		return u;
 	}
 
