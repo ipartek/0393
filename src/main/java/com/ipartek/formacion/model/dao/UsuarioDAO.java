@@ -14,7 +14,7 @@ public class UsuarioDAO {
 	private static UsuarioDAO INSTANCE = null;
 
 	private static final String SQL_EXISTE = "SELECT id, nombre, contrasenya, id_rol, fecha_creacion, fecha_eliminacion"
-			+ " FROM usuario " + " WHERE nombre = ? AND contrasenya = ? ;";
+			+ " FROM usuario " + " WHERE nombre = ? AND contrasenya = ? AND fecha_eliminacion IS NULL ;";
 	private static final String SQL_GET_ALL = "SELECT id, nombre, contrasenya, id_rol, fecha_creacion, fecha_eliminacion FROM usuario ORDER BY id ASC LIMIT 500;";
 	private static final String SQL_GET_ALL_VISIBLE = "SELECT id, nombre, contrasenya, id_rol, fecha_creacion, fecha_eliminacion FROM usuario WHERE fecha_eliminacion IS NULL ORDER BY id ASC LIMIT 500;";
 	private static final String SQL_GET_ALL_NOT_VISIBLE = "SELECT id, nombre, contrasenya, id_rol, fecha_creacion, fecha_eliminacion FROM usuario WHERE fecha_eliminacion IS NOT NULL ORDER BY id ASC LIMIT 500;";
@@ -213,13 +213,13 @@ public class UsuarioDAO {
 	}
 
 	public Usuario mapper(ResultSet rs) throws SQLException {
-		Usuario usuario = new Usuario();
-		usuario.setId(rs.getInt("id"));
-		usuario.setNombre(rs.getString("nombre"));
-		usuario.setContrasenya(rs.getString("contrasenya"));
-		usuario.setRol(rs.getInt("id_rol"));
-		usuario.setFecha_creacion(rs.getDate("fecha_creacion"));
-		usuario.setFecha_eliminacion(rs.getDate("fecha_eliminacion"));
-		return usuario;
+		Usuario u = new Usuario();
+		u.setId(rs.getInt("id"));
+		u.setNombre(rs.getString("nombre"));
+		u.setContrasenya(rs.getString("contrasenya"));
+		u.setRol(rs.getInt("id_rol"));
+		u.setFecha_creacion(rs.getDate("fecha_creacion"));
+		u.setFecha_eliminacion(rs.getDate("fecha_eliminacion"));
+		return u;
 	}
 }
