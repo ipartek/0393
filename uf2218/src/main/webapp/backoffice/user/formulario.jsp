@@ -43,12 +43,12 @@
 				
 				
 				<div class="form-group">	
-					<label for="fecha_creacion">Fecha de Creacion:</label>
-					<input type="text" name="fecha_creacion" value="<fmt:formatDate value="${usuarioEditar.fecha_creacion}" pattern="dd-MM-yyyy HH:mm:ss" />" readonly class="form-control">
+					<label for="fechaCreacion">Fecha de Creacion:</label>
+					<input type="text" name="fechaCreacion" value="<fmt:formatDate value="${usuarioEditar.fechaCreacion}" pattern="dd-MM-yyyy HH:mm:ss" />" readonly class="form-control">
 				</div>
 				<div class="form-group">	
-					<label for="fecha_eliminacion">Fecha de Eliminacion:</label>
-					<input type="text" name="fecha_eliminacion" value="<fmt:formatDate value="${usuarioEditar.fecha_eliminacion}" pattern="dd-MM-yyyy HH:mm:ss" />" readonly class="form-control">
+					<label for="fechaEliminacion">Fecha de Eliminacion:</label>
+					<input type="text" name="fechaEliminacion" value="<fmt:formatDate value="${usuarioEditar.fechaEliminacion}" pattern="dd-MM-yyyy HH:mm:ss" />" readonly class="form-control">
 				</div>
 			
 				<input type="submit" value="${(usuarioEditar.id != -1)?'Modificar':'Crear'}" class="btn btn-outline-primary  btn-block">

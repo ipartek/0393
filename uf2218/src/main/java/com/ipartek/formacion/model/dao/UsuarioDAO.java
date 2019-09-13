@@ -1,7 +1,6 @@
 package com.ipartek.formacion.model.dao;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,10 +20,11 @@ public class UsuarioDAO {
 	private static final String SQL_GET_ALL_DELETED = "SELECT id,nombre,contrasena,id_rol, fecha_creacion, fecha_eliminacion FROM usuario as u WHERE u.fecha_eliminacion is not Null ORDER BY id DESC LIMIT 500;";
 	private static final String SQL_GET_BY_ID = "SELECT id, nombre, contrasena,id_rol, fecha_creacion, fecha_eliminacion  FROM usuario WHERE id = ? ;";
 	private static final String SQL_GET_ALL_BY_NAME = "SELECT id,nombre, contrasena,id_rol, fecha_creacion, fecha_eliminacion FROM usuario WHERE nombre LIKE ? ORDER BY id DESC LIMIT 500;";
-	private static final String SQL_INSERT = "INSERT INTO usuario (nombre, contrasena,id_rol,fecha_creacion) VALUES (?,?,?,?);";
+	private static final String SQL_INSERT = "INSERT INTO usuario (nombre, contrasena,id_rol) VALUES (?,?,?);";
 	private static final String SQL_UPDATE = "UPDATE usuario SET nombre = ?, contrasena = ?, id_rol = ? WHERE  id = ?;";
-	private static final String SQL_DELETE = "UPDATE usuario SET fecha_eliminacion = CURRENT_DATESTAMP() WHERE  id = ?;";
-	//private static final String SQL_DELETE = "DELETE FROM usuario WHERE id = ?;";
+	private static final String SQL_DELETE_LOGICO = "UPDATE usuario SET fecha_eliminacion = CURRENT_TIMESTAMP() WHERE  id = ?;";
+	private static final String SQL_EXISTE = " SELECT id, nombre, contrasena, id_rol, fecha_creacion, fecha_eliminacion " + " FROM usuario " + " WHERE nombre = ? AND contrasena = ? AND fecha_eliminacion is null ;";
+	private static final String SQL_DELETE = "DELETE FROM usuario WHERE id = ?;";
 	private static String SQL = "";
 	
 	Rol rol = new Rol();
@@ -55,9 +55,7 @@ public class UsuarioDAO {
 
 		Usuario usuario = null;
 
-		String sql = " SELECT id, nombre, contrasena, id_rol " + " FROM usuario " + " WHERE nombre = ? AND contrasena = ? AND fecha_eliminacion is null ;";
-
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(SQL_EXISTE);) {
 			// Sustituir ? por parametros
 			pst.setString(1, nombre);
 			pst.setString(2, contrasena);
@@ -66,14 +64,7 @@ public class UsuarioDAO {
 			try (ResultSet rs = pst.executeQuery()) {
 
 				if (rs.next()) {
-
-					usuario = new Usuario();
-					usuario.setId(rs.getInt("id"));
-					usuario.setNombre(rs.getString("nombre"));
-					usuario.setContrasena(rs.getString("contrasena"));
-					rol.setId(rs.getInt("id_rol"));
-					usuario.setRol(rol);
-
+					usuario = mapper(rs);
 				}
 
 			} catch (Exception e) {
@@ -205,7 +196,6 @@ public class UsuarioDAO {
 			pst.setString(1, pojo.getNombre());
 			pst.setString(2, pojo.getContrasena());
 			pst.setInt(3, idRol);
-			pst.setDate(4, (Date) pojo.getFecha_creacion());
 
 			int affectedRows = pst.executeUpdate();
 			if (affectedRows == 1) {
@@ -226,7 +216,7 @@ public class UsuarioDAO {
 		boolean resultado = false;
 
 		try (Connection con = ConnectionManager.getConnection();
-				PreparedStatement pst = con.prepareStatement(SQL_DELETE);) {
+				PreparedStatement pst = con.prepareStatement(SQL_DELETE_LOGICO);) {
 			
 			pst.setInt(1, id);
 
@@ -254,8 +244,8 @@ public class UsuarioDAO {
 		u.setId(rs.getInt("id"));
 		u.setNombre(rs.getString("nombre"));
 		u.setContrasena(rs.getString("contrasena"));
-		u.setFecha_creacion(rs.getDate("fecha_creacion"));
-		u.setFecha_eliminacion(rs.getDate("fecha_eliminacion"));
+		u.setFechaCreacion(rs.getTimestamp("fecha_creacion"));
+		u.setFechaEliminacion(rs.getTimestamp("fecha_eliminacion"));
 		
 		Rol r = new Rol();
 		r.setId(rs.getInt("id_rol"));

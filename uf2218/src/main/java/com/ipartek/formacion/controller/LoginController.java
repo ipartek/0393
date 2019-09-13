@@ -58,21 +58,31 @@ public class LoginController extends HttpServlet {
 			HttpSession session = request.getSession();
 			// session.setMaxInactiveInterval( 60 * 5 ); // 5 min
 
-			session.setAttribute("usuario", usuario);
-
-			request.setAttribute("mensaje", new Alert("success", "Ongi Etorri " + usuario.getNombre()));
-
-			String callback = (String) session.getAttribute("callback");
-
-			if (callback == null) {
-
-				// redireccion para cambiar la url de "/login a "backoffice/inicio
-				response.sendRedirect("backoffice/inicio");
-
+			//preguntar si esta dado de baja
+			if (usuario.getFechaEliminacion() != null) {
+				
+				session.setAttribute("mensaje", new Alert("danger", "Lo sentimos pero usted fue dado de baja."));
+				request.getRequestDispatcher("login.jsp").forward(request, response);
+				
 			} else {
-				session.removeAttribute("callback");
-				response.sendRedirect(callback);
-			}
+				
+				session.setAttribute("usuario", usuario);
+
+				request.setAttribute("mensaje", new Alert("success", "Ongi Etorri " + usuario.getNombre()));
+				
+				String callback = (String) session.getAttribute("callback");
+
+					if (callback == null) {
+
+					// redireccion para cambiar la url de "/login a "backoffice/inicio
+					response.sendRedirect("backoffice/inicio");
+
+					} else {
+					session.removeAttribute("callback");
+					response.sendRedirect(callback);
+					}
+					
+			} //end dado de baja
 
 		} else {
 

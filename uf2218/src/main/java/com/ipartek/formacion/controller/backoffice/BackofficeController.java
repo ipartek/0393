@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ipartek.formacion.model.dao.CategoriaDAO;
 import com.ipartek.formacion.model.dao.UsuarioDAO;
 import com.ipartek.formacion.model.dao.VideoDAO;
 
@@ -19,14 +20,14 @@ import com.ipartek.formacion.model.dao.VideoDAO;
 public class BackofficeController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	private static UsuarioDAO usuarioDAO;
-	private static VideoDAO videoDAO;
+	private static UsuarioDAO usuarioDAO = UsuarioDAO.getInstance();
+	private static CategoriaDAO categoriaDAO = CategoriaDAO.getInstance();
+	private static VideoDAO videoDAO = VideoDAO.getInstance();
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
-		usuarioDAO = UsuarioDAO.getInstance();
-		videoDAO = VideoDAO.getInstance();
+		
 	}
 
 	/**
@@ -47,11 +48,14 @@ public class BackofficeController extends HttpServlet {
 
 		int numeroUsuariosReal = usuarioDAO.getAllVisible(true).size();
 		int numeroUsuariosDelete = usuarioDAO.getAllVisible(false).size();
+		int numeroCategorias = categoriaDAO.getAll().size();
 		int numeroVideos = videoDAO.getAll().size();
 
 		request.setAttribute("numeroVideos", numeroVideos);
 		request.setAttribute("numeroUsuariosActivos", numeroUsuariosReal);
 		request.setAttribute("numeroUsuariosEliminados", numeroUsuariosDelete);
+		request.setAttribute("numeroCategorias", numeroCategorias);
+		
 		// request interna
 		request.getRequestDispatcher("index.jsp").forward(request, response);
 

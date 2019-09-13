@@ -1,4 +1,5 @@
-    <%@page import="com.ipartek.formacion.controller.backoffice.VideoController"%>
+<%@page import="com.ipartek.formacion.controller.backoffice.UsuarioController"%>
+<%@page import="com.ipartek.formacion.controller.backoffice.VideoController"%>
     
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 	  <a class="navbar-brand" href="#">JEE</a>
@@ -19,9 +20,17 @@
 	      	<li class="nav-item">
 	        	<a class="nav-link" href="backoffice/videos">Videos</a>
 	      	</li>
-	      	<li class="nav-item">
-	        	<a class="nav-link" href="backoffice/usuarios">Usuarios</a>
-	      	</li>    
+	      	 <li class="nav-item">
+				<div class="dropdown">
+					  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					    Usuarios
+					  </button>
+					  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"> 
+					    	<a class="dropdown-item" href="backoffice/usuarios?op=<%=UsuarioController.OP_LISTAR%>&visible=true">Usuario Registrados</a>
+					    	<a class="dropdown-item" href="backoffice/usuarios?op=<%=UsuarioController.OP_LISTAR%>&visible=false">Usuarios Eliminados</a>			    
+					  </div>
+				</div>
+		      </li>   
 		    <li class="nav-item">
 				<div class="dropdown">
 					  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -32,7 +41,7 @@
 					    	<a class="dropdown-item" href="backoffice/videos?op=<%=VideoController.OP_DETALLE%>&id=${vv.value.id}">(${vv.key}) ${vv.value.nombre}</a>
 					    </c:forEach>				    
 					  </div>
-					</div>
+				</div>
 		      </li>
 	      </c:if>
 	    </ul>

@@ -23,6 +23,7 @@ import com.ipartek.formacion.model.pojo.Usuario;
  */
 @WebServlet("/backoffice/usuarios")
 public class UsuarioController extends HttpServlet {
+	
 	private static final long serialVersionUID = 1L;
 
 	public static final String VIEW_INDEX = "user/usuarios.jsp";
@@ -99,7 +100,7 @@ public class UsuarioController extends HttpServlet {
 
 	}
 
-	private void buscar(HttpServletRequest request, HttpServletResponse response) {
+	public void buscar(HttpServletRequest request, HttpServletResponse response) {
 
 		String nombreBuscar = request.getParameter("nombreBuscar");
 
@@ -107,13 +108,14 @@ public class UsuarioController extends HttpServlet {
 		view = VIEW_INDEX;
 	}
 
-	private void nuevo(HttpServletRequest request, HttpServletResponse response) {
+	public void nuevo(HttpServletRequest request, HttpServletResponse response) {
 
 		request.setAttribute("usuarioEditar", new Usuario());
+		request.setAttribute("roles", rolDAO.getAll());
 		view = VIEW_FORM;
 	}
 
-	private void eliminar(HttpServletRequest request, HttpServletResponse response) {
+	public void eliminar(HttpServletRequest request, HttpServletResponse response) {
 
 		String sid = request.getParameter("id");
 		int id = Integer.parseInt(sid);
@@ -128,15 +130,15 @@ public class UsuarioController extends HttpServlet {
 
 	}
 
-	private void guardar(HttpServletRequest request, HttpServletResponse response) {
+	public void guardar(HttpServletRequest request, HttpServletResponse response) {
 
-		String sid = request.getParameter("id");
 		String nombre = request.getParameter("nombre");
 		String contrasena = request.getParameter("contrasena");
+		int idUser = Integer.parseInt(request.getParameter("id"));
 		int idRol = Integer.parseInt(request.getParameter("id_rol"));
 
 		Usuario u = new Usuario();
-		u.setId(Integer.parseInt(sid));
+		u.setId(idUser);
 		u.setNombre(nombre);
 		u.setContrasena(contrasena);
 
@@ -167,11 +169,12 @@ public class UsuarioController extends HttpServlet {
 			request.setAttribute("mensaje", new Alert("warning", mensaje));
 		}
 		request.setAttribute("usuarioEditar", u);
+		request.setAttribute("roles", rolDAO.getAll());
 		view = VIEW_FORM;
 
 	}
 
-	private void detalle(HttpServletRequest request, HttpServletResponse response) {
+	public void detalle(HttpServletRequest request, HttpServletResponse response) {
 
 		String sid = request.getParameter("id");
 		int id = Integer.parseInt(sid);
@@ -183,7 +186,7 @@ public class UsuarioController extends HttpServlet {
 
 	}
 
-	private void listar(HttpServletRequest request, HttpServletResponse response) {
+	public void listar(HttpServletRequest request, HttpServletResponse response) {
 		
 		Boolean visible = Boolean.parseBoolean(request.getParameter("visible"));
 		request.setAttribute("usuarios", usuarioDAO.getAllVisible(visible));
