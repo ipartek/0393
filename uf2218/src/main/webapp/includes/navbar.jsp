@@ -26,9 +26,25 @@
 			        <a class="nav-link" href="backoffice/videos">Videos</a>
 			      </li>
 			      
-			      <li class="nav-item">
-			        <a class="nav-link" href="backoffice/usuarios">Usuarios</a>
-			      </li>
+				<li class="nav-item">
+					<div class="dropdown">
+						<button class="btn btn-secondary dropdown-toggle bg-primary" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  							Usuarios
+						</button>
+						<div class="dropdown-menu bg-primary" aria-labelledby="dropdownMenuButton">
+							<a class="nav-link" href="backoffice/usuarios?activo=1">Activos</a>
+							<a class="nav-link" href="backoffice/usuarios?activo=0">Eliminados</a>
+						</div>
+					</div>
+				</li>
+				
+				<li class="nav-item">
+					<a class="nav-link" href="backoffice/categorias">Categorías</a>
+				</li>
+			      
+				
+			      
+			      
 	        	<li class="nav-item">
 	        		<span class="nav-link"><i class="fas fa-user"></i> ${usuario.nombre}</span>	        		
 	        		     		

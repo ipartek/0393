@@ -33,6 +33,11 @@
 				</div>	
 				
 				<div class="form-group">
+					<label for="rol">Rol:</label>
+					<input type="number" name="rol" value="${usuarioEditar.rol}" class="form-control" disabled>
+				</div>	
+				
+				<div class="form-group">
 					<label for="fecha_creacion">Fecha Creación:</label>
 					<fmt:formatDate value="${usuarioEditar.fechaCreacion}" var="fecha1"  pattern="dd-MM-yyyy HH:mm:ss" />
 					<input type="text" name="fecha_creacion" value="${fecha1}" class="form-control" disabled>

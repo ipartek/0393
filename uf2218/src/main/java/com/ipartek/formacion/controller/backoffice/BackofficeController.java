@@ -10,8 +10,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ipartek.formacion.model.dao.CategoriaDAO;
+import com.ipartek.formacion.model.dao.RolDAO;
 import com.ipartek.formacion.model.dao.UsuarioDAO;
 import com.ipartek.formacion.model.dao.VideoDAO;
+import com.ipartek.formacion.model.pojo.Categoria;
+import com.ipartek.formacion.model.pojo.Rol;
 import com.ipartek.formacion.model.pojo.Usuario;
 import com.ipartek.formacion.model.pojo.Video;
 
@@ -24,12 +28,16 @@ public class BackofficeController extends HttpServlet {
 
 	private static UsuarioDAO usuarioDAO;
 	private static VideoDAO videoDAO;
+	private static RolDAO rolDAO;
+	private static CategoriaDAO categoriaDAO;
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		usuarioDAO = UsuarioDAO.getInstance();
 		videoDAO = VideoDAO.getInstance();
+		categoriaDAO = CategoriaDAO.getInstance();
+		rolDAO = RolDAO.getInstance();
 	}
 
 	/**
@@ -51,10 +59,13 @@ public class BackofficeController extends HttpServlet {
 		ArrayList<Video> listaVideos = videoDAO.getAll();
 		ArrayList<Usuario> listaUsuariosVisible = usuarioDAO.getAllVisible(true);
 		ArrayList<Usuario> listaUsuariosEliminados = usuarioDAO.getAllVisible(false);
+		ArrayList<Categoria> listaCategorias = categoriaDAO.getAll();
+		ArrayList<Rol> listaRoles = rolDAO.getAll();
 
 		request.setAttribute("totalUsuariosVisibles", listaUsuariosVisible.size());
 		request.setAttribute("totalUsuariosEliminados", listaUsuariosEliminados.size());
 		request.setAttribute("totalVideos", listaVideos.size());
+		request.setAttribute("totalRoles", listaRoles.size());
 
 		// request interna
 		request.getRequestDispatcher("index.jsp").forward(request, response);
