@@ -228,7 +228,13 @@ public class UsuarioDAO {
 
 			int affectedRows = pst.executeUpdate();
 			if (affectedRows == 1) {
-				resultado = true;
+				// conseguir id generado de forma automatica
+				try (ResultSet rsKeys = pst.getGeneratedKeys()) {
+					if (rsKeys.next()) {
+						pojo.setId(rsKeys.getInt(1));
+						resultado = true;
+					}
+				}
 			}
 
 		}
