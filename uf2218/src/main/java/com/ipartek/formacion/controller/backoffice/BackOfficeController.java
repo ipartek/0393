@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.ipartek.formacion.model.dao.CategoriaDAO;
 import com.ipartek.formacion.model.dao.UsuarioDAO;
 import com.ipartek.formacion.model.dao.VideoDAO;
 import com.ipartek.formacion.model.pojo.Usuario;
@@ -21,6 +22,7 @@ public class BackOfficeController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static UsuarioDAO usuarioDAO = UsuarioDAO.getInstance();
 	private static VideoDAO videoDAO = VideoDAO.getInstance();
+	private static CategoriaDAO categoriaDAO = CategoriaDAO.getInstance();
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -52,6 +54,7 @@ public class BackOfficeController extends HttpServlet {
 		if (usuario.getRol() == 1) {
 			request.setAttribute("numeroVideosNoVisibles", videoDAO.getAllVisible(false).size());
 			request.setAttribute("usuariosNoVisibles", usuarioDAO.getAllVisible(false).size());
+			request.setAttribute("numeroCategorias", categoriaDAO.getAll().size());
 		}
 
 		request.setAttribute("numeroVideos", videoDAO.getAllVisible(true).size());
