@@ -33,12 +33,14 @@
 					class="form-control">
 			</div>
 			<div class="form-group">
-				<label>Usuario</label> <select
-					  name="usuario_id"  class="form-control" id="usuario_id">
+				<label>Usuario</label> <select  name="usuario_id"  class="form-control" id="usuario_id">
 					<c:forEach items="${usuarios}" var="u">
-					
-					<option value="${u.id}" ${(u.id == video.usuario.id)?"selected":"" }>${u.nombre}</option>
-			
+						<c:if test="${video.id != -1}">
+							<option value="${u.id}" ${(u.id == video.usuario.id)?"selected":"" }>${u.nombre}</option>
+						</c:if>
+						<c:if test="${video.id == -1}">
+							<option value="${u.id}" ${(u.id == sessionScope.usuario.id)?"selected":"" }>${u.nombre}</option>
+						</c:if>
 					</c:forEach>
 					
 				</select>

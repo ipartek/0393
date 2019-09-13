@@ -50,18 +50,20 @@ public class LoginController extends HttpServlet {
 		Usuario usuario = usuarioDAO.existe(nombre, contrasenya);
 				
 		if (usuario != null ) {
+			//comprobar usuario baja
+			if(usuario.getFecha_eliminacion()==null) {
+				
+				
+				HttpSession session = request.getSession();
+				// session.setMaxInactiveInterval( 60 * 5 ); // 5 min
 			
 			
-			HttpSession session = request.getSession();
-			// session.setMaxInactiveInterval( 60 * 5 ); // 5 min
+					session.setAttribute("usuario",usuario );
 			
+				request.setAttribute("mensaje", new Alert("success","Ongi Etorri " + usuario.getNombre()));			
+				String callback = (String) session.getAttribute("callback");
 			
-			session.setAttribute("usuario",usuario );
-			
-			request.setAttribute("mensaje", new Alert("success","Ongi Etorri " + usuario.getNombre()));			
-			String callback = (String) session.getAttribute("callback");
-			
-			if ( callback == null ) {
+				if ( callback == null ) {
 				/*
 				request.setAttribute("numeroVideos", videoDAO.getAll().size());
 				request.setAttribute("numeroUsuarios",usuarioDAO.getAll().size());
@@ -73,11 +75,14 @@ public class LoginController extends HttpServlet {
 				
 				response.sendRedirect("backoffice/inicio");
 				
+				}else {
+					session.removeAttribute("callback");				
+					response.sendRedirect(callback);
+				}	
 			}else {
-				session.removeAttribute("callback");				
-				response.sendRedirect(callback);
-			}	
-			
+						request.setAttribute("mensaje", new Alert("danger","Tu usuario a sido eliminado"));
+						request.getRequestDispatcher("login.jsp").forward(request, response);
+			}//fin comprobar usuario baja
 		}else {
 			
 			request.setAttribute("mensaje", new Alert("danger","credenciales no correctas") );			

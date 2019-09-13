@@ -42,6 +42,33 @@ INSERT INTO `categoria` VALUES (2,'broma'),(1,'musica'),(3,'surf');
 /*!40000 ALTER TABLE `categoria` ENABLE KEYS */;
 UNLOCK TABLES;
 
+
+
+--
+-- Table structure for table `rol`
+--
+
+DROP TABLE IF EXISTS `rol`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `rol` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(15) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `nombre_UNIQUE` (`nombre`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='1: Admin\n2: Usuario';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `rol`
+--
+
+LOCK TABLES `rol` WRITE;
+/*!40000 ALTER TABLE `rol` DISABLE KEYS */;
+INSERT INTO `rol` VALUES (1,'admin'),(2,'usuario');
+/*!40000 ALTER TABLE `rol` ENABLE KEYS */;
+UNLOCK TABLES;
+
 --
 -- Table structure for table `usuario`
 --
@@ -53,9 +80,14 @@ CREATE TABLE `usuario` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) NOT NULL,
   `contrasenya` varchar(45) NOT NULL,
+  `id_rol` int(11) NOT NULL DEFAULT '2' COMMENT 'Por defecto es 2 = Usuario y no 1 = Administrador',
+  `fecha_creacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `fecha_eliminacion` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `nombre_UNIQUE` (`nombre`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+  UNIQUE KEY `nombre_UNIQUE` (`nombre`),
+  KEY `FK_usuario_rol_idx` (`id_rol`),
+  CONSTRAINT `FK_usuario_rol` FOREIGN KEY (`id_rol`) REFERENCES `rol` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -64,7 +96,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (1,'admin','admin'),(2,'pepe','pepe'),(3,'soso','soso');
+INSERT INTO `usuario` VALUES (1,'admin','admin',1,'2019-09-12 08:45:26',NULL),(2,'pepe','pepe',2,'2019-09-12 08:45:26',NULL),(3,'soso','soso',2,'2019-09-12 08:45:26',NULL),(4,'eliminado','1234',2,'2019-09-12 09:02:26','2019-09-12 09:02:40');
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -87,7 +119,7 @@ CREATE TABLE `video` (
   KEY `fk_video_categoria1_idx` (`categoria_id`),
   CONSTRAINT `fk_video_categoria1` FOREIGN KEY (`categoria_id`) REFERENCES `categoria` (`id`),
   CONSTRAINT `fk_video_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -96,9 +128,10 @@ CREATE TABLE `video` (
 
 LOCK TABLES `video` WRITE;
 /*!40000 ALTER TABLE `video` DISABLE KEYS */;
-INSERT INTO `video` VALUES (3,'Redhot','YlUKcNNmywk',1,1),(4,'Fary','NFkI-zxZlHo',3,1);
+INSERT INTO `video` VALUES (3,'Redhot','YlUKcNNmywk',1,1),(4,'Fary','NFkI-zxZlHo',2,1),(6,'105F RMX','qA6FBDYncGk',4,1);
 /*!40000 ALTER TABLE `video` ENABLE KEYS */;
 UNLOCK TABLES;
+
 
 --
 -- Table structure for table `likes`
@@ -129,9 +162,6 @@ INSERT INTO `likes` VALUES (1,4,'2019-09-05 09:41:45'),(2,3,'2019-09-05 09:41:45
 UNLOCK TABLES;
 
 
-
-
-
 --
 -- Dumping events for database 'videos'
 --
@@ -149,4 +179,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-09-05 10:11:02
+-- Dump completed on 2019-09-12  9:10:54

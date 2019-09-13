@@ -13,7 +13,7 @@ public class CategoriaDAO {
 		private static CategoriaDAO INSTANCE = null;
 		
 		private static final String SQL_GET_ALL =  "SELECT id, nombre FROM categoria ORDER BY  id  ASC LIMIT 500;";
-		
+		private static final String SQL_GET_BY_ID = "SELECT id, nombre FROM categoria WHERE id =?;";
 		private CategoriaDAO() {
 			super();
 		}
@@ -47,6 +47,30 @@ public class CategoriaDAO {
 			return lista;
 		}
 		
+		
+		public Categoria getById(int id) {
+			Categoria categoria = new Categoria();
+
+			try (Connection con = ConnectionManager.getConnection();
+					PreparedStatement pst = con.prepareStatement(SQL_GET_BY_ID)) {
+
+				// sustituyo la 1º ? por la variable id
+				pst.setInt(1, id);
+
+				try (ResultSet rs = pst.executeQuery()) {
+					if (rs.next()) {
+						/*
+						 * Video v = new Video(); v.setId( rs.getInt("id") ); v.setNombre(
+						 * rs.getString("nombre")); v.setCodigo( rs.getString("codigo"));
+						 */
+						categoria = mapper(rs);
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return categoria;
+		}
 		
 		
 		

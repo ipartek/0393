@@ -1,3 +1,4 @@
+<%@page import="com.ipartek.formacion.controller.CategoriaController"%>
 <%@page
 	import="com.ipartek.formacion.controller.backoffice.UsuarioController"%>
 
@@ -5,67 +6,31 @@
 <%@include file="../../includes/header.jsp"%>
 <%@include file="../../includes/navbar.jsp"%>
 
-<h1>Detalle Usuario</h1>
+<h1>Detalle Categoria</h1>
 
 <div class="row">
 	<div class="col">
 
 		<%@include file="../../includes/mensaje.jsp"%>
 
-		<form action="backoffice/usuario" method="post" class="mb-2">
+		<form action="backoffice/categoria" method="post" class="mb-2">
 
 			<input type="hidden" name="op"
-				value="<%=UsuarioController.OP_GUARDAR%>">
+				value="<%=CategoriaController.OP_GUARDAR%>">
 
 			<div class="form-group">
 				<label for="id">Id:</label> <input type="text" name="id"
-					value="${user.id}" readonly class="form-control">
+					value="${categoria.id}" readonly class="form-control">
 			</div>
 
 			<div class="form-group">
 				<label for="nombre">Nombre:</label> <input type="text" name="nombre"
-					value="${user.nombre}" placeholder="Mínimio 3 máximo 150"
+					value="${categoria.nombre}" placeholder="Mínimio 3 máximo 150"
 					class="form-control">
 			</div>
 
-			<div class="form-group">
-				<label for="codigo">Contraseña:</label> <input type="password"
-					name="contrasenya" value="${user.contrasenya}"
-					placeholder="Exactamente 11" class="form-control">
-			</div>
-			
-			<div class="form-group">
-				<label>Rol</label> <select class="form-control"
-					name="rol_id" id="rol_id">
-					<c:forEach items="${roles}" var="r">
-
-						<option value="${r.id}"> ${r.nombre}</option>
-
-					</c:forEach>
-
-				</select>
-			</div>
-
- 			<div class="form-group">
-				<label for="fecha_creacion">Fecha Creacion:</label> <input
-					type="text" name="fecha_creacion"
-					value="<fmt:formatDate value="${user.fecha_creacion}" pattern="dd-MM-yyyy HH:mm:ss"  />"
-					readonly class="form-control">
-			</div>
-
-			<div class="form-group">
-				<label for="fecha_eliminacion">Fecha Eliminacion:</label> <input
-					type="text" name="fecha_eliminacion"
-					value="<fmt:formatDate value="${user.fecha_eliminacion}" pattern="dd-MM-yyyy HH:mm:ss" />"
-					readonly class="form-control">
-			</div>
-
-
-
-
-
-
-			<input type="submit" value="${(user.id != -1)?'Modificar':'Crear'}"
+		
+			<input type="submit" value="${(categoria.id != -1)?'Modificar':'Crear'}"
 				class="btn btn-outline-primary  btn-block">
 
 		</form>

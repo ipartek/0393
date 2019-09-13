@@ -100,6 +100,7 @@ private static CategoriaDAO categoriaDAO;
 			listar(request, response);
 			break;
 		}
+	
 
 		request.getRequestDispatcher(view).forward(request, response);
 	}
@@ -152,6 +153,7 @@ private static CategoriaDAO categoriaDAO;
 					
 					
 					videoDAO.crear(v, idUsuario,idCategoria);
+					idVideo = v.getId();
 				} else {
 					videoDAO.modificar(v,idUsuario,idCategoria);
 				}
@@ -179,8 +181,9 @@ private static CategoriaDAO categoriaDAO;
 	}
 
 	private void listar(HttpServletRequest request, HttpServletResponse response) {
-
-		request.setAttribute("videos", videoDAO.getAll());
+		
+		request.setAttribute("videosVisible", videoDAO.getAllVisible(true));
+		request.setAttribute("videosEliminados", videoDAO.getAllVisible(false));
 		view = VIEW_INDEX;
 
 	}

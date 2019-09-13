@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ipartek.formacion.model.dao.CategoriaDAO;
 import com.ipartek.formacion.model.dao.UsuarioDAO;
 import com.ipartek.formacion.model.dao.VideoDAO;
 
@@ -20,12 +21,14 @@ public class BackofficeController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static UsuarioDAO usuarioDAO;
 	private static VideoDAO videoDAO;
+	private static CategoriaDAO categoriaDAO;
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		usuarioDAO = UsuarioDAO.getInstance();
 		videoDAO = VideoDAO.getInstance();
+		categoriaDAO=CategoriaDAO.getInstance();
 	}
 
 	/**
@@ -53,7 +56,9 @@ public class BackofficeController extends HttpServlet {
 			throws ServletException, IOException {
 
 		request.setAttribute("numeroVideos", videoDAO.getAll().size());
-		request.setAttribute("numeroUsuarios", usuarioDAO.getAll().size());
+		request.setAttribute("numeroCategorias", categoriaDAO.getAll().size());
+		request.setAttribute("numeroUsuariosV", usuarioDAO.getAllVisible(true).size());
+		request.setAttribute("numeroUsuariosE", usuarioDAO.getAllVisible(false).size());
 		request.getRequestDispatcher("index.jsp").forward(request, response);
 
 	}

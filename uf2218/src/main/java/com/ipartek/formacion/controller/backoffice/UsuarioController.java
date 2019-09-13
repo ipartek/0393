@@ -14,14 +14,16 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 
 import com.ipartek.formacion.controller.pojo.Alert;
+import com.ipartek.formacion.model.dao.RolDAO;
 import com.ipartek.formacion.model.dao.UsuarioDAO;
+import com.ipartek.formacion.model.pojo.Rol;
 import com.ipartek.formacion.model.pojo.Usuario;
 
 /**
  * Servlet implementation class UsuarioController
  */
 @WebServlet("/backoffice/usuario")
-public class UsuarioController extends HttpServlet {
+public class UsuarioController extends HttpServlet  {
 	private static final long serialVersionUID = 1L;
 
 	public static final String VIEW_INDEX = "usuario/index.jsp";
@@ -34,17 +36,20 @@ public class UsuarioController extends HttpServlet {
 	public static final String OP_ELIMINAR = "3";
 	public static final String OP_DETALLE = "4";
 	public static final String OP_BUSCAR = "5";
-
+	private RolDAO rolDAO;
 	private UsuarioDAO usuarioDAO;
 	private Validator validator;
+
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		usuarioDAO = UsuarioDAO.getInstance();
+		rolDAO= rolDAO.getInstance();
 		validator = Validation.buildDefaultValidatorFactory().getValidator();
 	}
 
+	
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
@@ -99,13 +104,14 @@ public class UsuarioController extends HttpServlet {
 		request.getRequestDispatcher(view).forward(request, response);
 	}
 
-	private void nuevo(HttpServletRequest request, HttpServletResponse response) {
+	public void nuevo(HttpServletRequest request, HttpServletResponse response) {
 
 		request.setAttribute("user", new Usuario());
+		request.setAttribute("roles",rolDAO.getAll());
 		view = VIEW_FORM;
 	}
 
-	private void eliminar(HttpServletRequest request, HttpServletResponse response) {
+	public void eliminar(HttpServletRequest request, HttpServletResponse response) {
 
 		String sid = request.getParameter("id");
 		int id = Integer.parseInt(sid);
@@ -120,17 +126,21 @@ public class UsuarioController extends HttpServlet {
 
 	}
 
-	private void guardar(HttpServletRequest request, HttpServletResponse response) {
+	public void guardar(HttpServletRequest request, HttpServletResponse response) {
 
 		String sid = request.getParameter("id");
 		String nombre = request.getParameter("nombre");
 		String contrasenya = request.getParameter("contrasenya");
-
+		Rol rol = new Rol();
+		rol.setId(Integer.parseInt(request.getParameter("rol_id")));
+	
+		
 		Usuario u = new Usuario();
 		u.setId(Integer.parseInt(sid));
 		u.setNombre(nombre);
 		u.setContrasenya(contrasenya);
-
+		u.setRol(rol);
+		
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(u);
 		if (violations.isEmpty()) {
 
@@ -163,25 +173,26 @@ public class UsuarioController extends HttpServlet {
 
 	}
 
-	private void listar(HttpServletRequest request, HttpServletResponse response) {
-
-		request.setAttribute("usuarios", usuarioDAO.getAll());
+	public void listar(HttpServletRequest request, HttpServletResponse response) {
+		boolean visible  = Boolean.parseBoolean(request.getParameter("visible"));
+		request.setAttribute("usuarios", usuarioDAO.getAllVisible(visible));
 		view = VIEW_INDEX;
 
 	}
 
-	private void detalle(HttpServletRequest request, HttpServletResponse response) {
+	public void detalle(HttpServletRequest request, HttpServletResponse response) {
 
 		String sid = request.getParameter("id");
 		int id = Integer.parseInt(sid);
-
 		Usuario u = usuarioDAO.getById(id);
+		
+		request.setAttribute("roles",rolDAO.getAll());
 		request.setAttribute("user", u);
 		view = VIEW_FORM;
 
 	}
 
-	private void buscar(HttpServletRequest request, HttpServletResponse response) {
+	public void buscar(HttpServletRequest request, HttpServletResponse response) {
 		String buscar = request.getParameter("buscar");
 		request.setAttribute("usuarios", usuarioDAO.getAllByName(buscar));
 		view = VIEW_INDEX;
