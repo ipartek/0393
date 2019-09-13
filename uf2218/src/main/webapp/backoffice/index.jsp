@@ -20,16 +20,16 @@
 		</div>
 		<div class="col-3">
 			<div class="jumbotron bg-primary p-4">
-				<h3 class="text-light">${nUsuarios} <fmt:message key="menu.usuarios" /> <i class="fas fa-user"></i></h3>
+				<h3 class="text-light">${nUsuariosActivos} <fmt:message key="menu.usuarios" /> <i class="fas fa-user"></i></h3>
 				<br>
-				<a class="text-light" href="backoffice/usuarios?op=<%=UsuarioController.OP_LISTAR%>"><fmt:message key="backoffice.detalles" /> >></a>
+				<a class="text-light" href="backoffice/usuarios?op=<%=UsuarioController.OP_LISTAR%>&visible=true"><fmt:message key="backoffice.detalles" /> >></a>
 			</div>
 		</div>
 		<div class="col-3">
 			<div class="jumbotron bg-warning p-4">
-				<h3 class="text-light">${nUsuarios} <fmt:message key="menu.usuarios" /> <i class="fas fa-user"></i></h3>
+				<h3 class="text-light">${nUsuariosEliminados} <fmt:message key="menu.usuarios" /> <i class="fas fa-user"></i></h3>
 				<br>
-				<a class="text-light" href="backoffice/usuarios?op=<%=UsuarioController.OP_LISTAR%>"><fmt:message key="backoffice.detalles" /> >></a>
+				<a class="text-light" href="backoffice/usuarios?op=<%=UsuarioController.OP_LISTAR%>&visible=false"><fmt:message key="backoffice.detalles" /> >></a>
 			</div>
 		</div>
 	</div>

@@ -48,13 +48,7 @@ public class UsuarioDAO {
 			// Ejecutamos la sentencia SQL y obtenemos el resultado
 			try (ResultSet rs = pst.executeQuery()) {
 				if (rs.next()) {
-					usuario = new Usuario();
-					usuario.setId(rs.getInt("id"));
-					usuario.setNombre(rs.getString("nombre"));
-					usuario.setContrasenya(rs.getString("contrasenya"));
-					usuario.setIdRol(rs.getInt("id_rol"));
-					usuario.setfCreacion(rs.getString("fecha_creacion"));
-					usuario.setfBaja(rs.getString("fecha_eliminacion"));
+					usuario = mapper(rs);
 				}
 			}
 
@@ -96,12 +90,17 @@ public class UsuarioDAO {
 	public ArrayList<Usuario> getAllVisible(boolean isVisible) {
 
 		ArrayList<Usuario> lista = new ArrayList<Usuario>();
-		String sql = "SELECT * FROM usuario ORDER BY id DESC LIMIT 500";
+		String sql = "";
+
+		if (isVisible) {
+			sql = "SELECT * FROM usuario WHERE fecha_eliminacion IS NULL ORDER BY id DESC LIMIT 500";
+		} else {
+			sql = "SELECT * FROM usuario WHERE fecha_eliminacion IS NOT NULL ORDER BY id DESC LIMIT 500";
+		}
 
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement pst = con.prepareStatement(sql);
 				ResultSet rs = pst.executeQuery()) {
-
 			while (rs.next()) {
 				lista.add(mapper(rs));
 			}
@@ -172,22 +171,19 @@ public class UsuarioDAO {
 	public boolean modificar(Usuario pojo) throws SQLException {
 		boolean resultado = false;
 
-		String sql = "UPDATE usuario SET nombre = ?, contrasenya = ?, id_rol = ?, fecha_creacion = ?, fecha_eliminacion = ? WHERE id = ?;";
+		String sql = "UPDATE usuario SET nombre = ?, contrasenya = ?, id_rol = ?  WHERE id = ?;";
 
 		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
 
 			pst.setString(1, pojo.getNombre());
 			pst.setString(2, pojo.getContrasenya());
-			pst.setString(3, pojo.getContrasenya());
-			pst.setString(4, pojo.getContrasenya());
-			pst.setString(5, pojo.getContrasenya());
-			pst.setInt(6, pojo.getId());
+			pst.setInt(3, pojo.getIdRol());
+			pst.setInt(4, pojo.getId());
 
 			int affectedRows = pst.executeUpdate();
 			if (affectedRows == 1) {
 				resultado = true;
 			}
-
 		}
 		return resultado;
 	}
@@ -217,8 +213,8 @@ public class UsuarioDAO {
 		u.setNombre(rs.getString("nombre"));
 		u.setContrasenya(rs.getString("contrasenya"));
 		u.setIdRol(rs.getInt("id_rol"));
-		u.setfCreacion(rs.getString("fecha_creacion"));
-		u.setfBaja(rs.getString("fecha_eliminacion"));
+		u.setfCreacion(rs.getTimestamp("fecha_creacion"));
+		u.setfBaja(rs.getTimestamp("fecha_eliminacion"));
 		return u;
 	}
 }

@@ -7,27 +7,27 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.ipartek.formacion.model.ConnectionManager;
-import com.ipartek.formacion.model.pojo.Categoria;
+import com.ipartek.formacion.model.pojo.Rol;
 
-public class CategoriaDAO {
+public class RolDAO {
 
-	private static CategoriaDAO INSTANCE = null;
+	private static RolDAO INSTANCE = null;
 
-	private CategoriaDAO() {
+	private RolDAO() {
 		super();
 	}
 
-	public static CategoriaDAO getInstance() {
+	public static RolDAO getInstance() {
 		if (INSTANCE == null) {
-			INSTANCE = new CategoriaDAO();
+			INSTANCE = new RolDAO();
 		}
 		return INSTANCE;
 	}
 
-	public ArrayList<Categoria> getAll() {
+	public ArrayList<Rol> getAll() {
 
-		ArrayList<Categoria> lista = new ArrayList<Categoria>();
-		String sql = "SELECT `id`, `nombre` FROM `categoria` ORDER BY `id` DESC LIMIT 500";
+		ArrayList<Rol> lista = new ArrayList<Rol>();
+		String sql = "SELECT `id`, `nombre` FROM `rol` ORDER BY `id` DESC LIMIT 500";
 
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement pst = con.prepareStatement(sql);
@@ -43,9 +43,9 @@ public class CategoriaDAO {
 		return lista;
 	}
 
-	public boolean crear(Categoria pojo) throws SQLException {
+	public boolean crear(Rol pojo) throws SQLException {
 		boolean resultado = false;
-		String sql = "INSERT INTO categoria (nombre) VALUES (?);";
+		String sql = "INSERT INTO rol (nombre) VALUES (?);";
 
 		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
 
@@ -60,9 +60,9 @@ public class CategoriaDAO {
 		return resultado;
 	}
 
-	public Categoria getById(int id) {
-		Categoria categoria = new Categoria();
-		String sql = "SELECT * FROM categoria WHERE id = ? ;";
+	public Rol getById(int id) {
+		Rol rol = new Rol();
+		String sql = "SELECT * FROM rol WHERE id = ? ;";
 
 		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
 
@@ -71,35 +71,35 @@ public class CategoriaDAO {
 
 			try (ResultSet rs = pst.executeQuery()) {
 				if (rs.next()) {
-					categoria = mapper(rs);
+					rol = mapper(rs);
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return categoria;
+		return rol;
 	}
 
-	public Categoria getByName(String nombre) {
-		Categoria categoria = new Categoria();
-		String sql = "SELECT * FROM categoria WHERE nombre LIKE '%" + nombre + "%';";
+	public Rol getByName(String nombre) {
+		Rol rol = new Rol();
+		String sql = "SELECT * FROM rol WHERE nombre LIKE '%" + nombre + "%';";
 
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement pst = con.prepareStatement(sql);
 				ResultSet rs = pst.executeQuery()) {
 			if (rs.next()) {
-				categoria = mapper(rs);
+				rol = mapper(rs);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return categoria;
+		return rol;
 	}
 
-	public boolean modificar(Categoria pojo) throws SQLException {
+	public boolean modificar(Rol pojo) throws SQLException {
 		boolean resultado = false;
 
-		String sql = "UPDATE categoria SET nombre = ? WHERE id = ?;";
+		String sql = "UPDATE rol SET nombre = ? WHERE id = ?;";
 
 		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
 
@@ -117,7 +117,7 @@ public class CategoriaDAO {
 
 	public boolean delete(int id) {
 		boolean resultado = false;
-		String sql = "DELETE FROM categoria WHERE id = ?;";
+		String sql = "DELETE FROM rol WHERE id = ?;";
 
 		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 
@@ -134,10 +134,10 @@ public class CategoriaDAO {
 		return resultado;
 	}
 
-	private Categoria mapper(ResultSet rs) throws SQLException {
-		Categoria c = new Categoria();
-		c.setId(rs.getInt("id"));
-		c.setNombre(rs.getString("nombre"));
-		return c;
+	private Rol mapper(ResultSet rs) throws SQLException {
+		Rol r = new Rol();
+		r.setId(rs.getInt("id"));
+		r.setNombre(rs.getString("nombre"));
+		return r;
 	}
 }

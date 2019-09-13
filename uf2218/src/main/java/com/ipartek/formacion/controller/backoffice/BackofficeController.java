@@ -27,7 +27,8 @@ public class BackofficeController extends HttpServlet {
 			throws ServletException, IOException {
 
 		request.setAttribute("nVideos", VideoDAO.getInstance().getAll().size());
-		request.setAttribute("nUsuariosActivos", UsuarioDAO.getInstance().getAll().size());
+		request.setAttribute("nUsuariosActivos", UsuarioDAO.getInstance().getAllVisible(true).size());
+		request.setAttribute("nUsuariosEliminados", UsuarioDAO.getInstance().getAllVisible(false).size());
 
 		// request interna
 		request.getRequestDispatcher("index.jsp").forward(request, response);

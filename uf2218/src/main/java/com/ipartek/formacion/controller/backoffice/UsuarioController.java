@@ -14,6 +14,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 
 import com.ipartek.formacion.controller.pojo.Alert;
+import com.ipartek.formacion.model.dao.RolDAO;
 import com.ipartek.formacion.model.dao.UsuarioDAO;
 import com.ipartek.formacion.model.pojo.Usuario;
 
@@ -175,7 +176,14 @@ public class UsuarioController extends HttpServlet {
 
 	private void listar(HttpServletRequest request, HttpServletResponse response) {
 
-		request.setAttribute("usuarios", usuarioDAO.getAll());
+		String sVisible = request.getParameter("visible");
+
+		if (sVisible != null) {
+			boolean visible = Boolean.parseBoolean(sVisible);
+			request.setAttribute("usuarios", usuarioDAO.getAllVisible(visible));
+		} else {
+			request.setAttribute("usuarios", usuarioDAO.getAll());
+		}
 		view = VIEW_INDEX;
 	}
 
@@ -184,6 +192,7 @@ public class UsuarioController extends HttpServlet {
 		int id = Integer.parseInt(request.getParameter("id"));
 
 		Usuario u = usuarioDAO.getById(id);
+		request.setAttribute("roles", RolDAO.getInstance().getAll());
 		request.setAttribute("usuario", u);
 		view = VIEW_FORM;
 	}

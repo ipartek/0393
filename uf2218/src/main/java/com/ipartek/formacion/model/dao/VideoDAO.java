@@ -55,7 +55,7 @@ public class VideoDAO {
 	 * 
 	 * @param isVisible boolean que determina si se obtienen los videos publicados u
 	 *                  ocultos true = visibles, false = ocultos
-	 *                  
+	 * 
 	 * @return lista de videos publicados u ocultos
 	 */
 
@@ -63,32 +63,18 @@ public class VideoDAO {
 
 		ArrayList<Video> lista = new ArrayList<Video>();
 		String sql;
-		
-		if(isVisible) {
-			sql = "SELECT v.id as 'id_video', "
-					+ "v.nombre as 'nombre_video', "
-					+ "v.codigo as 'codigo', "
-					+ "u.id as 'id_usuario', "
-					+ "u.nombre as 'nombre_usuario', "
-					+ "c.id as 'id_categoria', "
-					+ "c.nombre as 'nombre_categoria' "
-					+ "FROM "
-					+ "video as v, usuario as u, categoria as c "
-					+ "WHERE "
-					+ "v.id_usuario = u.id AND v.id_categoria = c.id AND u.fecha_eliminacion != NULL"
+
+		if (isVisible) {
+			sql = "SELECT v.id as 'id_video', " + "v.nombre as 'nombre_video', " + "v.codigo as 'codigo', "
+					+ "u.id as 'id_usuario', " + "u.nombre as 'nombre_usuario', " + "c.id as 'id_categoria', "
+					+ "c.nombre as 'nombre_categoria' " + "FROM " + "video as v, usuario as u, categoria as c "
+					+ "WHERE " + "v.id_usuario = u.id AND v.id_categoria = c.id AND u.fecha_eliminacion IS NULL "
 					+ "ORDER BY 'id_video' DESC LIMIT 500;";
-		}else {
-			sql = "SELECT v.id as 'id_video', "
-					+ "v.nombre as 'nombre_video', "
-					+ "v.codigo as 'codigo', "
-					+ "u.id as 'id_usuario', "
-					+ "u.nombre as 'nombre_usuario', "
-					+ "c.id as 'id_categoria', "
-					+ "c.nombre as 'nombre_categoria' "
-					+ "FROM "
-					+ "video as v, usuario as u, categoria as c "
-					+ "WHERE "
-					+ "v.id_usuario = u.id AND v.id_categoria = c.id  AND u.fecha_eliminacion = NULL"
+		} else {
+			sql = "SELECT v.id as 'id_video', " + "v.nombre as 'nombre_video', " + "v.codigo as 'codigo', "
+					+ "u.id as 'id_usuario', " + "u.nombre as 'nombre_usuario', " + "c.id as 'id_categoria', "
+					+ "c.nombre as 'nombre_categoria' " + "FROM " + "video as v, usuario as u, categoria as c "
+					+ "WHERE " + "v.id_usuario = u.id AND v.id_categoria = c.id  AND u.fecha_eliminacion IS NOT NULL "
 					+ "ORDER BY 'id_video' DESC LIMIT 500;";
 		}
 

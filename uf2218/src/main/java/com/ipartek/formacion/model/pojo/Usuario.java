@@ -1,5 +1,7 @@
 package com.ipartek.formacion.model.pojo;
 
+import java.util.Date;
+
 public class Usuario {
 
 	// Atributos
@@ -7,8 +9,8 @@ public class Usuario {
 	private String nombre;
 	private String contrasenya;
 	private int idRol;
-	private String fCreacion;
-	private String fBaja;
+	private Date fCreacion;
+	private Date fBaja;
 
 	// Constructores
 	public Usuario() {
@@ -17,8 +19,8 @@ public class Usuario {
 		this.nombre = "";
 		this.contrasenya = "";
 		this.idRol = 2;
-		this.fCreacion = "";
-		this.fBaja = "";
+		this.fCreacion = null;
+		this.fBaja = null;
 	}
 
 	public Usuario(int id) {
@@ -26,15 +28,14 @@ public class Usuario {
 		this.id = id;
 	}
 
-	public Usuario(int pId, String pNombre, String pContrasenya, int pIdRol, String pFechaCreacion,
-			String pFechaEliminacion) {
+	public Usuario(int pId, String pNombre, String pContrasenya, int pIdRol, Date pFechaCreacion, Date pFechaBaja) {
 		super();
 		setId(pId);
 		setNombre(pNombre);
 		setContrasenya(pContrasenya);
 		setIdRol(pIdRol);
 		setfCreacion(pFechaCreacion);
-		setfBaja(pFechaEliminacion);
+		setfBaja(pFechaBaja);
 	}
 
 	// Getters & Setters
@@ -70,19 +71,19 @@ public class Usuario {
 		this.idRol = idRol;
 	}
 
-	public String getfCreacion() {
+	public Date getfCreacion() {
 		return fCreacion;
 	}
 
-	public void setfCreacion(String fCreacion) {
+	public void setfCreacion(Date fCreacion) {
 		this.fCreacion = fCreacion;
 	}
 
-	public String getfBaja() {
+	public Date getfBaja() {
 		return fBaja;
 	}
 
-	public void setfBaja(String fBaja) {
+	public void setfBaja(Date fBaja) {
 		this.fBaja = fBaja;
 	}
 

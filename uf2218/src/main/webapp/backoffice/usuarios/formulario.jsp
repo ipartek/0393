@@ -24,20 +24,22 @@
 					<label for="contrasenya">Contraseña:</label>
 					<input type="text" name="contrasenya" value="${usuario.contrasenya}" class="form-control">
 				</div>
-				<label for="categoria">Rol: </label>
-				<select class="custom-select mb-3" name="categoria" id="categoria">
+				<label for="rol">Rol: </label>
+				<select class="custom-select mb-3" name="rol" id="rol">
 					<option value="-1">Elige un rol...</option>
 					<c:forEach items="${roles}" var="r">
-						<option value="${r.id}" ${(r.id == video.usuario.idRol)?"selected":""}>${r.nombre}</option>
+						<option value="${r.id}" ${(r.id == usuario.idRol)?"selected":""}>${r.nombre}</option>
 					</c:forEach>
 				</select>
 				<div class="form-group">
 					<label for="fCreacion">Fecha creación del Usuario:</label>
-					<input type="text" name="fCreacion" value="${usuario.fCreacion}" readonly class="form-control">
+					<fmt:formatDate value="${usuario.fCreacion}" var="fFormateada" pattern="dd-MM-yyyy HH:mm:ss"/>
+					<input type="text" name="fCreacion" value="${fFormateada}" class="form-control" readonly>
 				</div>
 				<div class="form-group">
 					<label for="fBaja">Fecha baja del Usuario:</label>
-					<input type="text" name="fBaja" value="${usuario.fBaja}" readonly class="form-control">
+					<fmt:formatDate value="${usuario.fBaja}" var="fFormateada" pattern="dd-MM-yyyy HH:mm:ss"/>
+					<input type="text" name="fBaja" value="${fFormateada}" class="form-control" readonly>
 				</div>
 			
 				<input type="submit" value="${(usuario.id != -1)?'Modificar':'Crear'}" class="btn btn-outline-primary btn-block">
