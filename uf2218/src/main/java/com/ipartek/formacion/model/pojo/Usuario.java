@@ -1,13 +1,15 @@
 package com.ipartek.formacion.model.pojo;
 
+import java.util.Date;
+
 public class Usuario {
 
 	private int id;
 	private String nombre;
 	private String contrasena;
 
-	private String fechaCreacion;
-	private String fechaEliminacion; // TODO la BD devuelve String?
+	private Date fechaCreacion;
+	private Date fechaEliminacion;
 
 	private Rol rol;
 
@@ -17,8 +19,8 @@ public class Usuario {
 		this.nombre = "";
 		this.contrasena = "";
 		this.rol = new Rol();
-		this.fechaCreacion = "";
-		this.fechaCreacion = "";
+		this.fechaCreacion = new Date();
+		this.fechaCreacion = new Date();
 	}
 
 	public int getId() {
@@ -45,19 +47,19 @@ public class Usuario {
 		this.contrasena = contrasena;
 	}
 
-	public String getFechaCreacion() {
+	public Date getFechaCreacion() {
 		return fechaCreacion;
 	}
 
-	public void setFechaCreacion(String fechaCreacion) {
+	public void setFechaCreacion(Date fechaCreacion) {
 		this.fechaCreacion = fechaCreacion;
 	}
 
-	public String getFechaEliminacion() {
+	public Date getFechaEliminacion() {
 		return fechaEliminacion;
 	}
 
-	public void setFechaEliminacion(String fechaEliminacion) {
+	public void setFechaEliminacion(Date fechaEliminacion) {
 		this.fechaEliminacion = fechaEliminacion;
 	}
 

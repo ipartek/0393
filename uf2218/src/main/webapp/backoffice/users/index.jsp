@@ -23,8 +23,8 @@
 	  			<a href="backoffice/users?op=<%=UserController.OP_DETALLE%>&id=${u.id}">
 	  			<p class="d-inline">${u.id}</p>
 	  			<p class="d-inline">${u.nombre}</p>
-	  			<p class="d-inline">${u.fechaCreacion}</p>
-	  			<p class="d-inline">${u.fechaEliminacion}</p>
+	  			<p class="d-inline"><fmt:formatDate type = "both" value ="${u.fechaCreacion}" /></p>
+	  			<p class="d-inline"><fmt:formatDate type = "both" value ="${u.fechaEliminacion}" /></p>
 	  			<!--  <p class="d-inline">${u.contrasena}</p>  -->
 	  		
 	  	</li>

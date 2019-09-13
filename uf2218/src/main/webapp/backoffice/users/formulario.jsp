@@ -44,19 +44,18 @@
 					
 					</select>
 				</div>	
-				<!-- 
+				
 				<div class="form-group">
-					<label for="codigo">Fecha Creación:</label>
-					<input type="password" name="contrasena" value="${usuarioEditar.fechaCreacion}"					      
-						   class="form-control">
+					<label for="fechaCreacion">Fecha Creación:</label>
+					  
+					<fmt:formatDate type = "both" value = "${usuarioEditar.fechaCreacion}" />  
 				</div>
 				
 				<div class="form-group">
-					<label for="codigo">Fecha Eliminación:</label>
-					<input type="password" name="contrasena" value="${usuarioEditar.fechaEliminacion}"					      
-						   class="form-control">
+					<label for="fechaEliminacion">Fecha Eliminación:</label>
+					<fmt:formatDate type = "both" value = "${usuarioEditar.fechaEliminacion}" />
 				</div>
-				 -->
+				
 				<input type="submit" value="${(usuarioEditar.id != -1)?'Modificar':'Crear'}" class="btn btn-outline-primary  btn-block">
 			
 			</form>

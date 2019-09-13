@@ -16,13 +16,11 @@ public class UsuarioDAO {
 	private static UsuarioDAO INSTANCE = null;
 
 	private static final String SQL_GET_ALL = "SELECT u.id, u.nombre, u.contrasena, u.rol as rol_id, r.nombre as rol_nombre, u.fecha_creacion, u.fecha_eliminacion"
-			+ " FROM usuario as u, rol as r"
-			+ " WHERE u.rol = r.id ORDER BY `id` LIMIT 500;";
+			+ " FROM usuario as u, rol as r" + " WHERE u.rol = r.id ORDER BY `id` LIMIT 500;";
 
 	private static final String SQL_GET_ALL_ACTIVOS = "SELECT u.id, u.nombre, u.contrasena, u.rol as rol_id, r.nombre as rol_nombre, u.fecha_creacion, u.fecha_eliminacion"
 			+ " FROM usuario as u, rol as r"
 			+ " WHERE u.rol = r.id AND fecha_eliminacion IS NULL ORDER BY `id` LIMIT 500;";
-
 
 	private static final String SQL_GET_ALL_ELIMINADOS = "SELECT u.id, u.nombre, u.contrasena, u.rol as rol_id, r.nombre as rol_nombre, u.fecha_creacion, u.fecha_eliminacion"
 			+ " FROM usuario as u, rol as r"
@@ -31,18 +29,16 @@ public class UsuarioDAO {
 	private static final String SQL_GET_ALL_NAME = "SELECT id, nombre, contrasena FROM usuario WHERE nombre LIKE ? ORDER BY nombre ASC LIMIT 500;";
 
 	private static final String SQL_GET_BY_ID = "SELECT u.id, u.nombre, u.contrasena, u.rol as rol_id, r.nombre as rol_nombre, u.fecha_creacion, u.fecha_eliminacion"
-			+ " FROM usuario as u, rol as r"
-			+ " WHERE u.rol = r.id AND u.id = ?";
+			+ " FROM usuario as u, rol as r" + " WHERE u.rol = r.id AND u.id = ?";
 
 	private static final String SQL_NEW_USER = "INSERT INTO usuario (nombre, contrasena) VALUES (?,?);";
 
 	private static final String SQL_DELETE = "UPDATE usuario SET fecha_eliminacion = CURRENT_TIMESTAMP() WHERE id = ?; ";
 
 	// "DELETE FROM usuario WHERE id = ?;"; YA no se usara
-	private static final String SQL_EXISTE = " SELECT id, nombre, contrasena"
-			+ " FROM usuario"
+	private static final String SQL_EXISTE = " SELECT id, nombre, contrasena" + " FROM usuario"
 			+ " WHERE nombre = ? AND contrasena = ? AND fecha_eliminacion IS NULL ;";
-	
+
 	private static final String SQL_UPDATE = "UPDATE usuario SET nombre = ?, contrasena = ?, rol = ? WHERE id = ?; ";
 
 	private UsuarioDAO() {
@@ -67,7 +63,8 @@ public class UsuarioDAO {
 
 		Usuario usuario = null;
 
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(SQL_EXISTE);) {
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_EXISTE);) {
 
 			// sustituir ? por parametros
 			pst.setString(1, nombre);
@@ -92,6 +89,7 @@ public class UsuarioDAO {
 
 	/**
 	 * Devuelve todos los usuarios, tanto los activos, como los "eliminados"
+	 * 
 	 * @return
 	 */
 	public ArrayList<Usuario> getAll() {
@@ -114,9 +112,13 @@ public class UsuarioDAO {
 	}
 
 	/**
-	 * Devuelve una lista de usuarios en funcion de si tienen fecha_eliminacion establecida en la BD<br>
-	 * Si fecha_eliminacion es null, son usuarios activos. Si la fecha_eliminacion esta establecida son usuarios inactivos
-	 * @param isVisible true -> fecha_eliminacion es null (Usuarios activos) / false -> fecha eliminacion != null (usuarios eliminados)
+	 * Devuelve una lista de usuarios en funcion de si tienen fecha_eliminacion
+	 * establecida en la BD<br>
+	 * Si fecha_eliminacion es null, son usuarios activos. Si la fecha_eliminacion
+	 * esta establecida son usuarios inactivos
+	 * 
+	 * @param isVisible true -> fecha_eliminacion es null (Usuarios activos) / false
+	 *                  -> fecha eliminacion != null (usuarios eliminados)
 	 * @return ArrayList<Usuario> lista de usuarios activos o eliminados
 	 */
 	public ArrayList<Usuario> getAllVisible(boolean isVisible) {
@@ -226,8 +228,10 @@ public class UsuarioDAO {
 	}
 
 	/**
-	 * Actualiza en la BD el registro estableciendo la fecha_eliminacion a la fecha en que se ejecuta la update<br>
+	 * Actualiza en la BD el registro estableciendo la fecha_eliminacion a la fecha
+	 * en que se ejecuta la update<br>
 	 * De esta forma con fecha_eliminacion sera "no visible" en getAllVisible()
+	 * 
 	 * @see UsuarioDAO.getAllVisible()
 	 * @param id el identificador que sera actualizado
 	 * @return
@@ -284,8 +288,8 @@ public class UsuarioDAO {
 
 		u.setRol(r);
 
-		u.setFechaCreacion(rs.getString("fecha_creacion"));
-		u.setFechaEliminacion(rs.getString("fecha_eliminacion"));
+		u.setFechaCreacion(rs.getTimestamp("fecha_creacion"));
+		u.setFechaEliminacion(rs.getTimestamp("fecha_eliminacion"));
 		return u;
 	}
 
