@@ -45,23 +45,30 @@ public class LoginController extends HttpServlet {
 		Usuario usuario = usuarioDAO.existe(nombre, contrasenya);
 
 		if (usuario != null) {
+			if (usuario.getFechaEliminacion() != null) {
 
-			HttpSession session = request.getSession();
-			// session.setMaxInactiveInterval( 60 * 5 ); // 5 min
-
-			session.setAttribute("usuario", usuario);
-
-			request.setAttribute("mensaje", new Alert("success", "Ongi Etorri " + usuario.getNombre()));
-
-			String callback = (String) session.getAttribute("callback");
-
-			if (callback == null) {
-
-				response.sendRedirect("backoffice/inicio");
+				request.setAttribute("mensaje", new Alert("danger", "No existe ese usuario"));
+				request.getRequestDispatcher("login.jsp").forward(request, response);
 
 			} else {
-				session.removeAttribute("callback");
-				response.sendRedirect(callback);
+
+				HttpSession session = request.getSession();
+				// session.setMaxInactiveInterval( 60 * 5 ); // 5 min
+
+				session.setAttribute("usuario", usuario);
+
+				request.setAttribute("mensaje", new Alert("success", "Ongi Etorri " + usuario.getNombre()));
+
+				String callback = (String) session.getAttribute("callback");
+
+				if (callback == null) {
+
+					response.sendRedirect("backoffice/inicio");
+
+				} else {
+					session.removeAttribute("callback");
+					response.sendRedirect(callback);
+				}
 			}
 
 		} else {

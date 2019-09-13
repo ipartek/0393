@@ -13,8 +13,16 @@ import com.ipartek.formacion.model.pojo.Usuario;
 public class UsuarioDAO {
 
 	private static UsuarioDAO INSTANCE = null;
-	private static String SQL_VER_USUARIOS_VISIBLES = "SELECT id, nombre, contrasenya FROM usuario WHERE fecha_eliminacion is null  ORDER BY id ASC LIMIT 500";
-	private static String SQL_VER_USUARIOS_NO_VISIBLES = "SELECT id, nombre, contrasenya FROM usuario WHERE fecha_eliminacion is not null  ORDER BY id ASC LIMIT 500";
+	private static String SQL_VER_USUARIOS_VISIBLES = "SELECT id, nombre, contrasenya, id_rol as 'rol', fecha_creacion, fecha_eliminacion FROM usuario WHERE fecha_eliminacion is null  ORDER BY id ASC LIMIT 500";
+	private static String SQL_VER_USUARIOS_NO_VISIBLES = "SELECT id, nombre, contrasenya, id_rol as 'rol', fecha_creacion, fecha_eliminacion FROM usuario WHERE fecha_eliminacion is not null  ORDER BY id ASC LIMIT 500";
+	private static String SQL_USUARIO_EXISTE = "SELECT u.id, u.nombre, u.contrasenya, r.id AS 'rol', u.fecha_creacion, u.fecha_eliminacion FROM usuario AS u, rol AS r WHERE u.id_rol=r.id AND u.nombre = ? AND u.contrasenya = ? ;";
+	private static String SQL_GET_ALL_USERS = "SELECT `id`, `nombre`, `contrasenya`, id_rol AS 'rol', fecha_creacion, fecha_eliminacion FROM `usuario` ORDER BY `id` ASC LIMIT 500";
+	private static String SQL_GET_ALL_USERS_BY_NAME = "SELECT id, nombre, contrasenya,id_rol AS 'rol', fecha_creacion, fecha_eliminacion FROM usuario WHERE nombre LIKE ? ORDER BY id ASC LIMIT 500";
+	private static String SQL_GET_USER_BY_ID = "SELECT id, nombre, contrasenya, id_rol AS 'rol', fecha_creacion, fecha_eliminacion FROM usuario WHERE id = ? ;";
+	private static String SQL_UPDATE_USER = "UPDATE usuario SET nombre = ?, contrasenya = ? WHERE  id = ?;";
+	private static String SQL_INSERT_USER = "INSERT INTO usuario (nombre, contrasenya) VALUES (?,?);";
+	// private static String SQL_DELETE_USER = "DELETE FROM usuario WHERE id = ?;";
+	private static String SQL_DELETE_USER = "UPDATE usuario SET fecha_eliminacion = current_timestamp() WHERE  id = ?;";
 
 	private UsuarioDAO() {
 		super();
@@ -31,8 +39,8 @@ public class UsuarioDAO {
 	}
 
 	/**
-	 * Compruab si existe el usuario en la base datos, lo busca por su nombre y
-	 * conetrsenya
+	 * Compruaba si existe el usuario en la base datos, lo busca por su nombre y
+	 * conetrasenya
 	 * 
 	 * @param nombre
 	 * @param contrasenya
@@ -42,11 +50,8 @@ public class UsuarioDAO {
 
 		Usuario usuario = null;
 
-		// String sql = " SELECT id, nombre, contrasenya " + " FROM usuario " + " WHERE
-		// nombre = ? AND contrasenya = ? ;";
-		String sql = "SELECT u.id, u.nombre, u.contrasenya, r.id AS 'rol' FROM usuario AS u, rol AS r WHERE u.id_rol=r.id AND u.nombre = ? AND u.contrasenya = ? ;";
-
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_USUARIO_EXISTE);) {
 
 			// sustituir ? por parametros
 			pst.setString(1, nombre);
@@ -61,6 +66,8 @@ public class UsuarioDAO {
 					usuario.setNombre(rs.getString("nombre"));
 					usuario.setContrasenya(rs.getString("contrasenya"));
 					usuario.setRol(rs.getInt("rol"));
+					usuario.setFechaCreacion(rs.getTimestamp("fecha_creacion"));
+					usuario.setFechaEliminacion(rs.getTimestamp("fecha_eliminacion"));
 				}
 			}
 
@@ -98,10 +105,9 @@ public class UsuarioDAO {
 	public ArrayList<Usuario> getAll() {
 
 		ArrayList<Usuario> lista = new ArrayList<Usuario>();
-		String sql = "SELECT `id`, `nombre`, `contrasenya` FROM `usuario` ORDER BY `id` ASC LIMIT 500";
 
 		try (Connection con = ConnectionManager.getConnection();
-				PreparedStatement pst = con.prepareStatement(sql);
+				PreparedStatement pst = con.prepareStatement(SQL_GET_ALL_USERS);
 				ResultSet rs = pst.executeQuery()) {
 
 			while (rs.next()) {
@@ -118,9 +124,9 @@ public class UsuarioDAO {
 	public ArrayList<Usuario> getAllByName(String nombre) {
 
 		ArrayList<Usuario> lista = new ArrayList<Usuario>();
-		String sql = "SELECT id, nombre, contrasenya FROM usuario WHERE nombre LIKE ? ORDER BY id ASC LIMIT 500";
 
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_GET_ALL_USERS_BY_NAME);) {
 
 			pst.setString(1, "%" + nombre + "%");
 
@@ -143,14 +149,17 @@ public class UsuarioDAO {
 		u.setId(rs.getInt("id"));
 		u.setNombre(rs.getString("nombre"));
 		u.setContrasenya(rs.getString("contrasenya"));
+		u.setRol(rs.getInt("rol"));
+		u.setFechaCreacion(rs.getTimestamp("fecha_creacion"));
+		u.setFechaEliminacion(rs.getTimestamp("fecha_eliminacion"));
 		return u;
 	}
 
 	public Usuario getById(int id) {
 		Usuario usuario = new Usuario();
-		String sql = "SELECT id, nombre, contrasenya FROM usuario WHERE id = ? ;";
 
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_GET_USER_BY_ID)) {
 
 			// sustituyo la 1º ? por la variable id
 			pst.setInt(1, id);
@@ -170,9 +179,8 @@ public class UsuarioDAO {
 	public boolean modificar(Usuario pojo) throws Exception {
 		boolean resultado = false;
 
-		String sql = "UPDATE usuario SET nombre = ?, contrasenya = ? WHERE  id = ?;";
-
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_UPDATE_USER)) {
 
 			pst.setString(1, pojo.getNombre());
 			pst.setString(2, pojo.getContrasenya());
@@ -189,10 +197,9 @@ public class UsuarioDAO {
 
 	public Usuario crear(Usuario pojo) throws Exception {
 		// boolean resultado = false;
-		String sql = "INSERT INTO usuario (nombre, contrasenya) VALUES (?,?);";
 
 		try (Connection con = ConnectionManager.getConnection();
-				PreparedStatement pst = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+				PreparedStatement pst = con.prepareStatement(SQL_INSERT_USER, Statement.RETURN_GENERATED_KEYS)) {
 
 			pst.setString(1, pojo.getNombre());
 			pst.setString(2, pojo.getContrasenya());
@@ -213,9 +220,9 @@ public class UsuarioDAO {
 
 	public boolean delete(int id) {
 		boolean resultado = false;
-		String sql = "DELETE FROM usuario WHERE id = ?;";
 
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_DELETE_USER);) {
 
 			pst.setInt(1, id);
 

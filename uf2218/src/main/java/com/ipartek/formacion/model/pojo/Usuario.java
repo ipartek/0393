@@ -1,11 +1,15 @@
 package com.ipartek.formacion.model.pojo;
 
+import java.util.Date;
+
 public class Usuario {
 
 	private int id;
 	private String nombre;
 	private String contrasenya;
 	private int rol;
+	private Date fechaCreacion;
+	private Date fechaEliminacion;
 
 	public Usuario() {
 		super();
@@ -47,12 +51,36 @@ public class Usuario {
 		this.rol = rol;
 	}
 
-	public Usuario(int id, String nombre, String contrasenya, int rol) {
+	public Date getFechaCreacion() {
+		return fechaCreacion;
+	}
+
+	public void setFechaCreacion(Date fechaCreacion) {
+		this.fechaCreacion = fechaCreacion;
+	}
+
+	public Date getFechaEliminacion() {
+		return fechaEliminacion;
+	}
+
+	public void setFechaEliminacion(Date fechaEliminacion) {
+		this.fechaEliminacion = fechaEliminacion;
+	}
+
+	public Usuario(int id, String nombre, String contrasenya, int rol, Date fechaCreacion, Date fechaEliminacion) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
 		this.contrasenya = contrasenya;
 		this.rol = rol;
+		this.fechaCreacion = fechaCreacion;
+		this.fechaEliminacion = fechaEliminacion;
+	}
+
+	@Override
+	public String toString() {
+		return "Usuario [id=" + id + ", nombre=" + nombre + ", contrasenya=" + contrasenya + ", rol=" + rol
+				+ ", fechaCreacion=" + fechaCreacion + ", fechaEliminacion=" + fechaEliminacion + "]";
 	}
 
 }

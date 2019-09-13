@@ -1,6 +1,7 @@
 package com.ipartek.formacion.controller.backoffice;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -16,7 +17,9 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 
 import com.ipartek.formacion.controller.pojo.Alert;
+import com.ipartek.formacion.model.dao.RolDAO;
 import com.ipartek.formacion.model.dao.UsuarioDAO;
+import com.ipartek.formacion.model.pojo.Rol;
 import com.ipartek.formacion.model.pojo.Usuario;
 
 /**
@@ -26,6 +29,7 @@ import com.ipartek.formacion.model.pojo.Usuario;
 public class UsuariosController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static UsuarioDAO usuarioDAO = UsuarioDAO.getInstance();
+	private static RolDAO rolDAO = RolDAO.getInstance();
 	public static final String VIEW_INDEX = "usuarios/index.jsp";
 	public static final String VIEW_FORM = "usuarios/formulario.jsp";
 	public static String view = VIEW_INDEX;
@@ -180,7 +184,14 @@ public class UsuariosController extends HttpServlet {
 
 	private void listar(HttpServletRequest request, HttpServletResponse response) {
 
-		request.setAttribute("usuarios", usuarioDAO.getAll());
+		String visible = request.getParameter("visible");
+
+		if ("1".equals(visible)) {
+			request.setAttribute("usuarios", usuarioDAO.getAllVisible(true));
+		} else {
+			request.setAttribute("usuarios", usuarioDAO.getAllVisible(false));
+		}
+
 		view = VIEW_INDEX;
 
 	}
@@ -200,6 +211,12 @@ public class UsuariosController extends HttpServlet {
 
 		Usuario u = usuarioDAO.getById(id);
 		request.setAttribute("usuario", u);
+
+		ArrayList<Rol> roles = new ArrayList<Rol>();
+		roles = rolDAO.getAll();
+
+		request.setAttribute("roles", roles);
+
 		view = VIEW_FORM;
 
 		HttpSession session = request.getSession();
