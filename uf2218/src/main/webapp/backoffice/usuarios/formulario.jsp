@@ -4,54 +4,53 @@
 <%@include file="../../includes/navbar.jsp"%>
 
 	<h1>Detalle Usuario</h1>
-	
-	<a href="backoffice/usuarios" class="mb-3 btn btn-outline-primary">Atrás</a>
-	
+
 	<div class="row">
 		<div class="col">
 		
 			<%@include file="../../includes/mensaje.jsp"%>
 			
-			<form action="backoffice/usuarios" method="post" class="mb-2 w-25">
+			<form action="backoffice/usuarios" method="post" class="mb-2">
 			
 				<input type="hidden" name="op" value="<%=UsuarioController.OP_GUARDAR%>">
 			
 				<div class="form-group">	
 					<label for="id">Id:</label>
-					<input type="text" name="id" value="${usuario.id}" readonly class="form-control">
+					<input type="text" name="id" value="${usuarioEditar.id}" readonly class="form-control">
 				</div>
 				
 				<div class="form-group">
 					<label for="nombre">Nombre:</label>
-					<input type="text" name="nombre" value="${usuario.nombre}"
+					<input type="text" name="nombre" value="${usuarioEditar.nombre}"
+					       placeholder="Mínimio 3 máximo 150"
 					       class="form-control">
 				</div>
 				
 				<div class="form-group">
-					<label for="contrasena">Contraseña:</label>
-					<input type="password" name="contrasena" value="${usuario.contrasena}"
+					<label for="codigo">Password:</label>
+					<input type="password" name="contrasena" value="${usuarioEditar.contrasena}"					      
 						   class="form-control">
-				</div>
+				</div>	
 				
 				<div class="form-group">
-					<label for="rol">Rol:</label>
-					<input type="text" name="rol" value="${usuario.rol}" class="form-control">
-				</div>
+					<label for="fecha_creacion">Fecha Creación:</label>
+					<fmt:formatDate value="${usuarioEditar.fechaCreacion}" var="fecha1"  pattern="dd-MM-yyyy HH:mm:ss" />
+					<input type="text" name="fecha_creacion" value="${fecha1}" class="form-control" disabled>
+				</div>	
 				
-				
-					<div class="form-group">
-						<label for="fecha_eliminacion">Fecha Eliminación:</label>
-						<input type="text" name="fecha_eliminacion" value="${usuario.fecha_eliminacion}" class="form-control">
-					</div>
-				<c:if test="${not empty usuario.fecha_eliminacion}"></c:if>
-					
+				<div class="form-group">
+					<label for="fecha_eliminacion">Fecha Eliminación:</label>
+					<fmt:formatDate value="${usuarioEditar.fechaEliminacion}" var="fecha2"  pattern="dd-MM-yyyy HH:mm:ss" />
+					<input type="text" name="fecha_eliminacion" value="${fecha2}" class="form-control" disabled>
+				</div>	
 			
-				<input type="submit" value="${(usuario.id != -1)?'Modificar':'Crear'}" class="btn btn-outline-primary btn-block">
+				<input type="submit" value="${(usuarioEditar.id != -1)?'Modificar':'Crear'}" class="btn btn-outline-primary  btn-block">
 			
 			</form>
 			
-			<c:if test="${usuario.id != -1}">
+			<c:if test="${usuarioEditar.id != -1}">
 			
+				
 				<!-- Button trigger modal -->
 				<button type="button" class="btn btn-outline-danger btn-block" data-toggle="modal" data-target="#exampleModal">
 				  Eliminar
@@ -62,7 +61,7 @@
 				  <div class="modal-dialog" role="document">
 				    <div class="modal-content">
 				      <div class="modal-header">
-				        <h5 class="modal-title" id="exampleModalLabel">¿Estas Seguro de ELIMINAR el usuario?</h5>
+				        <h5 class="modal-title" id="exampleModalLabel">¿Estás Seguro de ELIMINAR el registro?</h5>
 				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				          <span aria-hidden="true">&times;</span>
 				        </button>
@@ -74,15 +73,21 @@
 				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 			        	<form action="backoffice/usuarios" method="post">	
 							<input type="hidden" name="op" value="<%=UsuarioController.OP_ELIMINAR%>">
-							<input type="hidden" name="id" value="${usuario.id}" readonly>			
+							<input type="hidden" name="id" value="${usuarioEditar.id}" readonly>			
 							<input type="submit" value="Eliminar" class="btn btn-danger btn-block">	
 						</form>
 				      </div>
 				    </div>
 				  </div>
-				</div>				
-			</c:if>				
+				</div>
+				
+				
+			</c:if>	
+			
+			
+			
 		</div>
+		
 	</div>
 	
 <%@include file="../../includes/footer.jsp"%>

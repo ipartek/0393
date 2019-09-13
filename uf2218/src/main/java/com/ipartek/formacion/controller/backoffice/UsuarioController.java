@@ -191,13 +191,18 @@ public class UsuarioController extends HttpServlet {
 		
 	}
 	
+	
+	
+	
+	
+	
 	private void detalle(HttpServletRequest request, HttpServletResponse response) {
 		
 		String sid = request.getParameter("id");
 		int id = Integer.parseInt(sid);
 		
 		Usuario u = usuarioDAO.getById(id);
-		request.setAttribute("usuario", u );
+		request.setAttribute("usuarioEditar", u );
 		view = VIEW_FORM;
 		
 	}
