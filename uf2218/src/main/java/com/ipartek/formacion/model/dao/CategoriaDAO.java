@@ -20,6 +20,8 @@ public class CategoriaDAO {
 
 	private static String SQL_NEW = "INSERT INTO categoria (nombre) VALUES (?);";
 
+	private static String SQL_UPDATE = "UPDATE categoria SET nombre = ? WHERE id = ?";
+
 	public static synchronized CategoriaDAO getInstance() {
 		if (INSTANCE == null) {
 			INSTANCE = new CategoriaDAO();
@@ -51,6 +53,29 @@ public class CategoriaDAO {
 		}
 
 		return categorias;
+	}
+
+	public Categoria getById(int id) {
+
+		Categoria categoria = new Categoria();
+
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_GET_BY_ID)) {
+
+			// sustituyo la 1º ? por la variable id
+			pst.setInt(1, id);
+
+			try (ResultSet rs = pst.executeQuery()) {
+				if (rs.next()) {
+
+					categoria = mapper(rs);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return categoria;
 	}
 
 	public Categoria create(Categoria pojo) {
@@ -87,6 +112,25 @@ public class CategoriaDAO {
 		c.setNombre(rs.getString("nombre"));
 
 		return c;
+	}
+
+	public boolean modificar(Categoria pojo) throws Exception {
+		boolean resultado = false;
+
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_UPDATE)) {
+
+			pst.setString(1, pojo.getNombre());
+
+			pst.setInt(2, pojo.getId());
+
+			int affectedRows = pst.executeUpdate();
+			if (affectedRows == 1) {
+				resultado = true;
+			}
+
+		}
+		return resultado;
 	}
 
 }

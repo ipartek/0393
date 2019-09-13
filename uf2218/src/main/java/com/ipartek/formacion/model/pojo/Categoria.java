@@ -6,6 +6,12 @@ public class Categoria {
 
 	private String nombre;
 
+	public Categoria() {
+		super();
+		this.id = -1;
+		this.nombre = "";
+	}
+
 	public int getId() {
 		return id;
 	}

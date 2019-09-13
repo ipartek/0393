@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.ipartek.formacion.controller.ControladorCrud;
 import com.ipartek.formacion.model.dao.CategoriaDAO;
+import com.ipartek.formacion.model.pojo.Categoria;
 
 /**
  * Servlet implementation class CategoriaController
@@ -44,7 +45,18 @@ public class CategoriaController extends ControladorCrud implements Servlet {
 
 	@Override
 	protected void IrAFormulario(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
+
+		String sid = request.getParameter("id");
+
+		Categoria c = new Categoria();
+		if (sid != null) {
+			int id = Integer.parseInt(sid);
+
+			c = categoriaDAO.getById(id);
+
+		}
+		request.setAttribute("categoria", c);
+		view = VIEW_FORM;
 
 	}
 
@@ -56,8 +68,27 @@ public class CategoriaController extends ControladorCrud implements Servlet {
 
 	@Override
 	protected void guardar(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
 
+		String nombre = request.getParameter("nombre");
+		String sId = request.getParameter("id");
+		int id = Integer.parseInt(sId);
+
+		Categoria c = new Categoria();
+		c.setNombre(nombre);
+
+		if (id == -1) {
+
+			c = categoriaDAO.create(c);
+		} else {
+			try {
+				categoriaDAO.modificar(c);
+			} catch (Exception e) {
+
+				e.printStackTrace();
+			}
+		}
+		request.setAttribute("categoria", c);
+		// TODO revisar metodo
 	}
 
 	@Override
