@@ -14,11 +14,11 @@
 			<li class="nav-item active"><a class="nav-link" href="index.jsp" > <fmt:message key="menu.inicio"/>
 					<span class="sr-only">(current)</span></a>
 			</li>
-			<c:if test="${usuario != null}">
+			<c:if test="${sessionScope.usuario != null}">
 	        	<li class="nav-item active"><a class="nav-link" href="backoffice/inicio">Dashboard</a>
 			</li>
 	        </c:if>
-	        <c:if test="${usuario != null}">
+	        <c:if test="${sessionScope.usuario != null}">
 	        	<li class="nav-item active"><a class="nav-link" href="backoffice/videos"><fmt:message key="menu.video"/></a>
 			</li>
 	        </c:if>
@@ -38,11 +38,11 @@
 		</ul>
 		<ul class="navbar-nav mr-auto">
 		 
-	       	<c:if test="${usuario == null}">
+	       	<c:if test="${sessionScope.usuario == null}">
 	        	<a class="nav-link" href="login.jsp">Login</a>
 	        </c:if>
-	        <c:if test="${usuario != null}">
-	        	<span class="nav-link text-light"><i class="fas fa-user"></i> Hola ${usuario.nombre}</span>
+	        <c:if test="${sessionScope.usuario != null}">
+	        	<span class="nav-link text-light"><i class="fas fa-user"></i> Hola ${sessionScope.usuario.nombre}</span>
 	        	<a class="nav-link" href="logout">Logout</a>
 	        </c:if>		       
 	      
