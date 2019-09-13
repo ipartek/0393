@@ -71,5 +71,4 @@ public abstract class ControladorCrud extends HttpServlet {
 	protected abstract void buscar(HttpServletRequest request, HttpServletResponse response);
 
 	protected abstract void mostrarFormulario(HttpServletRequest request, HttpServletResponse response);
-
 }
