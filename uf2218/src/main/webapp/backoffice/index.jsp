@@ -11,23 +11,23 @@
 	<hr>
 	
 	<div class="row">
-		<div class="col-3">
+		<div class="col">
 			<div class="jumbotron bg-danger p-4">
-				<h3 class="text-light">${nVideos} <fmt:message key="menu.videos" /> <i class="fab fa-youtube"></i></h3>
+				<h3 class="text-light">${nVideos} <fmt:message key="menu.videos" /></h3>
 				<br>
 				<a class="text-light" href="backoffice/videos?op=<%=VideoController.OP_LISTAR%>"><fmt:message key="backoffice.detalles" /> >></a>
 			</div>
 		</div>
-		<div class="col-3">
+		<div class="col">
 			<div class="jumbotron bg-primary p-4">
-				<h3 class="text-light">${nUsuariosActivos} <fmt:message key="menu.usuarios" /> <i class="fas fa-user"></i></h3>
+				<h3 class="text-light">${nUsuariosActivos} <fmt:message key="menu.usuariosactivos" /></h3>
 				<br>
 				<a class="text-light" href="backoffice/usuarios?op=<%=UsuarioController.OP_LISTAR%>&visible=true"><fmt:message key="backoffice.detalles" /> >></a>
 			</div>
 		</div>
-		<div class="col-3">
+		<div class="col">
 			<div class="jumbotron bg-warning p-4">
-				<h3 class="text-light">${nUsuariosEliminados} <fmt:message key="menu.usuarios" /> <i class="fas fa-user"></i></h3>
+				<h3 class="text-light mb-1">${nUsuariosEliminados} <fmt:message key="menu.usuarioseliminados" /></h3>
 				<br>
 				<a class="text-light" href="backoffice/usuarios?op=<%=UsuarioController.OP_LISTAR%>&visible=false"><fmt:message key="backoffice.detalles" /> >></a>
 			</div>

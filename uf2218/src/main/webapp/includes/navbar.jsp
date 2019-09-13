@@ -1,3 +1,4 @@
+<%@page import="com.ipartek.formacion.controller.backoffice.UsuarioController"%>
 <%@page import="com.ipartek.formacion.controller.backoffice.VideoController"%>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 	<a class="navbar-brand" href="#">JEE</a>
@@ -31,9 +32,21 @@
 				</li>
 			</c:if>
 			<li class="nav-item">
-				<a class="nav-link" href="backoffice/usuarios">
-					<fmt:message key="menu.usuarios" />
-				</a>
+				<div class="dropdown">
+					<button class="btn btn-light dropdown-toggle" type="button"
+							id="dropdownMenuButton" data-toggle="dropdown"
+							aria-haspopup="true" aria-expanded="false">
+						<fmt:message key="menu.usuarios" />
+					</button>
+					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						<a class="dropdown-item" href="backoffice/usuarios?op=<%=UsuarioController.OP_LISTAR%>&visible=true">
+							<fmt:message key="menu.usuariosactivos" />
+						</a>
+						<a class="dropdown-item" href="backoffice/usuarios?op=<%=UsuarioController.OP_LISTAR%>&visible=false">
+							<fmt:message key="menu.usuarioseliminados" />
+						</a>
+					</div>
+				</div>
 			</li>
 			<li class="nav-item">
 				<a class="nav-link" href="backoffice/videos">
