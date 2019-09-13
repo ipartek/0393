@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ipartek.formacion.controller.ControladorCrud;
+import com.ipartek.formacion.controller.pojo.Alert;
 import com.ipartek.formacion.model.dao.CategoriaDAO;
 import com.ipartek.formacion.model.pojo.Categoria;
 
@@ -62,7 +63,21 @@ public class CategoriaController extends ControladorCrud implements Servlet {
 
 	@Override
 	protected void eliminar(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
+
+		String sId = request.getParameter("id");
+		try {
+			categoriaDAO.delete(Integer.parseInt(sId));
+			request.setAttribute("mensaje", new Alert("success", "Registro eliminado."));
+		} catch (NumberFormatException e) {
+			
+			e.printStackTrace();
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+		listar(request, response);
+		
+		
 
 	}
 
@@ -74,22 +89,30 @@ public class CategoriaController extends ControladorCrud implements Servlet {
 		int id = Integer.parseInt(sId);
 
 		Categoria c = new Categoria();
+		c.setId(id);
 		c.setNombre(nombre);
 
-		if (id == -1) {
+		
 
-			c = categoriaDAO.create(c);
-		} else {
 			try {
-				categoriaDAO.modificar(c);
-			} catch (Exception e) {
+				
+				if (id == -1) {
+					c = categoriaDAO.create(c);
+					request.setAttribute("mensaje", new Alert("success", "Categoria creada con éxito"));
+			 
+				} else {
+			
+					categoriaDAO.modificar(c);
+					request.setAttribute("mensaje", new Alert("success", "Categoria modificada con éxito"));
+				}	
+			}catch (Exception e) {
 
 				e.printStackTrace();
 			}
-		}
-		request.setAttribute("categoria", c);
-		// TODO revisar metodo
+			request.setAttribute("categoria", c);
+			view = VIEW_FORM;
 	}
+
 
 	@Override
 	protected void buscar(HttpServletRequest request, HttpServletResponse response) {

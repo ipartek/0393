@@ -55,9 +55,9 @@
 				      </div>
 				      <div class="modal-footer">
 				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-			        	<form action="backoffice/users" method="post">	
+			        	<form action="backoffice/categorias" method="post">	
 							<input type="hidden" name="op" value="<%=CategoriaController.OP_ELIMINAR%>">
-							<input type="hidden" name="id" value="${categoria.id}" readonly>			
+							<input type="hidden" name="id" value="${categoria.id}">			
 							<input type="submit" value="Eliminar" class="btn btn-danger btn-block">	
 						</form>
 				      </div>

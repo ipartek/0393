@@ -33,7 +33,7 @@ public class UsuarioDAO {
 
 	private static final String SQL_NEW_USER = "INSERT INTO usuario (nombre, contrasena) VALUES (?,?);";
 
-	private static final String SQL_DELETE = "UPDATE usuario SET fecha_eliminacion = CURRENT_TIMESTAMP() WHERE id = ?; ";
+	private static final String SQL_DELETE_LOGICO = "UPDATE usuario SET fecha_eliminacion = CURRENT_TIMESTAMP() WHERE id = ?; ";
 
 	// "DELETE FROM usuario WHERE id = ?;"; YA no se usara
 	private static final String SQL_EXISTE = " SELECT id, nombre, contrasena, fecha_creacion, fecha_eliminacion"
@@ -80,7 +80,7 @@ public class UsuarioDAO {
 					usuario.setFechaCreacion(rs.getTimestamp("fecha_creacion"));
 					usuario.setFechaEliminacion(rs.getTimestamp("fecha_eliminacion"));
 
-					// TODO devolver mensaje "lo sentimos, usted fue dado de baja"
+					
 				}
 			}
 
@@ -244,7 +244,7 @@ public class UsuarioDAO {
 		boolean resultado = false;
 
 		try (Connection con = ConnectionManager.getConnection();
-				PreparedStatement pst = con.prepareStatement(SQL_DELETE);) {
+				PreparedStatement pst = con.prepareStatement(SQL_DELETE_LOGICO);) {
 
 			pst.setInt(1, id);
 
