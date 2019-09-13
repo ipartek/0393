@@ -24,6 +24,7 @@
 	  <li class="list-group-item">Cookies</li>
 	  <li class="list-group-item">Filtros</li>
 	  <li class="list-group-item">Listeners o escuchadores de eventos</li>
+	  <li class="list-group-item"><a href="ejemplos/transacciones.jsp">Transacciones</a></li>
 	</ul>
     	    	
 <%@include file="includes/footer.jsp"%>   
