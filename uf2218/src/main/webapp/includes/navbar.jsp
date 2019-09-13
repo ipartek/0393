@@ -25,6 +25,9 @@
 	        		<a class="nav-link" href="backoffice/videos">Videos</a>
 	      		</li>
 	      		<li class="nav-item">
+	       			 <a class="nav-link" href="backoffice/categorias">Categorias</a>
+	    		 </li>
+	      		<li class="nav-item">
 	        		<a class="nav-link" href="backoffice/inicio">Dashboard</a>
 	      		</li>			
 	        	<li class="nav-item">	        		

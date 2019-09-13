@@ -17,6 +17,7 @@
 	<div class="row">
 		<div class="col">
 			<h2>Videos visibles</h2>
+			<ul class="list-group">
 			<c:forEach items="${videosVisibles }" var="v">	
 			  	<li class="list-group-item">
 			  		<a href="backoffice/videos?op=<%=VideoController.OP_DETALLE%>&id=${v.id}">
@@ -29,10 +30,12 @@
 			  		<p><i class="fas fa-tag"></i> ${v.categoria.nombre }</p>
 			  	</li>
 	  		</c:forEach>
+	  		</ul>
 		</div>
 		
 		<div class="col">
 			<h2>Videos no visibles</h2>
+			<ul class="list-group">
 			<c:forEach items="${videosNoVisibles }" var="v">	
 			  	<li class="list-group-item">
 			  		<a href="backoffice/videos?op=<%=VideoController.OP_DETALLE%>&id=${v.id}">
@@ -45,6 +48,7 @@
 			  		<p><i class="fas fa-tag"></i> ${v.categoria.nombre }</p>
 			  	</li>
 	  		</c:forEach>
+	  		</ul>
 		</div>
 	</div>
 	
