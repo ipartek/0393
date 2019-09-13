@@ -52,46 +52,37 @@ public class LoginController extends HttpServlet {
 		
 		Usuario usuario = usuarioDAO.existe(nombre, contrasena);
 		
-		
-		
-		if ( usuario != null) {
-			
+		if ( usuario != null) {		
 			
 			HttpSession session = request.getSession();
-			// session.setMaxInactiveInterval( 60 * 5 ); // 5 min
+			
+			if (usuario.getFechaEliminacion() != null) {
+				request.setAttribute("mensaje", new Alert("danger","¡ATENCIÓN! Este usuario ha sido eliminado. Póngase en contacto con su administrador.") );	
+				request.getRequestDispatcher("login.jsp").forward(request, response);
+				
+			}else {		
+				
+				session.setAttribute("usuario", usuario);
+				//session.setAttribute("rol", rol);
+				
+				request.setAttribute("mensaje", new Alert("success","Ongi Etorri " + usuario.getNombre() ) );
+				
+				String callback = (String) session.getAttribute("callback");
+				
+				if ( callback == null ) {				
+					response.sendRedirect("backoffice/inicio");
+					
+				}else {
+					session.removeAttribute("callback");				
+					response.sendRedirect(callback);
+				}
+			} //usuario.getFechaEliminacion() != null)
 			
 			
-			session.setAttribute("usuario", usuario);
-			//session.setAttribute("rol", rol);
-			
-			request.setAttribute("mensaje", new Alert("success","Ongi Etorri " + usuario.getNombre() ) );
-			
-			String callback = (String) session.getAttribute("callback");
-			
-			if ( callback == null ) {				
-				
-				/*
-				ArrayList<Video> listaVideos = videoDAO.getAll();
-				ArrayList<Usuario> listaUsuarios = usuarioDAO.getAll();
-				
-				request.setAttribute("totalUsuarios", listaUsuarios.size());
-				request.setAttribute("totalVideos", listaVideos.size());
-				
-				//request interna
-				request.getRequestDispatcher("backoffice/index.jsp").forward(request, response);
-				
-				*/
-				//redireccion para enviar la url de /login a backoffice/inicio.
-				response.sendRedirect("backoffice/inicio");
-				
-			}else {
-				session.removeAttribute("callback");				
-				response.sendRedirect(callback);
-			}	
 			
 		}else {
 			
-			request.setAttribute("mensaje", new Alert("danger","credenciales no correctas") );			
+			request.setAttribute("mensaje", new Alert("danger","Credenciales no correctas") );			
 			request.getRequestDispatcher("login.jsp").forward(request, response);
 			
 		}	

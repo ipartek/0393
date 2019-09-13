@@ -1,6 +1,6 @@
 package com.ipartek.formacion.model.pojo;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class Usuario {
 
@@ -8,26 +8,26 @@ public class Usuario {
 	private String nombre;
 	private String contrasena;
 	private int rol;
-	private Date fecha_creacion;
-	private Date fecha_eliminacion;	
+	private Date fechaCreacion;
+	private Date fechaEliminacion;	
 
 	public Usuario() {
 		super();
 		this.id = -1;
 		this.nombre = "";
 		this.contrasena = "";
-		this.fecha_creacion = null;
-		this.fecha_eliminacion = null;
+		this.fechaCreacion = null;
+		this.fechaEliminacion = null;
 		this.setRol(-1);
 		
 	}
 
-	public Date getFecha_eliminacion() {
-		return fecha_eliminacion;
+	public Date getFechaEliminacion() {
+		return fechaEliminacion;
 	}
 
-	public void setFecha_eliminacion(Date fecha_eliminacion) {
-		this.fecha_eliminacion = fecha_eliminacion;
+	public void setFechaEliminacion(Date fechaEliminacion) {
+		this.fechaEliminacion = fechaEliminacion;
 	}
 
 	public int getId() {
@@ -60,15 +60,15 @@ public class Usuario {
 	@Override
 	public String toString() {
 		return "Usuario [id=" + id + ", nombre=" + nombre + ", contrasena=" + contrasena + ", rol=" + rol
-				+ ", fecha_creacion=" + fecha_creacion + ", fecha_eliminacion=" + fecha_eliminacion + "]";
+				+ ", fechaCreacion=" + fechaCreacion + ", fechaEliminacion=" + fechaEliminacion + "]";
 	}
 
-	public Date getFecha_creacion() {
-		return fecha_creacion;
+	public Date getFechaCreacion() {
+		return fechaCreacion;
 	}
 
-	public void setFecha_creacion(Date fecha_creacion) {
-		this.fecha_creacion = fecha_creacion;
+	public void setFechaCreacion(Date fechaCreacion) {
+		this.fechaCreacion = fechaCreacion;
 	}
 
 	public int getRol() {

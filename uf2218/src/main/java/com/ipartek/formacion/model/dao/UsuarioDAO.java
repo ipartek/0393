@@ -16,11 +16,12 @@ public class UsuarioDAO {
 	private static final String SQL_GET_ALL = "SELECT id, nombre, contrasena, id_rol, fecha_creacion, fecha_eliminacion FROM usuario ORDER BY id DESC LIMIT 500;";
 	private static final String SQL_GET_ALL_VISIBLE = "SELECT id, nombre, contrasena, id_rol, fecha_creacion, fecha_eliminacion FROM usuario WHERE fecha_eliminacion is NULL ORDER BY id DESC LIMIT 500;";
 	private static final String SQL_GET_ALL_INVISIBLE = "SELECT id, nombre, contrasena, id_rol, fecha_creacion, fecha_eliminacion FROM usuario WHERE fecha_eliminacion is not NULL ORDER BY id DESC LIMIT 500;";
-	private static final String SQL_GET_BY_ID = "SELECT id, nombre, contrasena, id_rol, fecha_creacion, fecha_eliminacion FROM usuario FROM usuario WHERE id = ?;";
+	private static final String SQL_GET_BY_ID = "SELECT id, nombre, contrasena, id_rol, fecha_creacion, fecha_eliminacion FROM usuario WHERE id = ?;";
 	private static final String SQL_GET_ALL_BY_NOMBRE = "SELECT id, nombre, contrasena, id_rol, fecha_creacion, fecha_eliminacion FROM usuario WHERE nombre LIKE ? ORDER BY nombre ASC LIMIT 500;";
 	private static final String SQL_INSERT = "INSERT INTO usuario ( nombre, contrasena) VALUES ( ? , ?);";
 	private static final String SQL_UPDATE = "UPDATE usuario SET nombre= ?, contrasena= ? WHERE id = ?;";
-	private static final String SQL_DELETE = "DELETE FROM usuario WHERE id = ?;";
+	//private static final String SQL_DELETE = "DELETE FROM usuario WHERE id = ?;";
+	//private static final String SQL_DELETE = "DELETE FROM usuario WHERE id = ?;";
 	private static final String SQL_EXISTE = "SELECT id, nombre, contrasena, id_rol, fecha_creacion, fecha_eliminacion FROM usuario WHERE nombre = ? AND contrasena = ? ;"; 
 
 	private UsuarioDAO() {
@@ -64,8 +65,8 @@ public class UsuarioDAO {
 					usuario.setNombre(rs.getString("nombre"));
 					usuario.setContrasena(rs.getString("contrasena"));
 					usuario.setRol(rs.getInt("id_rol"));
-					usuario.setFecha_creacion(rs.getDate("fecha_creacion"));
-					usuario.setFecha_eliminacion(rs.getDate("fecha_eliminacion"));
+					usuario.setFechaCreacion(rs.getDate("fecha_creacion"));
+					usuario.setFechaEliminacion(rs.getDate("fecha_eliminacion"));
 				}
 			}
 
@@ -179,9 +180,17 @@ public class UsuarioDAO {
 
 	public boolean delete(int id) {
 		boolean resultado = false;
+		
+		String sql = "DELETE FROM usuario WHERE id = ?;";
+		
+		/*
+		 * UPDATE `v2019`.`usuario`
+		SET `fecha_eliminacion` = CURRENT_TIMESTAMP()
+	    WHERE (`id` = '4');
+		*/
 
 		try (Connection con = ConnectionManager.getConnection();
-				PreparedStatement pst = con.prepareStatement(SQL_DELETE);) {
+				PreparedStatement pst = con.prepareStatement(sql);) {
 
 			pst.setInt(1, id);
 
@@ -244,8 +253,8 @@ public class UsuarioDAO {
 		u.setNombre(rs.getString("nombre"));
 		u.setContrasena(rs.getString("contrasena"));
 		u.setRol(rs.getInt("id_rol"));
-		u.setFecha_eliminacion(rs.getDate("fecha_eliminacion"));
-		u.setFecha_creacion(rs.getDate("fecha_creacion"));
+		u.setFechaEliminacion(rs.getTimestamp("fecha_eliminacion"));
+		u.setFechaCreacion(rs.getTimestamp("fecha_creacion"));
 		return u;
 	}
 
