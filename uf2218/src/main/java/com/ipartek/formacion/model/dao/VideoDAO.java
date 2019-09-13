@@ -18,6 +18,18 @@ public class VideoDAO {
 			+ " codigo, " + " u.id as 'usuario_id', " + " u.nombre as 'usuario_nombre', " + " c.id as 'categoria_id', "
 			+ " c.nombre as 'categoria_nombre' " + " FROM video as v, usuario as u , categoria as c "
 			+ " WHERE v.id_usuario = u.id AND v.id_categoria = c.id " + " ORDER BY v.id DESC LIMIT 500;";
+	private static final String SQL_GET_ALL_VISIBLE = " SELECT " + " v.id as 'video_id', "
+			+ " v.nombre as 'video_nombre', " + " codigo, " + " u.id as 'usuario_id', "
+			+ " u.nombre as 'usuario_nombre', " + " c.id as 'categoria_id', " + " c.nombre as 'categoria_nombre' "
+			+ " FROM video as v, usuario as u , categoria as c "
+			+ " WHERE v.id_usuario = u.id AND v.id_categoria = c.id "
+			+ "  AND u.fecha_eliminacion IS NOT NULL ORDER BY v.id DESC LIMIT 500;";
+	private static final String SQL_GET_ALL_NOT_VISIBLE = " SELECT " + " v.id as 'video_id', "
+			+ " v.nombre as 'video_nombre', " + " codigo, " + " u.id as 'usuario_id', "
+			+ " u.nombre as 'usuario_nombre', " + " c.id as 'categoria_id', " + " c.nombre as 'categoria_nombre' "
+			+ " FROM video as v, usuario as u , categoria as c "
+			+ " WHERE v.id_usuario = u.id AND v.id_categoria = c.id "
+			+ "  AND u.fecha_eliminacion IS NULL ORDER BY v.id DESC LIMIT 500;";
 
 	private static final String SQL_GET_BY_ID = " SELECT " + " v.id as 'video_id', " + " v.nombre as 'video_nombre', "
 			+ " codigo, " + " u.id as 'usuario_id', " + " u.nombre as 'usuario_nombre', " + " c.id as 'categoria_id', "
@@ -25,6 +37,7 @@ public class VideoDAO {
 			+ " WHERE v.id_usuario = u.id AND v.id_categoria = c.id AND v.id = ? " + " ORDER BY v.id DESC LIMIT 500;";
 
 	private static final String SQL_UPDATE = "UPDATE video SET `nombre`= ?, `codigo`= ? , `id_usuario`= ? , `id_categoria`= ? WHERE `id` = ?;";
+	private static final String SQL_INSERT = "INSERT INTO video (nombre, codigo, id_usuario, id_categoria) VALUES (?, ?, ?, ?);";
 
 	private VideoDAO() {
 		super();
@@ -41,6 +54,32 @@ public class VideoDAO {
 
 		ArrayList<Video> lista = new ArrayList<Video>();
 		String sql = SQL_GET_ALL;
+
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(sql);
+				ResultSet rs = pst.executeQuery()) {
+
+			while (rs.next()) {
+				/*
+				 * Video v = new Video(); v.setId( rs.getInt("id") ); v.setNombre(
+				 * rs.getString("nombre")); v.setCodigo( rs.getString("codigo"));
+				 */
+				lista.add(mapper(rs));
+			}
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+		return lista;
+	}
+
+	public ArrayList<Video> getAllVisible(boolean isVisible) {
+
+		ArrayList<Video> lista = new ArrayList<Video>();
+		String sql = SQL_GET_ALL_VISIBLE;
+		if (!isVisible) {
+			sql = SQL_GET_ALL_NOT_VISIBLE;
+		}
 
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement pst = con.prepareStatement(sql);
@@ -118,7 +157,6 @@ public class VideoDAO {
 
 			pst.setString(1, pojo.getNombre());
 			pst.setString(2, pojo.getCodigo());
-			pst.setInt(3, pojo.getId());
 			pst.setInt(3, usuarioId);
 			pst.setInt(4, categoriaId);
 			pst.setInt(5, pojo.getId());
@@ -132,18 +170,26 @@ public class VideoDAO {
 		return resultado;
 	}
 
-	public boolean crear(Video pojo) throws Exception {
+	public boolean crear(Video pojo, int categoriaId, int usuarioId) throws Exception {
 		boolean resultado = false;
-		String sql = "INSERT INTO video (nombre, codigo) VALUES (?,?);";
 
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_INSERT)) {
 
 			pst.setString(1, pojo.getNombre());
 			pst.setString(2, pojo.getCodigo());
+			pst.setInt(3, usuarioId);
+			pst.setInt(4, categoriaId);
 
 			int affectedRows = pst.executeUpdate();
 			if (affectedRows == 1) {
+				// conseguir id generado de forma automatica
+//				try (ResultSet rsKeys = pst.getGeneratedKeys()) {
+//					if (rsKeys.next()) {
+//						pojo.setId(rsKeys.getInt(1));
 				resultado = true;
+//					}
+//				}
 			}
 
 		}

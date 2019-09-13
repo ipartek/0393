@@ -35,18 +35,26 @@
 			<!--  -->
 			<div class="form-group">
 					<label for="codigo">Usuario:</label>
-						<select class="custom-select" name="usuario_id">
-				  			<c:forEach items="${usuarios}" var="u">				  
-				  				<option value="${u.id}" ${(u.id == video.usuario.id)?"selected":"" }> ${u.nombre}</option>
-				  			</c:forEach>				  
-						</select>
+					<select class="custom-select" name="usuario_id">
+						<c:forEach items="${usuarios}" var="u">		
+							<% //modificar video %>
+							<c:if test="${video.id != -1}">				  				  
+						  			<option value="${u.id}" ${(u.id == video.usuario.id)?"selected":"" }> ${u.nombre}</option>					  		
+						  	</c:if>	
+					  
+						    <% //nuevo video %>
+						 	<c:if test="${video.id == -1}">					  						  
+						  			<option value="${u.id}" ${(u.id == sessionScope.usuario.id)?"selected":"" }> ${u.nombre}</option>					  		
+						  	</c:if>
+					   </c:forEach>
+					   </select>
 			</div>
 			<div class="form-group">
 					<label for="codigo">Categoria:</label>
 					<select class="custom-select" name="categoria_id">
-				  			<c:forEach items="${categorias}" var="c">				  
-				  				<option value="${c.id}" ${(c.id == video.categoria.id)?"selected":"" }> ${c.nombre}</option>
-				  			</c:forEach>				  
+				  			  <c:forEach items="${categorias}" var="c">
+					  		<option value="${c.id}" ${(c.id == video.categoria.id)?"selected":"" }> ${c.nombre}</option>					  	
+					  </c:forEach>				  
 						</select>
 			</div>
 			<!--  -->

@@ -32,6 +32,21 @@
 					       placeholder="" 
 						   class="form-control">
 				</div>	
+				<div class="form-group">
+					<label for="codigo">Rol:</label>	
+				<select class="custom-select" name="rol_id">
+				  			  <c:forEach items="${rol}" var="r">
+					  		<option value="${r.id}" ${(r.id == usua.rol.id)?"selected":"" }> ${r.nombre}</option>					  	
+					  </c:forEach>				  
+						</select>
+				<div class="form-group">	
+					<label for="id">Fecha Creacion:</label>
+					<input type="text" name="fecha_creacion" value="${usua.fechaCreacion}" readonly class="form-control">
+				</div>
+				<div class="form-group">	
+					<label for="id">Fecha Eliminacion:</label>
+					<input type="text" name="fecha_eliminacion" value="${usua.fechaEliminacion}" readonly class="form-control">
+				</div>
 			
 				<input type="submit" value="${(usua.id != -1)?'Modificar':'Crear'}" class="btn btn-outline-primary  btn-block">
 			

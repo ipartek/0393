@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Validator;
 
 import com.ipartek.formacion.controller.pojo.Alert;
+import com.ipartek.formacion.model.dao.RolDAO;
 import com.ipartek.formacion.model.dao.UsuarioDAO;
+import com.ipartek.formacion.model.pojo.Rol;
 import com.ipartek.formacion.model.pojo.Usuario;
 
 /**
@@ -32,7 +34,8 @@ public class UsuarioController extends HttpServlet {
 	public static final String OP_DETALLE = "5";
 	public static final String OP_BUSCAR = "6";
 
-	private static UsuarioDAO usuarioDAO = UsuarioDAO.getInstance();;
+	private static UsuarioDAO usuarioDAO = UsuarioDAO.getInstance();
+	private static RolDAO rolDAO = RolDAO.getInstance();
 	private Validator validator;
 
 	/**
@@ -93,11 +96,14 @@ public class UsuarioController extends HttpServlet {
 		String sid = request.getParameter("id");
 		String nombre = request.getParameter("nombre");
 		String contrasenya = request.getParameter("contrasenya");
+		String id_rol = request.getParameter("rol_id");
 
 		Usuario u = new Usuario();
 		u.setId(Integer.parseInt(sid));
 		u.setNombre(nombre);
 		u.setContrasenya(contrasenya);
+
+		u.setRol(new Rol(Integer.parseInt(id_rol), ""));
 
 //		Set<ConstraintViolation<Usuario>> violations = validator.validate(u);
 //		if (violations.isEmpty()) {
@@ -107,7 +113,7 @@ public class UsuarioController extends HttpServlet {
 			if (u.getId() == -1) {
 				usuarioDAO.crear(u);
 			} else {
-				usuarioDAO.modificar(u);
+				usuarioDAO.modificar(u, id_rol);
 			}
 			request.setAttribute("mensaje", new Alert("success", "Registro creado con exito"));
 
@@ -124,13 +130,23 @@ public class UsuarioController extends HttpServlet {
 //			}
 //			request.setAttribute("mensaje", new Alert("warning", mensaje));
 //		}
+		u = usuarioDAO.getById(Integer.parseInt(sid));
 		request.setAttribute("usua", u);
+
+		request.setAttribute("rol", rolDAO.getAll());
+
 		view = VIEW_DEATALLE;
 	}
 
 	private void listar(HttpServletRequest request, HttpServletResponse response) {
+		String activo = request.getParameter("activo");
 
-		request.setAttribute("usuarios", usuarioDAO.getAll());
+		if ("true".equals(activo)) {
+			request.setAttribute("usuarios", usuarioDAO.getAllActivos(true));
+		} else {
+			request.setAttribute("usuarios", usuarioDAO.getAllActivos(false));
+		}
+		// request.setAttribute("usuarios", usuarioDAO.getAll());
 		view = VIEW_INDEX;
 
 	}
@@ -142,6 +158,8 @@ public class UsuarioController extends HttpServlet {
 
 		Usuario u = usuarioDAO.getById(id);
 		request.setAttribute("usua", u);
+
+		request.setAttribute("rol", rolDAO.getAll());
 		view = VIEW_DEATALLE;
 
 	}
@@ -176,6 +194,7 @@ public class UsuarioController extends HttpServlet {
 	private void nuevo(HttpServletRequest request, HttpServletResponse response) {
 
 		request.setAttribute("usua", new Usuario());
+		request.setAttribute("rol", rolDAO.getAll());
 		view = VIEW_DEATALLE;
 	}
 }
