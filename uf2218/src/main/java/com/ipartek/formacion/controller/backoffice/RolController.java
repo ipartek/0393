@@ -16,13 +16,13 @@ import com.ipartek.formacion.model.pojo.Categoria;
 /**
  * Servlet implementation class CategoriaController
  */
-@WebServlet("/backoffice/categorias")
+@WebServlet("/backoffice/roles")
 public class RolController extends ControladorCrud {
 	
 	private static final long serialVersionUID = 1L;
 	
-	public static final String VIEW_INDEX = "categoria/index.jsp";
-	public static final String VIEW_FORM  = "categoria/formulario.jsp";
+	public static final String VIEW_INDEX = "rol/index.jsp";
+	public static final String VIEW_FORM  = "rol/formulario.jsp";
 	
 	private static final CategoriaDAO categoriaDAO = CategoriaDAO.getInstance();
 
@@ -44,7 +44,7 @@ public class RolController extends ControladorCrud {
 	protected void listar(HttpServletRequest request, HttpServletResponse response) {
 		
 		ArrayList<Categoria> lista = categoriaDAO.getAll();;
-		request.setAttribute("categorias", lista);
+		request.setAttribute("roles", lista);
 		view = VIEW_INDEX;
 		
 	}
