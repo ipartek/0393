@@ -61,9 +61,9 @@
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary"
 								data-dismiss="modal">Close</button>
-							<form action="backoffice/usuario" method="post">
+							<form action="backoffice/categoria" method="post">
 								<input type="hidden" name="op"
-									value="<%=UsuarioController.OP_ELIMINAR%>"> <input
+									value="<%=CategoriaController.OP_ELIMINAR%>"> <input
 									type="hidden" name="id" value="${user.id}" readonly> <input
 									type="submit" value="Eliminar" class="btn btn-danger btn-block">
 							</form>

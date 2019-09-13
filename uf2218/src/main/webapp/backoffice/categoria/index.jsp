@@ -7,8 +7,8 @@
 <%@include file="../../includes/mensaje.jsp"%>
 <div class="row">
 <div class="col-9">
-<a href="backoffice/categoria?op=<%=CategoriaController.OP_NUEVO%>"
-	class="mb-3 btn btn-outline-primary">Nueva Categoria</a>
+<a href="backoffice/categoria?op=<%=CategoriaController.OP_NUEVO%>"	class="mb-3 btn btn-outline-primary">Nueva Categoria</a>
+<a href="backoffice/transacciones"	class="mb-3 btn btn-danger	">Para Liarla Parda</a>
 </div>
 <div class="col-3">
  <form action="backoffice/usuario" class="form-inline my-2 my-lg-0 ">
