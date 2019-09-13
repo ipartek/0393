@@ -14,9 +14,10 @@ public class UsuarioDAO {
 
 	private static UsuarioDAO INSTANCE = null;
 
-	private static final String SQL_GET_ALL = "SELECT id,nombre,contrasenya FROM usuario ORDER BY id DESC LIMIT 500;";
-	private static final String SQL_GET_BY_ID = "SELECT id,nombre,contrasenya FROM usuario WHERE id = ?;";
-	private static final String SQL_GET_ALL_BY_NOMBRE = "SELECT id,nombre,contrasenya FROM usuario WHERE nombre LIKE ? ORDER BY nombre ASC LIMIT 500;";
+	private static final String SQL_GET_ALL = "SELECT id,nombre,contrasenya, fecha_creacion, fecha_eliminacion FROM usuario ORDER BY id DESC LIMIT 500;";
+	private static final String SQL_GET_BY_ID = "SELECT id,nombre,contrasenya, fecha_creacion, fecha_eliminacion FROM usuario WHERE id = ?;";
+	private static final String SQL_GET_ALL_BY_NOMBRE = "SELECT id,nombre,contrasenya, fecha_creacion, fecha_eliminacion FROM usuario WHERE nombre LIKE ? ORDER BY nombre ASC LIMIT 500;";
+	private static final String SQL_EXISTE = " SELECT id, nombre, contrasenya, fecha_creacion, fecha_eliminacion " + " FROM usuario " + " WHERE nombre = ? AND contrasenya = ? ;";
 	private static final String SQL_INSERT = "INSERT INTO usuario ( nombre, contrasenya) VALUES ( ? , ?);";
 	private static final String SQL_UPDATE = "UPDATE usuario SET nombre= ?, contrasenya= ? WHERE id = ?;";
 	private static final String SQL_DELETE = "DELETE FROM usuario WHERE id = ?;";
@@ -47,9 +48,9 @@ public class UsuarioDAO {
 
 		Usuario usuario = null;
 
-		String sql = " SELECT id, nombre, contrasenya " + " FROM usuario " + " WHERE nombre = ? AND contrasenya = ? ;";
+		
 
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(SQL_EXISTE);) {
 
 			// sustituir ? por parametros
 			pst.setString(1, nombre);
@@ -59,10 +60,7 @@ public class UsuarioDAO {
 			try (ResultSet rs = pst.executeQuery()) {
 
 				if (rs.next()) {
-					usuario = new Usuario();
-					usuario.setId(rs.getInt("id"));
-					usuario.setNombre(rs.getString("nombre"));
-					usuario.setContrasenya(rs.getString("contrasenya"));
+					usuario = mapper(rs);
 				}
 			}
 
@@ -205,6 +203,8 @@ public class UsuarioDAO {
 		u.setId(rs.getInt("id"));
 		u.setNombre(rs.getString("nombre"));
 		u.setContrasenya(rs.getString("contrasenya"));
+		u.setFechaCreacion(rs.getTimestamp("fecha_creacion"));
+		u.setFechaEliminacion(rs.getTimestamp("fecha_eliminacion"));
 		return u;
 	}
 

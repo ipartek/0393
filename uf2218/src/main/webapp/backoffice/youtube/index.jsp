@@ -14,16 +14,15 @@
 	<div class="row">
 		<div class="col">
 			<h1>Videos Publicados</h1>
-			<jsp:include page="list.jsp">	
-				<jsp:param value="${videosVisibles}" name="videos"/>
-			</jsp:include>			
+			<ul class="list-group">
+	  			<c:forEach items="${videosVisibles}" var="video" >	  
+	  				<jsp:include page="list-item.jsp">
+	  					<jsp:param value="${video}" name="v"/>
+	  				</jsp:include>						
+				</c:forEach>
+			</ul>		
 		</div>
-		<div class="col">
-			<h1>Videos Ocultos</h1>
-			<jsp:include page="list.jsp">	
-				<jsp:param value="${videosNoVisibles}" name="videos"/>
-			</jsp:include>			
-		</div>
+		
 		
 	</div>
 	
