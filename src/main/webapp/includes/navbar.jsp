@@ -22,7 +22,10 @@
 	        	<li class="nav-item active"><a class="nav-link" href="backoffice/videos"><fmt:message key="menu.video"/></a>
 			</li>
 	        </c:if>
-	        
+	        <c:if test="${sessionScope.usuario != null}">
+	        	<li class="nav-item active"><a class="nav-link" href="backoffice/categoria">Categorias</a>
+			</li>
+	        </c:if>
 	        <!-- 
 			<li class="nav-item dropdown"><a
 				class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
