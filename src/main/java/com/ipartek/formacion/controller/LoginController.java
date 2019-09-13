@@ -62,38 +62,33 @@ public class LoginController extends HttpServlet {
 			HttpSession session = request.getSession();
 			// session.setMaxInactiveInterval(60 * 5); //5 minutos
 
-			session.setAttribute("usuario", usuario);
-
-			request.setAttribute("mensaje", new Alert("success", "Ongi Etorri " + usuario));
-
-			// guardamos a donde intentaba ir para que sea redirigido alli despues de
-			// loguearse
-			String callback = (String) request.getAttribute("callback");
-			if (callback == null) {
-				/*
-				 * // llamar DAO de videos y DAO de users para saber cuantos hay de cada
-				 * request.setAttribute("numeroVideos", youtubeDAO.getAll().size());
-				 * request.setAttribute("numeroUsuarios", usuarioDAO.getAll().size());
-				 * 
-				 * request.getRequestDispatcher("backoffice/index.jsp").forward(request,
-				 * response);
-				 * //request.getRequestDispatcher("backoffice/videos").forward(request,
-				 * response);
-				 * 
-				 */
-				// Redireccion para cambiar la url de "/login" a "/backoffice/inicio"
-
-				response.sendRedirect("backoffice/inicio");
-
+			// preguntar si esta dado de baja
+			if (usuario.getFechaEliminacion() != null) {
+				session.setAttribute("mensaje",
+						new Alert("danger", "El usuario " + usuario.getNombre() + " ha sido eliminado"));
+				request.getRequestDispatcher("/login.jsp").forward(request, response);
 			} else {
-				session.removeAttribute("callback");
-				response.sendRedirect(callback);
-			}
+
+				session.setAttribute("usuario", usuario);
+
+				request.setAttribute("mensaje", new Alert("success", "Ongi Etorri " + usuario));
+
+				// guardamos a donde intentaba ir para que sea redirigido alli despues de
+				// loguearse
+				String callback = (String) request.getAttribute("callback");
+				if (callback == null) {
+					// Redireccion para cambiar la url de "/login" a "/backoffice/inicio"
+					response.sendRedirect("backoffice/inicio");
+
+				} else {
+					session.removeAttribute("callback");
+					response.sendRedirect(callback);
+				}
+			} // end preguntar si esta dado de baja
 
 		} else {
 			request.setAttribute("mensaje", new Alert("danger", "credenciales no correctas"));
 			request.getRequestDispatcher("/login.jsp").forward(request, response);
 		}
 	}
-
 }

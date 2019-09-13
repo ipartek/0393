@@ -12,9 +12,18 @@
 </div>
 <div class="row">
 	<div class="col-9">
-		<a class="btn btn-primary mt-2 mb-2"
+		<%
+					boolean visible =(Boolean)request.getAttribute("visible");
+					if (visible) {
+				%>
+					<a class="btn btn-primary mt-2 mb-2"
 			href="backoffice/usuario?op=<%=UsuarioController.OP_FORM%>"
 			role="button" title="anadir"><i class="fas fa-plus"></i> Añadir</a>
+				<%
+					}
+				%>
+		
+	
 	</div>
 	<div class="col-3">
 		<!-- Search form -->

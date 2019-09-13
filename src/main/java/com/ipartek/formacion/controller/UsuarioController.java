@@ -133,6 +133,7 @@ public class UsuarioController extends HttpServlet {
 
 		// request.setAttribute("usuarios", usuarioDAO.getAll());
 		request.setAttribute("usuarios", usuarioDAO.getAllVisible(isVisible));
+		request.setAttribute("visible", isVisible);
 		view = VIEW_INDEX;
 	}
 
@@ -174,12 +175,12 @@ public class UsuarioController extends HttpServlet {
 	}
 
 	private void guardar(HttpServletRequest request, HttpServletResponse response) {
-		String sid = request.getParameter("id");
 		String nombre = request.getParameter("nombre");
 		String contrasenya = request.getParameter("contrasenya");
+		int idUsuario = Integer.parseInt(request.getParameter("id"));
 
 		Usuario u = new Usuario();
-		u.setId(Integer.parseInt(sid));
+		u.setId(idUsuario);
 		u.setNombre(nombre);
 		u.setContrasenya(contrasenya);
 
@@ -218,6 +219,7 @@ public class UsuarioController extends HttpServlet {
 			request.setAttribute("mensaje", new Alert("warning", mensaje));
 		}
 		request.setAttribute("usuario", u);
+
 		view = VIEW_INDEX;
 	}
 

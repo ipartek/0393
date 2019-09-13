@@ -7,8 +7,8 @@ public class Usuario {
 	private String nombre;
 	private String contrasenya;
 	private int rol;
-	private Date fecha_creacion;
-	private Date fecha_eliminacion;
+	private Date fechaCreacion;
+	private Date fechaEliminacion;
 
 	public Usuario() {
 		super();
@@ -16,8 +16,8 @@ public class Usuario {
 		this.nombre = "";
 		this.contrasenya = "";
 		this.rol = 2;
-		this.fecha_creacion = new Date();
-		this.fecha_eliminacion = new Date();
+		this.fechaCreacion = new Date();
+		this.fechaEliminacion = new Date();
 	}
 
 	public int getId() {
@@ -52,26 +52,26 @@ public class Usuario {
 		this.rol = rol;
 	}
 
-	public Date getFecha_creacion() {
-		return fecha_creacion;
+	public Date getFechaCreacion() {
+		return fechaCreacion;
 	}
 
-	public void setFecha_creacion(Date fecha_creacion) {
-		this.fecha_creacion = fecha_creacion;
+	public void setFechaCreacion(Date fechaCreacion) {
+		this.fechaCreacion = fechaCreacion;
 	}
 
-	public Date getFecha_eliminacion() {
-		return fecha_eliminacion;
+	public Date getFechaEliminacion() {
+		return fechaEliminacion;
 	}
 
-	public void setFecha_eliminacion(Date fecha_eliminacion) {
-		this.fecha_eliminacion = fecha_eliminacion;
+	public void setFechaEliminacion(Date fechaEliminacion) {
+		this.fechaEliminacion = fechaEliminacion;
 	}
 
 	@Override
 	public String toString() {
 		return "Usuario [id=" + id + ", nombre=" + nombre + ", contrasenya=" + contrasenya + ", rol=" + rol
-				+ ", fecha_creacion=" + fecha_creacion + ", fecha_eliminacion=" + fecha_eliminacion + "]";
+				+ ", fechaCreacion=" + fechaCreacion + ", fechaEliminacion=" + fechaEliminacion + "]";
 	}
 
 }

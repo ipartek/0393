@@ -13,14 +13,14 @@ import com.ipartek.formacion.model.pojo.Usuario;
 public class UsuarioDAO {
 	private static UsuarioDAO INSTANCE = null;
 
-	private static final String SQL_EXISTE = "SELECT id, nombre, contrasenya, id_rol, fecha_creacion, fecha_eliminacion"
-			+ " FROM usuario " + " WHERE nombre = ? AND contrasenya = ? AND fecha_eliminacion IS NULL ;";
+	private static final String SQL_EXISTE = "SELECT id, nombre, contrasenya, id_rol, fecha_creacion, fecha_eliminacion FROM usuario WHERE nombre = ? AND contrasenya = ?;";
 	private static final String SQL_GET_ALL = "SELECT id, nombre, contrasenya, id_rol, fecha_creacion, fecha_eliminacion FROM usuario ORDER BY id ASC LIMIT 500;";
 	private static final String SQL_GET_ALL_VISIBLE = "SELECT id, nombre, contrasenya, id_rol, fecha_creacion, fecha_eliminacion FROM usuario WHERE fecha_eliminacion IS NULL ORDER BY id ASC LIMIT 500;";
 	private static final String SQL_GET_ALL_NOT_VISIBLE = "SELECT id, nombre, contrasenya, id_rol, fecha_creacion, fecha_eliminacion FROM usuario WHERE fecha_eliminacion IS NOT NULL ORDER BY id ASC LIMIT 500;";
 	private static final String SQL_GET_BY_ID = "SELECT id, nombre, contrasenya, id_rol, fecha_creacion, fecha_eliminacion FROM usuario WHERE id = ?;";
 	private static final String SQL_UPDATE = "UPDATE usuario SET nombre = ?, contrasenya = ? WHERE  id = ?;";
-	private static final String SQL_DELETE = "DELETE FROM usuario WHERE id = ?;";
+	// private static final String SQL_DELETE = "DELETE FROM usuario WHERE id = ?;";
+	private static final String SQL_DELETE_LOGICO = "UPDATE usuario SET fecha_eliminacion = CURRENT_TIMESTAMP WHERE id = ? ";
 	private static final String SQL_INSERT = "INSERT INTO usuario (nombre, contrasenya) VALUES (?,?);";
 	private static final String SQL_GET_BY_NAME = "SELECT id, nombre, contrasenya, id_rol, fecha_creacion, fecha_eliminacion FROM usuario WHERE nombre LIKE ? ORDER BY id ASC LIMIT 500;";
 	private static String sql = "";
@@ -64,8 +64,8 @@ public class UsuarioDAO {
 					usuario.setNombre(rs.getString("nombre"));
 					usuario.setContrasenya(rs.getString("contrasenya"));
 					usuario.setRol(rs.getInt("id_rol"));
-					usuario.setFecha_creacion(rs.getDate("fecha_creacion"));
-					usuario.setFecha_eliminacion(rs.getDate("fecha_eliminacion"));
+					usuario.setFechaCreacion(rs.getDate("fecha_creacion"));
+					usuario.setFechaEliminacion(rs.getDate("fecha_eliminacion"));
 				}
 			}
 
@@ -176,7 +176,7 @@ public class UsuarioDAO {
 		// String sql = "DELETE FROM usuario WHERE id = ?;";
 
 		try (Connection con = ConnectionManager.getConnection();
-				PreparedStatement pst = con.prepareStatement(SQL_DELETE);) {
+				PreparedStatement pst = con.prepareStatement(SQL_DELETE_LOGICO);) {
 
 			pst.setInt(1, id);
 
@@ -218,8 +218,8 @@ public class UsuarioDAO {
 		u.setNombre(rs.getString("nombre"));
 		u.setContrasenya(rs.getString("contrasenya"));
 		u.setRol(rs.getInt("id_rol"));
-		u.setFecha_creacion(rs.getDate("fecha_creacion"));
-		u.setFecha_eliminacion(rs.getDate("fecha_eliminacion"));
+		u.setFechaCreacion(rs.getTimestamp("fecha_creacion"));
+		u.setFechaEliminacion(rs.getTimestamp("fecha_eliminacion"));
 		return u;
 	}
 }
