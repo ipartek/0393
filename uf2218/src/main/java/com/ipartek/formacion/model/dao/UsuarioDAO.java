@@ -20,7 +20,8 @@ public class UsuarioDAO {
 	private static final String SQL_EXISTE = " SELECT id, nombre, contrasenya, fecha_creacion, fecha_eliminacion " + " FROM usuario " + " WHERE nombre = ? AND contrasenya = ? ;";
 	private static final String SQL_INSERT = "INSERT INTO usuario ( nombre, contrasenya) VALUES ( ? , ?);";
 	private static final String SQL_UPDATE = "UPDATE usuario SET nombre= ?, contrasenya= ? WHERE id = ?;";
-	private static final String SQL_DELETE = "DELETE FROM usuario WHERE id = ?;";
+	// private static final String SQL_DELETE = "DELETE FROM usuario WHERE id = ?;";
+	private static final String SQL_DELETE_LOGICO = "UPDATE usuario SET fecha_eliminacion = CURRENT_TIMESTAMP() WHERE id = ?;";
 
 	private UsuarioDAO() {
 		super();
@@ -141,7 +142,7 @@ public class UsuarioDAO {
 		boolean resultado = false;
 
 		try (Connection con = ConnectionManager.getConnection();
-				PreparedStatement pst = con.prepareStatement(SQL_DELETE);) {
+				PreparedStatement pst = con.prepareStatement(SQL_DELETE_LOGICO);) {
 
 			pst.setInt(1, id);
 
