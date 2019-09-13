@@ -19,8 +19,8 @@ public class Usuario {
 		this.nombre = "";
 		this.contrasena = "";
 		this.rol = new Rol();
-		this.fechaCreacion = new Date();
-		this.fechaCreacion = new Date();
+		this.fechaCreacion = null;
+		this.fechaCreacion = null;
 	}
 
 	public int getId() {

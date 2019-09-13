@@ -48,12 +48,16 @@
 				<div class="form-group">
 					<label for="fechaCreacion">Fecha Creación:</label>
 					  
-					<fmt:formatDate type = "both" value = "${usuarioEditar.fechaCreacion}" />  
+					<fmt:formatDate type = "both"  var="fechaC" value = "${usuarioEditar.fechaCreacion}" />
+					<input type="text" name="fechaCreacion" value="${fechaC }"					      
+						   class="form-control" disabled>  
 				</div>
 				
 				<div class="form-group">
 					<label for="fechaEliminacion">Fecha Eliminación:</label>
-					<fmt:formatDate type = "both" value = "${usuarioEditar.fechaEliminacion}" />
+					<fmt:formatDate type = "both" var="fechaE" value = "${usuarioEditar.fechaEliminacion}" />
+					<input type="text" name="fechaEliminacion" value="${fechaE }"					      
+						   class="form-control" disabled>
 				</div>
 				
 				<input type="submit" value="${(usuarioEditar.id != -1)?'Modificar':'Crear'}" class="btn btn-outline-primary  btn-block">

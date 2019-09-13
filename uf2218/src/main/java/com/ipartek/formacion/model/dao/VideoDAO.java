@@ -271,6 +271,8 @@ public class VideoDAO {
 		v.setUsuario(u);
 		v.setCategoria(c);
 		return v;
+
+		// TODO mostrar ahora tb los likes
 	}
 
 }

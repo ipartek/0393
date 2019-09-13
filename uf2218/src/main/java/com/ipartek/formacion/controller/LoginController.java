@@ -46,23 +46,32 @@ public class LoginController extends HttpServlet {
 
 		if (usuario != null) {
 
-			HttpSession session = request.getSession();
-			// session.setMaxInactiveInterval( 60 * 5 ); // 5 min
+			if (usuario.getFechaEliminacion() != null) { // si entra, es un usuario eliminado
 
-			session.setAttribute("usuario", usuario);
+				request.setAttribute("mensaje", new Alert("danger", "Lo siento, usted fue dado de baja"));
+				request.getRequestDispatcher("login.jsp").forward(request, response);
 
-			request.setAttribute("mensaje", new Alert("success", "Ongi Etorri " + usuario.getNombre()));
+			} else { // fechaEliminacion == null, usuario activo
 
-			String callback = (String) session.getAttribute("callback");
+				HttpSession session = request.getSession();
+				// session.setMaxInactiveInterval( 60 * 5 ); // 5 min
 
-			if (callback == null) {
+				session.setAttribute("usuario", usuario);
 
-				response.sendRedirect("backoffice/inicio");
+				request.setAttribute("mensaje", new Alert("success", "Ongi Etorri " + usuario.getNombre()));
 
-			} else {
-				session.removeAttribute("callback");
-				response.sendRedirect(callback);
-			}
+				String callback = (String) session.getAttribute("callback");
+
+				if (callback == null) {
+
+					response.sendRedirect("backoffice/inicio");
+
+				} else {
+					session.removeAttribute("callback");
+					response.sendRedirect(callback);
+				}
+
+			} // end: fechaEliminacion == null, usuario activo
 
 		} else {
 

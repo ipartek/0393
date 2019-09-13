@@ -36,8 +36,8 @@ public class UsuarioDAO {
 	private static final String SQL_DELETE = "UPDATE usuario SET fecha_eliminacion = CURRENT_TIMESTAMP() WHERE id = ?; ";
 
 	// "DELETE FROM usuario WHERE id = ?;"; YA no se usara
-	private static final String SQL_EXISTE = " SELECT id, nombre, contrasena" + " FROM usuario"
-			+ " WHERE nombre = ? AND contrasena = ? AND fecha_eliminacion IS NULL ;";
+	private static final String SQL_EXISTE = " SELECT id, nombre, contrasena, fecha_creacion, fecha_eliminacion"
+			+ " FROM usuario" + " WHERE nombre = ? AND contrasena = ? ;";
 
 	private static final String SQL_UPDATE = "UPDATE usuario SET nombre = ?, contrasena = ?, rol = ? WHERE id = ?; ";
 
@@ -77,6 +77,10 @@ public class UsuarioDAO {
 					usuario.setId(rs.getInt("id"));
 					usuario.setNombre(rs.getString("nombre"));
 					usuario.setContrasena(rs.getString("contrasena"));
+					usuario.setFechaCreacion(rs.getTimestamp("fecha_creacion"));
+					usuario.setFechaEliminacion(rs.getTimestamp("fecha_eliminacion"));
+
+					// TODO devolver mensaje "lo sentimos, usted fue dado de baja"
 				}
 			}
 
