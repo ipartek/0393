@@ -1,4 +1,4 @@
-<%@page import="com.ipartek.formacion.controller.CategoriaController"%>
+<%@page import="com.ipartek.formacion.controller.backoffice.CategoriaController"%>
 
 <%@include file="../../includes/header.jsp"%>
 <%@include file="../../includes/navbar.jsp"%>
@@ -7,7 +7,7 @@
 
 <h1>CATEGORÍAS PARA LOS VÍDEOS</h1>
 
-<a href="backoffice/categorias?" class="mb-3 btn btn-outline-primary">Nueva Categoria</a>
+<a href="backoffice/categorias?op=<%=CategoriaController.OP_NUEVO%>" class="mb-3 btn btn-outline-primary">Nueva Categoria</a>
 
 
 <div class="row d-flex justify-content-center">
@@ -23,8 +23,9 @@
 				<c:forEach items="${categorias}" var="cat">
 					<tr>
 					<th scope="row">${cat.id }</th>
-					<td>		
-						${cat.nombre }
+					<td>
+						<a href="backoffice/usuarios?op=<%=CategoriaController.OP_DETALLE%>&id=${cat.id}">${cat.nombre }</a>
+
 					</td>
 				</tr>
 				</c:forEach>
