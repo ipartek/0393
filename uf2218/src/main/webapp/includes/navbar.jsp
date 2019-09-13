@@ -1,6 +1,6 @@
 <%@page import="com.ipartek.formacion.controller.backoffice.UsuarioController"%>
 <%@page import="com.ipartek.formacion.controller.backoffice.VideoController"%>
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 	<a class="navbar-brand" href="#">JEE</a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
@@ -33,7 +33,7 @@
 			</c:if>
 			<li class="nav-item">
 				<div class="dropdown">
-					<button class="btn btn-light dropdown-toggle" type="button"
+					<button class="btn btn-secondary dropdown-toggle" type="button"
 							id="dropdownMenuButton" data-toggle="dropdown"
 							aria-haspopup="true" aria-expanded="false">
 						<fmt:message key="menu.usuarios" />
@@ -69,12 +69,22 @@
 					</div>
 				</div>
 			</li>
-		</ul>
-	</div>
-</nav>
-<!-- end navar -->
+		</ul><!-- End Lista Navbar -->
+		<div class="navbar-nav flex-row mr-3">
+			<a class="mr-1" href="i18n?idiomaSeleccionado=en_EN">
+				<img src="resources/img/british.png" alt="" class="${sessionScope.idiomaSeleccionado != 'en_EN' ? 'inactive': ''  }">
+			</a>
+			<a class="mr-1" href="i18n?idiomaSeleccionado=eu_ES">
+				<img src="resources/img/euskadi.png" alt="" class="${sessionScope.idiomaSeleccionado != 'eu_ES' ? 'inactive': ''  }">
+			</a>
+			<a class="mr-1" href="i18n?idiomaSeleccionado=es_ES">
+				<img src="resources/img/Spain.png" alt="" class="${sessionScope.idiomaSeleccionado != 'es_ES' ? 'inactive': ''  }">
+			</a>
+		</div>
+	</div><!-- End collapse navbar-collapse -->
+</nav><!-- End navar -->
 
-<nav class="bg-dark">
+<!-- <nav class="bg-dark">
 	<a href="i18n?idiomaSeleccionado=en_EN">
 		<img src="resources/img/british.png" alt="" class="${sessionScope.idiomaSeleccionado != 'en_EN' ? 'inactive': ''  }">
 	</a>
@@ -84,7 +94,7 @@
 	<a href="i18n?idiomaSeleccionado=es_ES">
 		<img src="resources/img/Spain.png" alt="" class="${sessionScope.idiomaSeleccionado != 'es_ES' ? 'inactive': ''  }">
 	</a>
-</nav>
+</nav> -->
 
 
 <main class="container">
