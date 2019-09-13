@@ -49,10 +49,12 @@ public class BackofficeController extends HttpServlet {
 			throws ServletException, IOException {
 
 		ArrayList<Video> videos = videoDAO.getAll();
-		ArrayList<Usuario> usuarios = usuarioDAO.getAll();
+		ArrayList<Usuario> usuariosActivos = usuarioDAO.getAllActivos(true);
+		ArrayList<Usuario> usuariosInactivos = usuarioDAO.getAllActivos(false);
 
 		request.setAttribute("numeroVideos", videos.size());
-		request.setAttribute("numeroUsuarios", usuarios.size());
+		request.setAttribute("numeroUsuariosActivos", usuariosActivos.size());
+		request.setAttribute("numeroUsuariosInactivos", usuariosInactivos.size());
 
 		// request interna
 		request.getRequestDispatcher("index.jsp").forward(request, response);

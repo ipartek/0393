@@ -5,6 +5,11 @@ public class Rol {
 	private int id;
 	private String nombre;
 
+	public Rol() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	public Rol(int id, String nombre) {
 		super();
 		this.id = id;

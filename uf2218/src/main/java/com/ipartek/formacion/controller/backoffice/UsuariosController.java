@@ -13,6 +13,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 
 import com.ipartek.formacion.controller.pojo.Alert;
+import com.ipartek.formacion.model.dao.RolDAO;
 import com.ipartek.formacion.model.dao.UsuarioDAO;
 import com.ipartek.formacion.model.pojo.Usuario;
 
@@ -23,6 +24,7 @@ import com.ipartek.formacion.model.pojo.Usuario;
 public class UsuariosController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static UsuarioDAO usuarioDAO = UsuarioDAO.getInstance();
+	private static RolDAO rolDAO = RolDAO.getInstance();
 
 	public static final String VIEW_INDEX = "usuarios/lista.jsp";
 	public static final String VIEW_FORM = "usuarios/formulario.jsp";
@@ -33,6 +35,7 @@ public class UsuariosController extends HttpServlet {
 	public static final String OP_DELETE = "d3ng";
 	public static final String OP_LIST = "q092d";
 	public static final String OP_DETALLE = "13";
+	public static final String OP_BUSCAR = "8";
 
 	private Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
@@ -78,6 +81,10 @@ public class UsuariosController extends HttpServlet {
 			detalle(request, response);
 			break;
 
+		case OP_BUSCAR:
+			buscar(request, response);
+			break;
+
 		case OP_CREATE:
 			create(request, response);
 			break;
@@ -105,6 +112,8 @@ public class UsuariosController extends HttpServlet {
 
 		Usuario u = usuarioDAO.getById(id);
 		request.setAttribute("usuarioEditar", u);
+		request.setAttribute("roles", rolDAO.getAll());
+
 		view = VIEW_FORM;
 
 	}
@@ -124,7 +133,14 @@ public class UsuariosController extends HttpServlet {
 	}
 
 	private void listar(HttpServletRequest request, HttpServletResponse response) {
-		request.setAttribute("usuarios", usuarioDAO.getAll());
+		String activos = request.getParameter("activos");
+		if ("true".equals(activos)) {
+			request.setAttribute("usuarios", usuarioDAO.getAllActivos(true));
+		} else {
+			request.setAttribute("usuarios", usuarioDAO.getAllActivos(false));
+
+		}
+
 		view = VIEW_INDEX;
 
 	}
@@ -142,9 +158,10 @@ public class UsuariosController extends HttpServlet {
 		String contra = request.getParameter("contra");
 
 		Usuario u = new Usuario();
-		u.setId(Integer.parseInt(sid));
-		u.setNombre(nombre);
-		u.setContra(contra);
+		/*
+		 * u.setId(Integer.parseInt(sid)); u.setNombre(nombre); u.setContra(contra);
+		 * u.setFecha_creacion(fecha_creacion);
+		 */
 
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(u);
 		if (violations.isEmpty()) {
@@ -172,6 +189,7 @@ public class UsuariosController extends HttpServlet {
 			}
 			request.setAttribute("mensaje", new Alert("warning", mensaje));
 		}
+		u = usuarioDAO.getById(Integer.parseInt(sid));
 		request.setAttribute("usuario", u);
 		view = VIEW_FORM;
 

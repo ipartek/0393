@@ -7,10 +7,16 @@ nav img{
 	width: 25px;
 	height: 25px;
 }
-far fa-play-circle:before{
-	content: "\f086";
-}
 
-*::before{
-	box-sizing: border-box;
+
+/*iconos para el index del backoffice*/
+.card-body-icon {
+    position: absolute;
+    z-index: 0;
+    top: -1.25rem;
+    right: -1rem;
+    opacity: 0.4;
+    font-size: 5rem;
+    -webkit-transform: rotate(15deg);
+    transform: rotate(15deg);
 }

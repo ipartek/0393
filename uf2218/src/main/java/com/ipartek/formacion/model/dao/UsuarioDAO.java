@@ -14,12 +14,14 @@ public class UsuarioDAO {
 
 	private static UsuarioDAO INSTANCE = null;
 
-	private static final String SQL_GET_ALL = "SELECT idusuario,nombre,contra FROM usuario ORDER BY idusuario DESC LIMIT 500;";
-	private static final String SQL_GET_BY_ID = "SELECT idusuario,nombre,contra FROM usuario WHERE idusuario = ?;";
-	private static final String SQL_GET_ALL_BY_NOMBRE = "SELECT idusuario,nombre,contra FROM usuario WHERE nombre LIKE ? ORDER BY nombre ASC LIMIT 500;";
-	private static final String SQL_INSERT = "INSERT INTO usuario ( nombre, contra) VALUES ( ? , ?);";
+	private static final String SQL_GET_ALL = "SELECT idusuario,nombre,contra,fecha_creacion, fecha_eliminacion, id_rol FROM usuario ORDER BY idusuario DESC LIMIT 500;";
+	private static final String SQL_GET_BY_ID = "SELECT idusuario,nombre,contra,fecha_creacion, fecha_eliminacion, id_rol FROM usuario WHERE idusuario = ?;";
+	private static final String SQL_GET_ALL_BY_NOMBRE = "SELECT idusuario,nombre,contra, fecha_creacion, fecha_eliminacion, id_rol FROM usuario WHERE nombre LIKE ? ORDER BY nombre ASC LIMIT 500;";
+	private static final String SQL_INSERT = "INSERT INTO usuario ( nombre, contra, fecha_creacion, fecha_eliminacion, id_rol) VALUES ( ?, ?, ?, ?, ?);";
 	private static final String SQL_UPDATE = "UPDATE usuario SET nombre= ?, contra= ? WHERE idusuario = ?;";
-	private static final String SQL_DELETE = "DELETE FROM usuario WHERE idusuario = ?;";
+	private static final String SQL_DELETE = "UPDATE usuario SET fecha_eliminacion = CURRENT_TIMESTAMP() WHERE idusuario= ? ";
+	private static final String SQL_GET_ALL_ACTIVOS = "SELECT idusuario,nombre,contra,fecha_creacion, fecha_eliminacion, id_rol FROM usuario WHERE fecha_eliminacion IS NULL ORDER BY idusuario DESC LIMIT 500;";
+	private static final String SQL_GET_ALL_NO_ACTIVOS = "SELECT idusuario,nombre,contra,fecha_creacion, fecha_eliminacion, id_rol FROM usuario WHERE fecha_eliminacion IS NOT NULL ORDER BY idusuario DESC LIMIT 500;";
 
 	private UsuarioDAO() {
 		super();
@@ -80,6 +82,35 @@ public class UsuarioDAO {
 
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement pst = con.prepareStatement(SQL_GET_ALL);
+				ResultSet rs = pst.executeQuery()) {
+
+			while (rs.next()) {
+				/*
+				 * Usuario u = new Usuario(); u.setId(rs.getInt("id"));
+				 * u.setNombre(rs.getString("nombre"));
+				 * u.setContrasenya(rs.getString("contrasenya")); lista.add(u);
+				 */
+				lista.add(mapper(rs));
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return lista;
+	}
+
+	public ArrayList<Usuario> getAllActivos(boolean isActivo) {
+
+		ArrayList<Usuario> lista = new ArrayList<Usuario>();
+		String sql = SQL_GET_ALL_ACTIVOS;
+		if (!isActivo) {
+			sql = SQL_GET_ALL_NO_ACTIVOS;
+		}
+
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(sql);
 				ResultSet rs = pst.executeQuery()) {
 
 			while (rs.next()) {
@@ -206,6 +237,9 @@ public class UsuarioDAO {
 		u.setId(rs.getInt("idusuario"));
 		u.setNombre(rs.getString("nombre"));
 		u.setContra(rs.getString("contra"));
+		u.setFechaCreacion(rs.getDate("fecha_creacion"));
+		u.setFechaEliminacion(rs.getDate("fecha_eliminacion"));
+		u.setId_rol(rs.getInt("id_rol"));
 
 		return u;
 	}

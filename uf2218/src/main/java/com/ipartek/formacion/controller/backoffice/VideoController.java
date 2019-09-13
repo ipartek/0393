@@ -29,7 +29,7 @@ public class VideoController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String VIEW_INDEX = "youtube/index.jsp";
+	public static final String VIEW_INDEX = "youtube/list.jsp";
 	public static final String VIEW_FORM = "youtube/formulario.jsp";
 	public static String view = VIEW_INDEX;
 

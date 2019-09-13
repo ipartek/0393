@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 import com.ipartek.formacion.model.ConnectionManager;
 import com.ipartek.formacion.model.pojo.Rol;
-import com.ipartek.formacion.model.pojo.Video;
 import com.mysql.jdbc.Statement;
 
 public class RolDAO {
@@ -65,8 +64,8 @@ public class RolDAO {
 		return r;
 	}
 
-	public Video getById(int id) {
-		Video video = new Video();
+	public Rol getById(int id) {
+		Rol rol = new Rol();
 
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement pst = con.prepareStatement(SQL_GET_BY_ID)) {
@@ -80,13 +79,13 @@ public class RolDAO {
 					 * Video v = new Video(); v.setId( rs.getInt("id") ); v.setNombre(
 					 * rs.getString("nombre")); v.setCodigo( rs.getString("codigo"));
 					 */
-					video = mapper(rs);
+					rol = mapper(rs);
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return video;
+		return rol;
 	}
 
 	public boolean modificar(Rol pojo, int usuarioId, int categoriaId) throws Exception {
