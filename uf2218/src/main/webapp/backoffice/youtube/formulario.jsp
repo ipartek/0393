@@ -34,6 +34,13 @@
 				</div>	
 				
 				<div class="form-group">
+					<label for="likes">Número de likes:</label>
+					<input type="text" name="likes" value="${video.likes}"
+					       disabled 
+						   class="form-control">
+				</div>
+				
+				<div class="form-group">
 					<label for="categoria">Categoría:</label>
 					<select class="form-control" name="idCategoria">
 						<option value="-1">Elige una categoria...</option>

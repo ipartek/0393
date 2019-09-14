@@ -27,3 +27,14 @@ SELECT v.id as 'video_id',   v.nombre as 'video_nombre',
               FROM video as v, usuario as u, categoria as c, likes
 			  WHERE v.usuario_id = u.id   AND c.id = v.categoria_id AND likes.id_video = v.id
               GROUP BY v.id;
+              
+-- getall videos con likes, version explicita
+
+SELECT v.id as video_id, v.nombre as video_nombre, v.codigo as codigo,
+ u.id as usuario_id, u.nombre as usuario_nombre, u.fecha_creacion as usuario_creacion, u.fecha_eliminacion as usuario_eliminacion,
+ c.id as categoria_id, c.nombre as categoria_nombre, COUNT(l.id_video) as megusta
+ FROM video as v
+ INNER JOIN usuario as u ON v.usuario_id = u.id 
+ INNER JOIN categoria as c ON v.categoria_id = c.id
+ LEFT JOIN likes as l ON v.id = l.id_video
+ GROUP BY v.id LIMIT 500;              

@@ -16,27 +16,43 @@ public class VideoDAO {
 
 	private static VideoDAO INSTANCE = null;
 
-	private static final String SQL_GET_ALL = "SELECT v.id as 'video_id'," + " v.nombre as 'video_nombre',"
-			+ " codigo, u.id as 'usuario_id'," + " u.nombre as 'usuario_nombre'," + " c.id as 'categoria_id',"
-			+ " c.nombre as 'categoria_nombre', u.fecha_eliminacion as 'usuario_eliminacion', u.fecha_creacion as 'usuario_creacion' FROM video as v, usuario as u, categoria as c"
-			+ " WHERE v.usuario_id = u.id" + " AND c.id = v.categoria_id" + " ORDER BY v.id DESC LIMIT 500;";
+	private static final String SQL_GET_ALL = "SELECT v.id as video_id, v.nombre as video_nombre, v.codigo as codigo," + 
+			" u.id as usuario_id, u.nombre as usuario_nombre, u.fecha_creacion as usuario_creacion, u.fecha_eliminacion as usuario_eliminacion," + 
+			" c.id as categoria_id, c.nombre as categoria_nombre, COUNT(l.id_video) as megusta" + 
+			" FROM video as v" + 
+			" INNER JOIN usuario as u ON v.usuario_id = u.id " + 
+			" INNER JOIN categoria as c ON v.categoria_id = c.id" + 
+			" LEFT JOIN likes as l ON v.id = l.id_video" + 
+			" GROUP BY v.id LIMIT 500;";
 
-	private static final String SQL_GET_ALL_VIDEOS_NO_VISIBLES = "SELECT \n" + "v.id as 'video_id',\n"
-			+ " v.nombre as 'video_nombre',\n" + " codigo, u.id as 'usuario_id',\n" + " u.nombre as 'usuario_nombre',\n"
-			+ " u.fecha_eliminacion as 'usuario_eliminacion', u.fecha_creacion as 'usuario_creacion', c.id as 'categoria_id',\n"
-			+ " c.nombre as 'categoria_nombre'\n" + " FROM video as v, usuario as u, categoria as c \n"
-			+ " WHERE v.usuario_id = u.id AND c.id = v.categoria_id AND u.fecha_eliminacion IS NOT NULL ORDER BY v.id DESC LIMIT 500;";
 
-	private static final String SQL_GET_ALL_VIDEOS_VISIBLES = "SELECT \n" + "v.id as 'video_id',\n"
-			+ " v.nombre as 'video_nombre',\n" + " codigo, u.id as 'usuario_id',\n" + " u.nombre as 'usuario_nombre',\n"
-			+ " u.fecha_eliminacion as 'usuario_eliminacion', u.fecha_creacion as 'usuario_creacion', c.id as 'categoria_id',\n"
-			+ " c.nombre as 'categoria_nombre'\n" + " FROM video as v, usuario as u, categoria as c \n"
-			+ " WHERE v.usuario_id = u.id AND c.id = v.categoria_id AND u.fecha_eliminacion IS NULL ORDER BY v.id DESC LIMIT 500;";
+	private static final String SQL_GET_ALL_VIDEOS_NO_VISIBLES = "SELECT v.id as video_id, v.nombre as video_nombre, v.codigo as codigo," + 
+			" u.id as usuario_id, u.nombre as usuario_nombre, u.fecha_creacion as usuario_creacion, u.fecha_eliminacion as usuario_eliminacion," + 
+			" c.id as categoria_id, c.nombre as categoria_nombre, COUNT(l.id_video) as megusta" + 
+			" FROM video as v" + 
+			" INNER JOIN usuario as u ON v.usuario_id = u.id " + 
+			" INNER JOIN categoria as c ON v.categoria_id = c.id" + 
+			" LEFT JOIN likes as l ON v.id = l.id_video" + 
+			" WHERE u.fecha_eliminacion IS NOT NULL" +
+			" GROUP BY v.id LIMIT 500;";
 
-	private static final String SQL_GET_BY_ID = "SELECT v.id as 'video_id',   v.nombre as 'video_nombre',\n"
-			+ "			  codigo, u.id as 'usuario_id',   u.nombre as 'usuario_nombre',   c.id as 'categoria_id',\n"
-			+ "			  c.nombre as 'categoria_nombre', u.fecha_eliminacion as 'usuario_eliminacion', u.fecha_creacion as 'usuario_creacion' FROM video as v, usuario as u, categoria as c\n"
-			+ "			  WHERE v.usuario_id = u.id   AND c.id = v.categoria_id AND v.id = ?;";
+
+	private static final String SQL_GET_ALL_VIDEOS_VISIBLES = "SELECT v.id as video_id, v.nombre as video_nombre, v.codigo as codigo," + 
+			" u.id as usuario_id, u.nombre as usuario_nombre, u.fecha_creacion as usuario_creacion, u.fecha_eliminacion as usuario_eliminacion," + 
+			" c.id as categoria_id, c.nombre as categoria_nombre, COUNT(l.id_video) as megusta" + 
+			" FROM video as v" + 
+			" INNER JOIN usuario as u ON v.usuario_id = u.id " + 
+			" INNER JOIN categoria as c ON v.categoria_id = c.id" + 
+			" LEFT JOIN likes as l ON v.id = l.id_video" + 
+			" WHERE u.fecha_eliminacion IS NULL" +
+			" GROUP BY v.id LIMIT 500;";
+			
+
+	private static final String SQL_GET_BY_ID = "SELECT v.id as 'video_id',   v.nombre as 'video_nombre',"
+			+ "	codigo, u.id as 'usuario_id',   u.nombre as 'usuario_nombre',   c.id as 'categoria_id',"
+			+ "	c.nombre as 'categoria_nombre', u.fecha_eliminacion as 'usuario_eliminacion', u.fecha_creacion as 'usuario_creacion', COUNT(l.id_video) as megusta "
+			+ "	FROM video as v, usuario as u, categoria as c, likes as l"
+			+ "	WHERE v.usuario_id = u.id AND c.id = v.categoria_id AND l.id_video = v.id AND v.id = ?;";
 
 	private static final String SQL_UPDATE = "UPDATE video SET nombre = ?," + " codigo = ?," + " categoria_id = ?,"
 			+ " usuario_id= ?" + " WHERE  id = ?;";
@@ -253,10 +269,12 @@ public class VideoDAO {
 	}
 
 	public Video mapper(ResultSet rs) throws SQLException {
+		
 		Video v = new Video();
 		v.setId(rs.getInt("video_id"));
 		v.setNombre(rs.getString("video_nombre"));
 		v.setCodigo(rs.getString("codigo"));
+		v.setLikes(rs.getInt("megusta"));
 
 		Usuario u = new Usuario();
 		u.setId(rs.getInt("usuario_id"));
@@ -272,7 +290,7 @@ public class VideoDAO {
 		v.setCategoria(c);
 		return v;
 
-		// TODO mostrar ahora tb los likes
+		
 	}
 
 }
