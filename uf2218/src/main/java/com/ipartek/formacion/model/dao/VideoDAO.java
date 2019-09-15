@@ -47,12 +47,15 @@ public class VideoDAO {
 			" WHERE u.fecha_eliminacion IS NULL" +
 			" GROUP BY v.id LIMIT 500;";
 			
-
-	private static final String SQL_GET_BY_ID = "SELECT v.id as 'video_id',   v.nombre as 'video_nombre',"
-			+ "	codigo, u.id as 'usuario_id',   u.nombre as 'usuario_nombre',   c.id as 'categoria_id',"
-			+ "	c.nombre as 'categoria_nombre', u.fecha_eliminacion as 'usuario_eliminacion', u.fecha_creacion as 'usuario_creacion', COUNT(l.id_video) as megusta "
-			+ "	FROM video as v, usuario as u, categoria as c, likes as l"
-			+ "	WHERE v.usuario_id = u.id AND c.id = v.categoria_id AND l.id_video = v.id AND v.id = ?;";
+	//TODO revisar video detalle likes / debe ser un left join
+	private static final String SQL_GET_BY_ID = "SELECT v.id as video_id, v.nombre as video_nombre, v.codigo as codigo," + 
+			" u.id as usuario_id, u.nombre as usuario_nombre, u.fecha_creacion as usuario_creacion, u.fecha_eliminacion as usuario_eliminacion," + 
+			" c.id as categoria_id, c.nombre as categoria_nombre, COUNT(l.id_video) as megusta" + 
+			" FROM video as v" + 
+			" INNER JOIN usuario as u ON v.usuario_id = u.id " + 
+			" INNER JOIN categoria as c ON v.categoria_id = c.id" + 
+			" LEFT JOIN likes as l ON v.id = l.id_video" + 
+			" WHERE v.id = ?;";
 
 	private static final String SQL_UPDATE = "UPDATE video SET nombre = ?," + " codigo = ?," + " categoria_id = ?,"
 			+ " usuario_id= ?" + " WHERE  id = ?;";
