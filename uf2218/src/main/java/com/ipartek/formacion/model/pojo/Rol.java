@@ -1,6 +1,8 @@
 package com.ipartek.formacion.model.pojo;
 
 public class Rol {
+	public static final int ROL_ADMINISTRADOR = 1;
+	public static final int ROL_USUARIO = 2;
 
 	private int id;
 	private String nombre;
@@ -13,9 +15,8 @@ public class Rol {
 
 	public Rol() {
 		super();
-
-		this.id = 1;
-		this.nombre = "administrador";
+		this.id = ROL_USUARIO;
+		this.nombre = "usuario";
 	}
 
 	public int getId() {
@@ -36,7 +37,7 @@ public class Rol {
 
 	@Override
 	public String toString() {
-		return "Usuario [id=" + id + ", nombre=" + nombre + "]";
+		return "Rol [id=" + id + ", nombre=" + nombre + "]";
 	}
 
 }

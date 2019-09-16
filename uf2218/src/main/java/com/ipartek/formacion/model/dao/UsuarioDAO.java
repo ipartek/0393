@@ -38,7 +38,8 @@ public class UsuarioDAO {
 	private static final String SQL_INSERT = "INSERT INTO usuario ( nombre, contrasenya) VALUES ( ? , ?);";
 	private static final String SQL_UPDATE = "UPDATE usuario SET nombre= ?, contrasenya= ?, id_rol= ? WHERE id = ?;";
 	private static final String SQL_DELETE = "UPDATE usuario SET fecha_eliminacion= CURRENT_TIMESTAMP() WHERE id = ?;";
-	private static final String SQL_EXISTE = "SELECT id, nombre, contrasenya FROM usuario WHERE nombre = ? AND contrasenya = ? AND fecha_eliminacion IS NULL ;";
+	private static final String SQL_EXISTE = " SELECT u.id as 'usuario_id', u.nombre as 'usuario_nombre', u.fecha_creacion as 'fecha_creacion', u.fecha_eliminacion as 'fecha_eliminacion', u.contrasenya as 'usuario_contrasenya', r.id as 'rol_id', r.nombre as 'rol_nombre', contrasenya, fecha_creacion, fecha_eliminacion "
+			+ " FROM usuario as u, rol as r " + " WHERE u.id_rol = r.id AND u.nombre = ? AND contrasenya = ? ;";
 
 	private UsuarioDAO() {
 		super();
@@ -63,32 +64,27 @@ public class UsuarioDAO {
 	public Usuario existe(String nombre, String contrasenya) {
 
 		Usuario usuario = null;
-		String sql = SQL_EXISTE;
 
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_EXISTE);) {
 
-			// sustuuir ? por parametros
+			// sustituir ? por parametros
 			pst.setString(1, nombre);
 			pst.setString(2, contrasenya);
 
-			// ejecutar sentencia SQL y obtener resultado
+			// ejecutar sentencia SQL y obtener Resultado
 			try (ResultSet rs = pst.executeQuery()) {
-				while (rs.next()) {
-					usuario = new Usuario();
-					usuario.setId(rs.getInt("id"));
-					usuario.setNombre(rs.getString("nombre"));
-					usuario.setContrasenya(rs.getString("contrasenya"));
 
+				if (rs.next()) {
+					usuario = mapper(rs);
 				}
 			}
 
-		} catch (Exception e) {
-
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
 		return usuario;
-
 	}
 
 	public ArrayList<Usuario> getAll() {
@@ -249,7 +245,10 @@ public class UsuarioDAO {
 		u.setContrasenya(rs.getString("usuario_contrasenya"));
 		u.setFechaCreacion(rs.getDate("fecha_creacion"));
 		u.setFechaEliminacion(rs.getDate("fecha_eliminacion"));
-		u.setRol(new Rol(rs.getInt("rol_id"), rs.getString("rol_nombre")));
+		Rol rol = new Rol();
+		rol.setId(rs.getInt("rol_id"));
+		rol.setNombre(rs.getString("rol_nombre"));
+		u.setRol(rol);
 		return u;
 	}
 

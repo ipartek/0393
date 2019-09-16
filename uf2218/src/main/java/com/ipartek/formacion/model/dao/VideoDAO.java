@@ -23,13 +23,13 @@ public class VideoDAO {
 			+ " u.nombre as 'usuario_nombre', " + " c.id as 'categoria_id', " + " c.nombre as 'categoria_nombre' "
 			+ " FROM video as v, usuario as u , categoria as c "
 			+ " WHERE v.id_usuario = u.id AND v.id_categoria = c.id "
-			+ "  AND u.fecha_eliminacion IS NOT NULL ORDER BY v.id DESC LIMIT 500;";
+			+ "  AND u.fecha_eliminacion IS NULL ORDER BY v.id DESC LIMIT 500;";
 	private static final String SQL_GET_ALL_NOT_VISIBLE = " SELECT " + " v.id as 'video_id', "
 			+ " v.nombre as 'video_nombre', " + " codigo, " + " u.id as 'usuario_id', "
 			+ " u.nombre as 'usuario_nombre', " + " c.id as 'categoria_id', " + " c.nombre as 'categoria_nombre' "
 			+ " FROM video as v, usuario as u , categoria as c "
 			+ " WHERE v.id_usuario = u.id AND v.id_categoria = c.id "
-			+ "  AND u.fecha_eliminacion IS NULL ORDER BY v.id DESC LIMIT 500;";
+			+ "  AND u.fecha_eliminacion IS NOT NULL ORDER BY v.id DESC LIMIT 500;";
 
 	private static final String SQL_GET_BY_ID = " SELECT " + " v.id as 'video_id', " + " v.nombre as 'video_nombre', "
 			+ " codigo, " + " u.id as 'usuario_id', " + " u.nombre as 'usuario_nombre', " + " c.id as 'categoria_id', "
