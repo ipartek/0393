@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ipartek.formacion.controller.pojo.Alert;
 import com.ipartek.formacion.model.dao.CategoriaDAO;
 import com.ipartek.formacion.model.pojo.Categoria;
 
@@ -62,7 +63,16 @@ public class CategoriaController extends ControllerCrud {
 
 	@Override
 	protected void eliminar(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
+		String sid = request.getParameter("id");
+		int id = Integer.parseInt(sid);
+
+		if (categoriaDAO.delete(id)) {
+			request.setAttribute("mensaje", new Alert("success", "Registro Eliminado"));
+		} else {
+			request.setAttribute("mensaje", new Alert("danger", "ERROR, no se pudo eliminar"));
+		}
+
+		listar(request, response);
 		
 	}
 

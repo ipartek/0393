@@ -38,7 +38,7 @@ public class UsuarioDAO {
 	 */
 	public Usuario existe(String nombre, String contrasenya) {
 		Usuario usuario = null;
-		String sql = "SELECT id, nombre, contrasenya, id_rol, fecha_creacion, fecha_eliminacion FROM usuario WHERE nombre = ? AND contrasenya = ?;";
+			String sql = "SELECT u.id , u.nombre, u.contrasenya, r.id as id_rol, r.nombre as nombre_rol, fecha_creacion, fecha_eliminacion  FROM usuario u, rol r WHERE r.id = u.id_rol AND u.nombre = ? AND u.contrasenya = ?;";
 		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 
 			pst.setString(1, nombre);
@@ -46,12 +46,7 @@ public class UsuarioDAO {
 
 			try (ResultSet rs = pst.executeQuery()) {
 				if (rs.next()) {
-					usuario = new Usuario();
-					usuario.setId(rs.getInt("id"));
-					usuario.setNombre(rs.getString("nombre"));
-					usuario.setContrasenya(rs.getString("contarsenya"));
-					rol.setId(rs.getInt("id_rol"));
-					usuario.setRol(rol);
+					usuario = mapper(rs);
 				}
 			}
 
@@ -64,7 +59,8 @@ public class UsuarioDAO {
 	public ArrayList<Usuario> getAll() {
 
 		ArrayList<Usuario> lista = new ArrayList<Usuario>();
-		String sql = "SELECT `id`, `nombre`, `contrasenya`,`id_rol`, `fecha_creacion`, `fecha_eliminacion` FROM `usuario` ORDER BY `id` ASC LIMIT 500";
+		
+		String sql = "SELECT u.id , u.nombre, u.contrasenya, r.id as id_rol, r.nombre as nombre_rol, fecha_creacion, fecha_eliminacion FROM usuario u, rol r WHERE  r.id = u.id_rol AND ORDER BY `u.id` ASC LIMIT 500";
 
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement pst = con.prepareStatement(sql);
@@ -88,9 +84,9 @@ public class UsuarioDAO {
 	public ArrayList<Usuario> getAllVisible(boolean isVisible) {
 
 		ArrayList<Usuario> lista = new ArrayList<Usuario>();
-		String sql = "SELECT `id`, `nombre`, `contrasenya`, `id_rol`, `fecha_creacion`, `fecha_eliminacion` FROM `usuario` WHERE fecha_eliminacion IS NULL  ORDER BY `id` ASC LIMIT 500;";
+		String sql = "SELECT u.id , u.nombre, u.contrasenya, r.id as id_rol, r.nombre as nombre_rol, fecha_creacion, fecha_eliminacion FROM usuario u, rol r WHERE  r.id = u.id_rol AND u.fecha_eliminacion IS NULL  ORDER BY `u.id` ASC LIMIT 500;";
 		if(!isVisible) {
-			sql = "SELECT `id`, `nombre`, `contrasenya`, `id_rol`, `fecha_creacion`, `fecha_eliminacion` FROM `usuario` WHERE fecha_eliminacion is not null  ORDER BY `id` ASC LIMIT 500";
+			sql = "SELECT u.id , u.nombre, u.contrasenya, r.id as id_rol, r.nombre as nombre_rol, fecha_creacion, fecha_eliminacion FROM usuario u, rol r WHERE  r.id = u.id_rol AND u.fecha_eliminacion is not null  ORDER BY `u.id` ASC LIMIT 500";
 		}
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement pst = con.prepareStatement(sql);
@@ -112,7 +108,7 @@ public class UsuarioDAO {
 
 	public Usuario getById(int id) {
 		Usuario user = new Usuario();
-		String sql = "SELECT id, nombre, contrasenya, id_rol, fecha_creacion, fecha_eliminacion FROM usuario WHERE id = ? ;";
+		String sql = "SELECT u.id , u.nombre, u.contrasenya, r.id as id_rol, r.nombre as nombre_rol, fecha_creacion, fecha_eliminacion FROM usuario u, rol r WHERE  r.id = u.id_rol AND u.id = ? ;";
 
 		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
 
@@ -121,10 +117,7 @@ public class UsuarioDAO {
 
 			try (ResultSet rs = pst.executeQuery()) {
 				if (rs.next()) {
-					/*
-					 * Video v = new Video(); v.setId( rs.getInt("id") ); v.setNombre(
-					 * rs.getString("nombre")); v.setCodigo( rs.getString("codigo"));
-					 */
+				
 					user = mapper(rs);
 				}
 			}
@@ -136,7 +129,7 @@ public class UsuarioDAO {
 
 	public ArrayList<Usuario> getAllByName(String buscar) {
 		ArrayList<Usuario> lista = new ArrayList<Usuario>();
-		String sql = "SELECT `id`, `nombre`, `contrasenya`, `id_rol`, `fecha_creacion`, `fecha_modificacion` FROM `usuario` WHERE nombre LIKE ? ORDER BY `id` ASC LIMIT 500";
+		String sql = "SELECT u.id , u.nombre, u.contrasenya, r.id as id_rol, r.nombre as nombre_rol, fecha_creacion, fecha_eliminacion FROM usuario u, rol r WHERE  r.id = u.id_rol AND u.nombre LIKE ? ORDER BY `u.id` ASC LIMIT 500";
 
 		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
 			pst.setString(1, '%' + buscar + '%');
@@ -232,6 +225,11 @@ public class UsuarioDAO {
 		u.setContrasenya(rs.getString("contrasenya"));
 		u.setFecha_creacion(rs.getTimestamp("fecha_creacion"));
 		u.setFecha_eliminacion(rs.getTimestamp("fecha_eliminacion"));
+		Rol rol = new Rol();
+		rol.setId( rs.getInt("id_rol"));
+		rol.setNombre( rs.getString("nombre_rol"));
+		u.setRol(rol);
+		
 		return u;
 	}
 

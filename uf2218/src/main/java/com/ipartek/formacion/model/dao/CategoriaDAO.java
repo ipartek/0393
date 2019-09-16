@@ -14,6 +14,7 @@ public class CategoriaDAO {
 		
 		private static final String SQL_GET_ALL =  "SELECT id, nombre FROM categoria ORDER BY  id  ASC LIMIT 500;";
 		private static final String SQL_GET_BY_ID = "SELECT id, nombre FROM categoria WHERE id =?;";
+		private static final String SQL_DELETE ="DELETE FROM categoria WHERE id = ?";
 		private CategoriaDAO() {
 			super();
 		}
@@ -70,6 +71,28 @@ public class CategoriaDAO {
 				e.printStackTrace();
 			}
 			return categoria;
+		}
+		
+		
+		
+		public boolean delete(int id) {
+			boolean resultado = false;
+
+			try (Connection con = ConnectionManager.getConnection();
+					PreparedStatement pst = con.prepareStatement(SQL_DELETE);) {
+
+				pst.setInt(1, id);
+
+				int affetedRows = pst.executeUpdate();
+				if (affetedRows == 1) {
+					resultado = true;
+				}
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			return resultado;
 		}
 		
 		
