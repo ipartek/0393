@@ -151,6 +151,7 @@ public class UsuarioController extends HttpServlet {
 
 		} else {
 			request.setAttribute("usuario", new Usuario());
+			request.setAttribute("roles", rolDAO.getAll());
 			request.setAttribute("op", op);
 		}
 
@@ -207,6 +208,7 @@ public class UsuarioController extends HttpServlet {
 			}
 
 			request.setAttribute("usuario", u);
+			request.setAttribute("roles", rolDAO.getAll());
 
 		} else { // hay violaciones de las validaciones
 

@@ -30,6 +30,9 @@
 				<%
 					}
 				%>
+				
+				${usuario }
+				${roles }
 			
   			 <input type="hidden" class="form-control" name="op" id="op" value="6">
    			
@@ -52,7 +55,7 @@
 			    <label for="inputRol" class="col-sm-3 col-form-label col-form-label-lg">Rol</label>
 			    <select class="form-control" name="id_rol">
   					<c:forEach items="${roles}" var="r">
-				 		<option value="${r.id}" ${(r.id==usuario.rol)?'selected':''}>${r.nombre}</option>
+				 		<option value="${r.id}" ${(r.id==usuario.rol.id)?'selected':''}>${r.nombre}</option>
 				 	</c:forEach>
 				</select>
 			 </div>
