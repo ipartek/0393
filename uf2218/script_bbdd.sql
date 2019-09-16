@@ -1,55 +1,164 @@
-CREATE DATABASE  IF NOT EXISTS `v2019` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `v2019`;
--- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.16, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: v2019
+-- Host: 192.168.0.5    Database: videos_vero
 -- ------------------------------------------------------
--- Server version	5.5.5-10.1.38-MariaDB
+-- Server version	8.0.12
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+ SET NAMES utf8 ;
+
+--
+-- Table structure for table `categoria`
+--
+
+DROP TABLE IF EXISTS `categoria`;
+
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `categoria` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `nombre_UNIQUE` (`nombre`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+--
+-- Dumping data for table `categoria`
+--
+
+LOCK TABLES `categoria` WRITE;
+
+INSERT INTO `categoria` VALUES (2,'bromas'),(1,'musica'),(3,'surf');
+
+UNLOCK TABLES;
+
+
+--
+-- Table structure for table `rol`
+--
+
+DROP TABLE IF EXISTS `rol`;
+
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `rol` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(15) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `nombre_UNIQUE` (`nombre`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='1:administrador\n2:usuario';
+
+
+--
+-- Dumping data for table `rol`
+--
+
+LOCK TABLES `rol` WRITE;
+
+INSERT INTO `rol` VALUES (1,'administrador'),(2,'usuario');
+
+UNLOCK TABLES;
+
+--
+-- Table structure for table `usuario`
+--
+
+DROP TABLE IF EXISTS `usuario`;
+
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `usuario` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(45) NOT NULL,
+  `contrasenya` varchar(45) NOT NULL,
+  `fecha_creacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `fecha_eliminacion` datetime DEFAULT NULL,
+  `id_rol` int(11) DEFAULT '2',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `nombre_UNIQUE` (`nombre`),
+  KEY `FK_usuario_rol_idx` (`id_rol`),
+  CONSTRAINT `FK_usuario_rol` FOREIGN KEY (`id_rol`) REFERENCES `rol` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+
+--
+-- Dumping data for table `usuario`
+--
+
+LOCK TABLES `usuario` WRITE;
+
+INSERT INTO `usuario` VALUES (1,'admin','admin','2019-09-12 08:47:19',NULL,NULL),(2,'pepe','pepe','2019-09-12 08:47:19',NULL,NULL),(3,'soso','soso','2019-09-12 08:47:19',NULL,NULL),(4,'Srburn','123','2019-09-12 09:02:32',NULL,1),(5,'eliminado','123','2019-09-12 09:03:20','2019-09-12 09:03:21',2);
+
+UNLOCK TABLES;
 
 --
 -- Table structure for table `video`
 --
 
 DROP TABLE IF EXISTS `video`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `video` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `nombre` varchar(150) NOT NULL,
-  `codigo` varchar(11) NOT NULL,
+  `codigo` varchar(45) NOT NULL,
+  `usuario_id` int(11) NOT NULL,
+  `categoria_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `codigo_UNIQUE` (`codigo`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  UNIQUE KEY `codigo_UNIQUE` (`codigo`),
+  KEY `fk_video_usuario_idx` (`usuario_id`),
+  KEY `fk_video_categoria1_idx` (`categoria_id`),
+  CONSTRAINT `fk_video_categoria1` FOREIGN KEY (`categoria_id`) REFERENCES `categoria` (`id`),
+  CONSTRAINT `fk_video_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 --
 -- Dumping data for table `video`
 --
 
 LOCK TABLES `video` WRITE;
-/*!40000 ALTER TABLE `video` DISABLE KEYS */;
-INSERT INTO `video` VALUES (1,'Su Ta Gar - Mari  Su Ta Gar 20 Urte','5oi2WTPAHcs'),(5,'Clasicos del Rock','BWcmD_de99g'),(9,'The Black Eyed Peas - Where Is The Love? (Official Music Video)','WpYeekQkAdc'),(10,'Bob Marley - redemption song','kOFu6b3w6c0'),(16,'El Where','i_cVJgIz_Cs'),(17,'Red Hot Chili Peppers - Dark Necessities','Q0oIoR9mLwc');
-/*!40000 ALTER TABLE `video` ENABLE KEYS */;
+
+INSERT INTO `video` VALUES (3,'Redhottttt','Q0oIoR9mLwc',2,2),(4,'Fary','NFkI-zxZlHo',1,2),(5,'lost on you','pv8SGsH6Axg',5,1);
+
 UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+--
+-- Dumping events for database 'videos_vero'
+--
 
--- Dump completed on 2019-07-29 13:36:19
+--
+-- Dumping routines for database 'videos_vero'
+--
+
+
+-- Dump completed on 2019-09-12  9:34:06
+
+
+--
+-- Table structure for table `likes`
+--
+
+DROP TABLE IF EXISTS `likes`;
+
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `likes` (
+  `usuario_id` int(11) NOT NULL,
+  `video_id` int(11) NOT NULL,
+  `fecha` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`usuario_id`,`video_id`),
+  KEY `fk_usuario_has_video_video1_idx` (`video_id`),
+  KEY `fk_usuario_has_video_usuario1_idx` (`usuario_id`),
+  CONSTRAINT `fk_usuario_likes_video` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_video_likes_usuario` FOREIGN KEY (`video_id`) REFERENCES `video` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+--
+-- Dumping data for table `likes`
+--
+
+LOCK TABLES `likes` WRITE;
+
+INSERT INTO `likes` VALUES (2,3,'2019-09-05 11:41:46'),(3,3,'2019-09-05 11:41:46');
+
+UNLOCK TABLES;
+

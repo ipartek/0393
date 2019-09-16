@@ -4,23 +4,35 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class Video {
-	
-	
-	private int id;	
-	
-	@NotNull	
-	@Size(min=3,max= 150)
+
+	private int id;
+
+	@NotNull
+	@Size(min = 3, max = 150)
 	private String nombre;
-	
-	@NotNull	
-	@Size(min=11,max= 11, message = "Exactamente debe ser 11")
+
+	@NotNull
+	@Size(min = 11, max = 11, message = "Exactamente debe ser 11")
 	private String codigo;
-	
+
+	private Usuario usuario;
+	private Categoria categoria;
+
 	public Video() {
 		super();
 		this.id = -1;
 		this.nombre = "";
 		this.codigo = "";
+		this.usuario = new Usuario();
+		this.categoria = new Categoria();
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 	public int getId() {
@@ -47,10 +59,20 @@ public class Video {
 		this.codigo = codigo;
 	}
 
+	public Categoria getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
+	}
+
 	@Override
 	public String toString() {
-		return "Youtube [id=" + id + ", nombre=" + nombre + ", codigo=" + codigo + "]";
+		return "Video [id=" + id + ", nombre=" + nombre + ", codigo=" + codigo + ", usuario=" + usuario + ", categoria="
+				+ categoria + "]";
 	}
-	
-}
 
+
+
+}

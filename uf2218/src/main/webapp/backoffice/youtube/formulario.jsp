@@ -32,6 +32,35 @@
 					       placeholder="Exactamente 11" 
 						   class="form-control">
 				</div>	
+				
+				<div class="form-group">
+					<label for="categoria_id">Categoria:</label>
+					<select name="categoria_id" id="categoria_id" class="form-control">
+					  <c:forEach items="${categorias}" var="c">
+					  		<option value="${c.id}" ${(c.id == video.categoria.id)?"selected":"" }> ${c.nombre}</option>					  	
+					  </c:forEach>				  
+					</select>
+				</div>	
+								
+				<div class="form-group">
+					<label for="usuario_id">Usuario:</label>
+					<select name="usuario_id" id="usuario_id" class="form-control">
+					
+						<c:forEach items="${usuarios}" var="u">		
+							<% //modificar video %>
+							<c:if test="${video.id != -1}">				  				  
+						  			<option value="${u.id}" ${(u.id == video.usuario.id)?"selected":"" }> ${u.nombre}</option>					  		
+						  	</c:if>	
+					  
+						    <% //nuevo video %>
+						 	<c:if test="${video.id == -1}">					  						  
+						  			<option value="${u.id}" ${(u.id == sessionScope.usuario.id)?"selected":"" }> ${u.nombre}</option>					  		
+						  	</c:if>
+					   </c:forEach>
+					  
+					  				  
+					</select>
+				</div>	
 			
 				<input type="submit" value="${(video.id != -1)?'Modificar':'Crear'}" class="btn btn-outline-primary  btn-block">
 			

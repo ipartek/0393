@@ -1,14 +1,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%> 
 
-<%@page errorPage="error.jsp" %>  
 
 
 
 	<%
 		// Gestion del idioma
 	%>
-
+	
 	<c:set var="idiomaSeleccionado" 
 		   value="${not empty sessionScope.idiomaSeleccionado ? sessionScope.idiomaSeleccionado : 'eu_ES'}" 
 		   scope="session" />

@@ -4,7 +4,7 @@
 <%@include file="../../includes/navbar.jsp"%>
 
 	<h1>Detalle Usuario</h1>
-	
+
 	<div class="row">
 		<div class="col">
 		
@@ -30,6 +30,18 @@
 					<label for="codigo">Password:</label>
 					<input type="password" name="contrasenya" value="${usuarioEditar.contrasenya}"					      
 						   class="form-control">
+				</div>	
+				
+				<div class="form-group">
+					<label for="fecha_creacion">Fecha Creacion:</label>
+					<fmt:formatDate value="${usuarioEditar.fechaCreacion}" var="fecha1"  pattern="dd-MM-yyyy HH:mm:ss" />
+					<input type="text" name="fecha_creacion" value="${fecha1}" class="form-control" disabled>
+				</div>	
+				
+				<div class="form-group">
+					<label for="fecha_eliminacion">Fecha Eliminación:</label>
+					<fmt:formatDate value="${usuarioEditar.fechaEliminacion}" var="fecha2"  pattern="dd-MM-yyyy HH:mm:ss" />
+					<input type="text" name="fecha_eliminacion" value="${fecha2}" class="form-control" disabled>
 				</div>	
 			
 				<input type="submit" value="${(usuarioEditar.id != -1)?'Modificar':'Crear'}" class="btn btn-outline-primary  btn-block">
