@@ -16,6 +16,7 @@ import javax.validation.Validator;
 import com.ipartek.formacion.controller.pojo.Alert;
 import com.ipartek.formacion.model.dao.RolDAO;
 import com.ipartek.formacion.model.dao.UsuarioDAO;
+import com.ipartek.formacion.model.pojo.Rol;
 import com.ipartek.formacion.model.pojo.Usuario;
 
 /**
@@ -142,7 +143,7 @@ public class UsuarioController extends HttpServlet {
 		u.setId(Integer.parseInt(id));
 		u.setNombre(nombre);
 		u.setContrasenya(contrasenya);
-		u.setIdRol(Integer.parseInt(idRol));
+		u.setRol(new Rol(Integer.parseInt(idRol)));
 
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(u);
 		if (violations.isEmpty()) {

@@ -7,11 +7,22 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.ipartek.formacion.model.ConnectionManager;
+import com.ipartek.formacion.model.pojo.Rol;
 import com.ipartek.formacion.model.pojo.Usuario;
 
 public class UsuarioDAO {
 
+	// Constantes
 	private static UsuarioDAO INSTANCE = null;
+	private static final String SQL_LOGIN = "SELECT u.id, u.nombre, u.contrasenya, r.id as id_rol, r.nombre as nombre_rol, fecha_creacion, fecha_eliminacion FROM usuario as u, rol as r WHERE u.id_rol = r.id AND nombre = ? AND contrasenya = ? AND fecha_eliminacion IS NULL;";
+	private static final String SQL_GETALL = "SELECT u.id, u.nombre, u.contrasenya, r.id as id_rol, r.nombre as nombre_rol, fecha_creacion, fecha_eliminacion FROM usuario as u, rol as r WHERE u.id_rol = r.id ORDER BY id DESC LIMIT 500;";
+	private static final String SQL_GETVISIBLE = "SELECT u.id, u.nombre, u.contrasenya, r.id as id_rol, r.nombre as nombre_rol, fecha_creacion, fecha_eliminacion FROM usuario as u, rol as r WHERE u.id_rol = r.id AND fecha_eliminacion IS NULL ORDER BY id DESC LIMIT 500";
+	private static final String SQL_GETNOTVISIBLE = "SELECT u.id, u.nombre, u.contrasenya, r.id as id_rol, r.nombre as nombre_rol, fecha_creacion, fecha_eliminacion FROM usuario as u, rol as r WHERE u.id_rol = r.id fecha_eliminacion IS NOT NULL ORDER BY id DESC LIMIT 500";
+	// private static final String SQL_CREAR = ;
+	// private static final String SQL_GETBYID = ;
+	// private static final String SQL_GETBYNAME = ;
+	// private static final String SQL_MODIFICAR = ;
+	// private static final String SQL_DELETE = ;
 
 	private UsuarioDAO() {
 		super();
@@ -37,9 +48,8 @@ public class UsuarioDAO {
 
 		Usuario usuario = null;
 
-		String sql = "SELECT * FROM usuario WHERE nombre = ? AND contrasenya = ? AND fecha_eliminacion IS NULL;";
-
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_LOGIN);) {
 
 			// Sustituimos ? por parametros
 			pst.setString(1, nombre);
@@ -62,10 +72,9 @@ public class UsuarioDAO {
 	public ArrayList<Usuario> getAll() {
 
 		ArrayList<Usuario> lista = new ArrayList<Usuario>();
-		String sql = "SELECT * FROM usuario ORDER BY id DESC LIMIT 500";
 
 		try (Connection con = ConnectionManager.getConnection();
-				PreparedStatement pst = con.prepareStatement(sql);
+				PreparedStatement pst = con.prepareStatement(SQL_GETALL);
 				ResultSet rs = pst.executeQuery()) {
 
 			while (rs.next()) {
@@ -93,9 +102,9 @@ public class UsuarioDAO {
 		String sql = "";
 
 		if (isVisible) {
-			sql = "SELECT * FROM usuario WHERE fecha_eliminacion IS NULL ORDER BY id DESC LIMIT 500";
+			sql = SQL_GETVISIBLE;
 		} else {
-			sql = "SELECT * FROM usuario WHERE fecha_eliminacion IS NOT NULL ORDER BY id DESC LIMIT 500";
+			sql = SQL_GETNOTVISIBLE;
 		}
 
 		try (Connection con = ConnectionManager.getConnection();
@@ -119,7 +128,7 @@ public class UsuarioDAO {
 
 			pst.setString(1, pojo.getNombre());
 			pst.setString(2, pojo.getContrasenya());
-			pst.setInt(3, pojo.getIdRol());
+			pst.setInt(3, pojo.getRol().getId());
 
 			int affectedRows = pst.executeUpdate();
 			if (affectedRows == 1) {
@@ -177,7 +186,7 @@ public class UsuarioDAO {
 
 			pst.setString(1, pojo.getNombre());
 			pst.setString(2, pojo.getContrasenya());
-			pst.setInt(3, pojo.getIdRol());
+			pst.setInt(3, pojo.getRol().getId());
 			pst.setInt(4, pojo.getId());
 
 			int affectedRows = pst.executeUpdate();
@@ -209,12 +218,14 @@ public class UsuarioDAO {
 
 	private Usuario mapper(ResultSet rs) throws SQLException {
 		Usuario u = new Usuario();
+
 		u.setId(rs.getInt("id"));
 		u.setNombre(rs.getString("nombre"));
 		u.setContrasenya(rs.getString("contrasenya"));
-		u.setIdRol(rs.getInt("id_rol"));
+		u.setRol(new Rol(rs.getInt("id_rol")));
 		u.setfCreacion(rs.getTimestamp("fecha_creacion"));
 		u.setfBaja(rs.getTimestamp("fecha_eliminacion"));
+
 		return u;
 	}
 }

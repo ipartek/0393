@@ -8,7 +8,7 @@ public class Usuario {
 	private int id;
 	private String nombre;
 	private String contrasenya;
-	private int idRol;
+	private Rol rol;
 	private Date fCreacion;
 	private Date fBaja;
 
@@ -18,7 +18,7 @@ public class Usuario {
 		this.id = -1;
 		this.nombre = "";
 		this.contrasenya = "";
-		this.idRol = 2;
+		this.rol = null;
 		this.fCreacion = null;
 		this.fBaja = null;
 	}
@@ -28,12 +28,12 @@ public class Usuario {
 		this.id = id;
 	}
 
-	public Usuario(int pId, String pNombre, String pContrasenya, int pIdRol, Date pFechaCreacion, Date pFechaBaja) {
+	public Usuario(int pId, String pNombre, String pContrasenya, Rol pRol, Date pFechaCreacion, Date pFechaBaja) {
 		super();
 		setId(pId);
 		setNombre(pNombre);
 		setContrasenya(pContrasenya);
-		setIdRol(pIdRol);
+		setRol(pRol);
 		setfCreacion(pFechaCreacion);
 		setfBaja(pFechaBaja);
 	}
@@ -63,12 +63,12 @@ public class Usuario {
 		this.contrasenya = contrasenya;
 	}
 
-	public int getIdRol() {
-		return idRol;
+	public Rol getRol() {
+		return rol;
 	}
 
-	public void setIdRol(int idRol) {
-		this.idRol = idRol;
+	public void setRol(Rol rol) {
+		this.rol = rol;
 	}
 
 	public Date getfCreacion() {
@@ -89,7 +89,7 @@ public class Usuario {
 
 	@Override
 	public String toString() {
-		return "Usuario [id=" + id + ", nombre=" + nombre + ", contrasenya=" + contrasenya + ", idRol=" + idRol
+		return "Usuario [id=" + id + ", nombre=" + nombre + ", contrasenya=" + contrasenya + ", idRol=" + rol
 				+ ", fCreacion=" + fCreacion + ", fBaja=" + fBaja + "]";
 	}
 }

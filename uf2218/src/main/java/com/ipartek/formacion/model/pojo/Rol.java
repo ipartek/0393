@@ -2,6 +2,8 @@ package com.ipartek.formacion.model.pojo;
 
 public class Rol {
 
+	public static final int ROL_ADMIN = 1;
+	public static final int ROL_USER = 2;
 	// Atributos
 	private int id;
 	private String nombre;
@@ -13,10 +15,14 @@ public class Rol {
 		this.nombre = "";
 	}
 
-	public Rol(int id, String nombre) {
+	public Rol(int id) {
 		super();
 		setId(id);
-		setNombre(nombre);
+		if (id == ROL_ADMIN) {
+			setNombre("administrador");
+		} else if (id == ROL_USER) {
+			setNombre("usuario");
+		}
 	}
 
 	// Getters & Setters
