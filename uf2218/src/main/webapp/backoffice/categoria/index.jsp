@@ -7,7 +7,7 @@
 
 <h1>CATEGORÍAS PARA LOS VÍDEOS</h1>
 
-<a href="backoffice/categorias?op=<%=CategoriaController.OP_NUEVO%>" class="mb-3 btn btn-outline-primary">Nueva Categoria</a>
+<a href="backoffice/categorias?op=1111111111111111111" class="mb-3 btn btn-outline-primary">Nueva Categoria</a>
 
 
 <div class="row d-flex justify-content-center">
@@ -24,7 +24,7 @@
 					<tr>
 					<th scope="row">${cat.id }</th>
 					<td>
-						<a href="backoffice/usuarios?op=<%=CategoriaController.OP_DETALLE%>&id=${cat.id}">${cat.nombre }</a>
+						<a href="backoffice/usuarios?op=1111111111111111111&id=${cat.id}">${cat.nombre }</a>
 
 					</td>
 				</tr>

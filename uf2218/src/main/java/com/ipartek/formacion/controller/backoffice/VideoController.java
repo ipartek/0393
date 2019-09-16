@@ -20,6 +20,7 @@ import com.ipartek.formacion.controller.pojo.Alert;
 import com.ipartek.formacion.model.dao.CategoriaDAO;
 import com.ipartek.formacion.model.dao.UsuarioDAO;
 import com.ipartek.formacion.model.dao.VideoDAO;
+import com.ipartek.formacion.model.pojo.Rol;
 import com.ipartek.formacion.model.pojo.Usuario;
 import com.ipartek.formacion.model.pojo.Video;
 
@@ -185,7 +186,7 @@ public class VideoController extends HttpServlet {
 		HttpSession session = request.getSession();
 		Usuario usuario = (Usuario) session.getAttribute("usuario");
 		
-		if (usuario.getRol()==1) {
+		if (usuario.getRol().getId()==Rol.ROL_ADMINISTRADOR) {
 			request.setAttribute("videosEliminados", videoDAO.getAllVisible(true));
 		}
 		

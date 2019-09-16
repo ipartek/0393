@@ -7,7 +7,7 @@ public class Usuario {
 	private int id;
 	private String nombre;
 	private String contrasena;
-	private int rol;
+	private Rol rol;
 	private Date fechaCreacion;
 	private Date fechaEliminacion;	
 
@@ -18,7 +18,7 @@ public class Usuario {
 		this.contrasena = "";
 		this.fechaCreacion = null;
 		this.fechaEliminacion = null;
-		this.setRol(-1);
+		this.rol = new Rol();
 		
 	}
 
@@ -55,14 +55,6 @@ public class Usuario {
 	}
 
 	
-
-
-	@Override
-	public String toString() {
-		return "Usuario [id=" + id + ", nombre=" + nombre + ", contrasena=" + contrasena + ", rol=" + rol
-				+ ", fechaCreacion=" + fechaCreacion + ", fechaEliminacion=" + fechaEliminacion + "]";
-	}
-
 	public Date getFechaCreacion() {
 		return fechaCreacion;
 	}
@@ -71,15 +63,20 @@ public class Usuario {
 		this.fechaCreacion = fechaCreacion;
 	}
 
-	public int getRol() {
+	public Rol getRol() {
 		return rol;
 	}
 
-	public void setRol(int rol) {
+	public void setRol(Rol rol) {
 		this.rol = rol;
 	}
 
-	
+	@Override
+	public String toString() {
+		return "Usuario [id=" + id + ", nombre=" + nombre + ", contrasena=" + contrasena + ", rol=" + rol
+				+ ", fechaCreacion=" + fechaCreacion + ", fechaEliminacion=" + fechaEliminacion + "]";
+	}
+
 	
 	
 
