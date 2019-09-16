@@ -14,16 +14,16 @@ import com.ipartek.formacion.model.pojo.Usuario;
 public class UsuarioDAO {
 	private static UsuarioDAO INSTANCE = null;
 
-	private static final String SQL_EXISTE = "SELECT u.id, u.nombre, r.id AS 'id_rol', r.nombre AS 'nombre_rol', contrasenya, id_rol, fecha_creacion, fecha_eliminacion FROM usuario AS u, rol AS r WHERE u.nombre = ? AND u.contrasenya = ?;";
-	private static final String SQL_GET_ALL = "SELECT u.id, u.nombre, r.id AS 'id_rol', r.nombre AS 'nombre_rol', contrasenya, id_rol, fecha_creacion, fecha_eliminacion FROM usuario AS u, rol AS r ORDER BY u.id ASC LIMIT 500;";
-	private static final String SQL_GET_ALL_VISIBLE = "SELECT u.id, u.nombre, r.id AS 'id_rol', r.nombre AS 'nombre_rol', contrasenya, id_rol, fecha_creacion, fecha_eliminacion FROM usuario AS u, rol AS r WHERE fecha_eliminacion IS NULL ORDER BY u.id ASC LIMIT 500;";
-	private static final String SQL_GET_ALL_NOT_VISIBLE = "SELECT u.id, u.nombre, r.id AS 'id_rol', r.nombre AS 'nombre_rol', contrasenya, id_rol, fecha_creacion, fecha_eliminacion FROM usuario AS u, rol AS r WHERE fecha_eliminacion IS NOT NULL ORDER BY u.id ASC LIMIT 500;";
-	private static final String SQL_GET_BY_ID = "SELECT u.id, u.nombre, r.id AS 'id_rol', r.nombre AS 'nombre_rol', contrasenya, id_rol, fecha_creacion, fecha_eliminacion FROM usuario AS u, rol AS r WHERE u.id = ?;";
+	private static final String SQL_EXISTE = "SELECT u.id, u.nombre, r.id AS 'id_rol', r.nombre AS 'nombre_rol', contrasenya, fecha_creacion, fecha_eliminacion FROM usuario AS u, rol AS r WHERE u.id_rol = r.id AND u.nombre = ? AND u.contrasenya = ?;";
+	private static final String SQL_GET_ALL = "SELECT u.id, u.nombre, r.id AS 'id_rol', r.nombre AS 'nombre_rol', contrasenya, fecha_creacion, fecha_eliminacion FROM usuario AS u, rol AS r WHERE u.id_rol = r.id ORDER BY u.id ASC LIMIT 500;";
+	private static final String SQL_GET_ALL_VISIBLE = "SELECT u.id, u.nombre, r.id AS 'id_rol', r.nombre AS 'nombre_rol', contrasenya, fecha_creacion, fecha_eliminacion FROM usuario AS u, rol AS r WHERE u.id_rol = r.id AND fecha_eliminacion IS NULL ORDER BY u.id ASC LIMIT 500;";
+	private static final String SQL_GET_ALL_NOT_VISIBLE = "SELECT u.id, u.nombre, r.id AS 'id_rol', r.nombre AS 'nombre_rol', contrasenya, fecha_creacion, fecha_eliminacion FROM usuario AS u, rol AS r WHERE u.id_rol = r.id AND fecha_eliminacion IS NOT NULL ORDER BY u.id ASC LIMIT 500;";
+	private static final String SQL_GET_BY_ID = "SELECT u.id, u.nombre, r.id AS 'id_rol', r.nombre AS 'nombre_rol', contrasenya, fecha_creacion, fecha_eliminacion FROM usuario AS u, rol AS r WHERE u.id_rol = r.id AND u.id = ?;";
 	private static final String SQL_UPDATE = "UPDATE usuario SET nombre = ?, contrasenya = ? WHERE  id = ?;";
 	// private static final String SQL_DELETE = "DELETE FROM usuario WHERE id = ?;";
 	private static final String SQL_DELETE_LOGICO = "UPDATE usuario SET fecha_eliminacion = CURRENT_TIMESTAMP WHERE id = ? ";
 	private static final String SQL_INSERT = "INSERT INTO usuario (nombre, contrasenya) VALUES (?,?);";
-	private static final String SQL_GET_BY_NAME = "SELECT u.id, u.nombre, r.id AS 'id_rol', r.nombre AS 'nombre_rol', contrasenya, id_rol, fecha_creacion, fecha_eliminacion FROM usuario AS u, rol AS r WHERE u.nombre LIKE ? ORDER BY u.id ASC LIMIT 500;";
+	private static final String SQL_GET_BY_NAME = "SELECT u.id, u.nombre, r.id AS 'id_rol', r.nombre AS 'nombre_rol', contrasenya, fecha_creacion, fecha_eliminacion FROM usuario AS u, rol AS r WHERE u.id_rol = r.id AND u.nombre LIKE ? ORDER BY u.id ASC LIMIT 500;";
 	private static String sql = "";
 
 	private UsuarioDAO() {
@@ -120,7 +120,7 @@ public class UsuarioDAO {
 	}
 
 	public Usuario getById(int id) {
-		Usuario usuario = new Usuario();
+		Usuario user = new Usuario();
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement pst = con.prepareStatement(SQL_GET_BY_ID)) {
 			// sustituyo la 1º ? por la variable id
@@ -128,13 +128,13 @@ public class UsuarioDAO {
 
 			try (ResultSet rs = pst.executeQuery()) {
 				if (rs.next()) {
-					usuario = mapper(rs);
+					user = mapper(rs);
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return usuario;
+		return user;
 	}
 
 	public boolean modificar(Usuario pojo) throws Exception {

@@ -82,7 +82,7 @@ public class LoginController extends HttpServlet {
 						// Redireccion para cambiar la url de "/login" a "/backoffice/inicio"
 						response.sendRedirect("backoffice/inicio");
 					} else {
-						response.sendRedirect("frontoffice/index");
+						response.sendRedirect("frontoffice/index.jsp");
 					}
 
 				} else {
