@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import com.ipartek.formacion.model.ConnectionManager;
+import com.ipartek.formacion.model.pojo.Rol;
 import com.ipartek.formacion.model.pojo.Usuario;
 
 public class UsuarioDAO {
@@ -49,8 +50,8 @@ public class UsuarioDAO {
 
 		Usuario usuario = null;
 
-		String sql = " SELECT idusuario, nombre, contra " + " FROM usuario "
-				+ " WHERE nombre = ? AND contra = ? AND fecha_eliminacion IS NULL ;";
+		String sql = " SELECT u.idusuario, u.nombre, r.id as 'id_rol', r.nombre as 'nombre_rol', contra, fecha_creacion, fecha_eliminacion "
+				+ " FROM usuario as u, rol as r  WHERE u.id_rol = r.id AND u.nombre = ? AND contra = ?";
 
 		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 
@@ -62,10 +63,7 @@ public class UsuarioDAO {
 			try (ResultSet rs = pst.executeQuery()) {
 
 				if (rs.next()) {
-					usuario = new Usuario();
-					usuario.setId(rs.getInt("idusuario"));
-					usuario.setNombre(rs.getString("nombre"));
-					usuario.setContra(rs.getString("contra"));
+					usuario = mapper(rs);
 				}
 			}
 
@@ -239,7 +237,11 @@ public class UsuarioDAO {
 		u.setContra(rs.getString("contra"));
 		u.setFechaCreacion(rs.getDate("fecha_creacion"));
 		u.setFechaEliminacion(rs.getDate("fecha_eliminacion"));
-		u.setId_rol(rs.getInt("id_rol"));
+
+		Rol r = new Rol();
+		r.setId(rs.getInt("id_rol"));
+		r.setNombre(rs.getString("nombre_rol"));
+		u.setRol(r);
 
 		return u;
 	}

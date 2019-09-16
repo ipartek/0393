@@ -28,8 +28,9 @@ public class IdiomaController extends HttpServlet {
 
 		String idiomaSeleccionado = request.getParameter("idiomaSeleccionado");
 
-		String ruta = request.getParameter("ruta");
-		ruta = ruta.split("uf2218/")[1];
+		/*
+		 * String ruta = request.getParameter("ruta"); ruta = ruta.split("uf2218/")[1];
+		 */
 
 		String language = "en";
 		String country = "EN";
@@ -50,16 +51,18 @@ public class IdiomaController extends HttpServlet {
 
 		// request.setAttribute("mensajeIdioma", idiomaSeleccionado);
 
-		if (ruta != null) {
-			request.getRequestDispatcher(ruta).forward(request, response);
-		} else {
-			request.getRequestDispatcher("index.jsp").forward(request, response);
-		}
+		/*
+		 * if ( ruta != null ) { request.getRequestDispatcher(ruta).forward(request,
+		 * response); }else { request.getRequestDispatcher("index.jsp").forward(request,
+		 * response); }
+		 */
+
 		String contextPath = request.getContextPath();
+
 		if (session.getAttribute("usuario") != null) {
-			response.sendRedirect("backoffice/inicio");
+			response.sendRedirect(contextPath + "/backoffice/inicio");
 		} else {
-			response.sendRedirect(contextPath);
+			response.sendRedirect(contextPath); // inicio app web
 		}
 
 	}

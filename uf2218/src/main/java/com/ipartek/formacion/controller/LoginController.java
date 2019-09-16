@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import com.ipartek.formacion.controller.pojo.Alert;
 import com.ipartek.formacion.model.dao.UsuarioDAO;
+import com.ipartek.formacion.model.pojo.Rol;
 import com.ipartek.formacion.model.pojo.Usuario;
 
 /**
@@ -49,22 +50,36 @@ public class LoginController extends HttpServlet {
 			HttpSession session = request.getSession();
 			// session.setMaxInactiveInterval( 60 * 5 ); // 5 min
 
-			session.setAttribute("usuario", usuario);
+			// preguntar si esta dado de baja
+			if (usuario.getFechaEliminacion() != null) {
 
-			request.setAttribute("mensaje", new Alert("success", "Ongi Etorri " + usuario.getNombre()));
-
-			String callback = (String) session.getAttribute("callback");
-
-			if (callback == null) {
-
-				// redireccion para cambiar la url de "/login" a "/backoffice/inicio"
-
-				response.sendRedirect("backoffice/inicio");
+				request.setAttribute("mensaje", new Alert("danger", "Lo sentimos pero se le ha dado de baja"));
+				request.getRequestDispatcher("login.jsp").forward(request, response);
 
 			} else {
-				session.removeAttribute("callback");
-				response.sendRedirect(callback);
-			}
+
+				session.setAttribute("usuario", usuario);
+
+				request.setAttribute("mensaje", new Alert("success", "Ongi Etorri " + usuario.getNombre()));
+
+				String callback = (String) session.getAttribute("callback");
+
+				if (callback == null) {
+
+					if (usuario.getRol().getId() == Rol.ROL_ADMINISTRADOR) {
+
+						response.sendRedirect("backoffice/inicio");
+					} else {
+
+						response.sendRedirect("frontoffice/index.jsp");
+					}
+
+				} else {
+					session.removeAttribute("callback");
+					response.sendRedirect(callback);
+				}
+
+			} // end: preguntar si esta dado de baja
 
 		} else {
 
