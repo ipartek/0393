@@ -27,7 +27,7 @@
 				
 	</form>
 	
-	<c:if test="${video.id != -1}">
+	<c:if test="${categoria.id != -1}">
 				
 		<!-- Button trigger modal -->
 		<button type="button" class="btn btn-outline-danger btn-block" data-toggle="modal" data-target="#exampleModal">

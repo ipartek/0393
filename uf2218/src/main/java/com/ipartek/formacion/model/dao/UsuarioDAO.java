@@ -15,15 +15,15 @@ public class UsuarioDAO {
 
 	private static UsuarioDAO INSTANCE = null;
 
-	private static final String SQL_GET_ALL = "SELECT id,nombre,contrasena, id_rol, fecha_creacion, fecha_eliminacion FROM usuario ORDER BY id DESC LIMIT 500;";
-	private static final String SQL_GET_ALL_REAL = "SELECT id,nombre,contrasena, id_rol, fecha_creacion, fecha_eliminacion FROM usuario as u WHERE u.fecha_eliminacion is Null ORDER BY id DESC LIMIT 500;";
-	private static final String SQL_GET_ALL_DELETED = "SELECT id,nombre,contrasena,id_rol, fecha_creacion, fecha_eliminacion FROM usuario as u WHERE u.fecha_eliminacion is not Null ORDER BY id DESC LIMIT 500;";
-	private static final String SQL_GET_BY_ID = "SELECT id, nombre, contrasena,id_rol, fecha_creacion, fecha_eliminacion  FROM usuario WHERE id = ? ;";
-	private static final String SQL_GET_ALL_BY_NAME = "SELECT id,nombre, contrasena,id_rol, fecha_creacion, fecha_eliminacion FROM usuario WHERE nombre LIKE ? ORDER BY id DESC LIMIT 500;";
+	private static final String SQL_GET_ALL = "SELECT u.id, u.nombre, r.id as id_rol, r.nombre as nombre_rol, contrasena, fecha_creacion, fecha_eliminacion FROM usuario as u, rol as r WHERE u.id_rol = r.id ORDER BY u.id DESC LIMIT 500;";
+	private static final String SQL_GET_ALL_REAL = "SELECT u.id, u.nombre, r.id as id_rol, r.nombre as nombre_rol, contrasena, fecha_creacion, fecha_eliminacion FROM usuario as u, rol as r WHERE u.id_rol = r.id AND u.fecha_eliminacion is Null ORDER BY u.id DESC LIMIT 500;";
+	private static final String SQL_GET_ALL_DELETED = "SELECT u.id, u.nombre, r.id as id_rol, r.nombre as nombre_rol, contrasena, fecha_creacion, fecha_eliminacion FROM usuario as u WHERE u.id_rol = r.id AND u.fecha_eliminacion is not Null ORDER BY u.id DESC LIMIT 500;";
+	private static final String SQL_GET_BY_ID = "SELECT u.id, u.nombre, r.id as id_rol, r.nombre as nombre_rol, contrasena, fecha_creacion, fecha_eliminacion  FROM usuario as u, rol as r WHERE u.id_rol = r.id AND u.id = ? ;";
+	private static final String SQL_GET_ALL_BY_NAME = "SELECT u.id, u.nombre, r.id as id_rol, r.nombre as nombre_rol, contrasena,id_rol, fecha_creacion, fecha_eliminacion FROM usuario as u, rol as r WHERE u.id_rol = r.id AND u.nombre LIKE ? ORDER BY u.id DESC LIMIT 500;";
 	private static final String SQL_INSERT = "INSERT INTO usuario (nombre, contrasena,id_rol) VALUES (?,?,?);";
 	private static final String SQL_UPDATE = "UPDATE usuario SET nombre = ?, contrasena = ?, id_rol = ? WHERE  id = ?;";
 	private static final String SQL_DELETE_LOGICO = "UPDATE usuario SET fecha_eliminacion = CURRENT_TIMESTAMP() WHERE  id = ?;";
-	private static final String SQL_EXISTE = " SELECT id, nombre, contrasena, id_rol, fecha_creacion, fecha_eliminacion " + " FROM usuario " + " WHERE nombre = ? AND contrasena = ? AND fecha_eliminacion is null ;";
+	private static final String SQL_EXISTE = " SELECT u.id, u.nombre, r.id as id_rol, r.nombre as nombre_rol, contrasena, fecha_creacion, fecha_eliminacion FROM usuario as u, rol as r WHERE u.id_rol = r.id AND u.nombre = ? AND contrasena = ? AND fecha_eliminacion is null ;";
 	private static final String SQL_DELETE = "DELETE FROM usuario WHERE id = ?;";
 	private static String SQL = "";
 	
@@ -249,6 +249,7 @@ public class UsuarioDAO {
 		
 		Rol r = new Rol();
 		r.setId(rs.getInt("id_rol"));
+		r.setNombre(rs.getNString("nombre_rol"));
 		
 		u.setRol(r);
 		

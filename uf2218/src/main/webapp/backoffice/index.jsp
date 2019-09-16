@@ -65,7 +65,7 @@
                 </div>
                 <div class="mr-5">${numeroCategorias} categorias</div>
               </div>
-              <a class="card-footer text-white clearfix small z-1" href="backoffice/categorias">
+              <a class="card-footer text-white clearfix small z-1" href="backoffice/categoria">
                 <span class="float-left">Listado de categorias</span>
                 <span class="float-right">
                   <i class="fas fa-angle-right"></i>
