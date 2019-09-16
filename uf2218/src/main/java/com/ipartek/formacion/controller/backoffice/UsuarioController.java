@@ -177,7 +177,6 @@ public class UsuarioController extends HttpServlet  {
 		boolean visible  = Boolean.parseBoolean(request.getParameter("visible"));
 		request.setAttribute("usuarios", usuarioDAO.getAllVisible(visible));
 		view = VIEW_INDEX;
-
 	}
 
 	public void detalle(HttpServletRequest request, HttpServletResponse response) {
