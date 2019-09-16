@@ -8,21 +8,22 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import com.ipartek.formacion.model.ConnectionManager;
+import com.ipartek.formacion.model.pojo.Rol;
 import com.ipartek.formacion.model.pojo.Usuario;
 
 public class UsuarioDAO {
 	private static UsuarioDAO INSTANCE = null;
 
-	private static final String SQL_EXISTE = "SELECT id, nombre, contrasenya, id_rol, fecha_creacion, fecha_eliminacion FROM usuario WHERE nombre = ? AND contrasenya = ?;";
-	private static final String SQL_GET_ALL = "SELECT id, nombre, contrasenya, id_rol, fecha_creacion, fecha_eliminacion FROM usuario ORDER BY id ASC LIMIT 500;";
-	private static final String SQL_GET_ALL_VISIBLE = "SELECT id, nombre, contrasenya, id_rol, fecha_creacion, fecha_eliminacion FROM usuario WHERE fecha_eliminacion IS NULL ORDER BY id ASC LIMIT 500;";
-	private static final String SQL_GET_ALL_NOT_VISIBLE = "SELECT id, nombre, contrasenya, id_rol, fecha_creacion, fecha_eliminacion FROM usuario WHERE fecha_eliminacion IS NOT NULL ORDER BY id ASC LIMIT 500;";
-	private static final String SQL_GET_BY_ID = "SELECT id, nombre, contrasenya, id_rol, fecha_creacion, fecha_eliminacion FROM usuario WHERE id = ?;";
+	private static final String SQL_EXISTE = "SELECT u.id, u.nombre, r.id AS 'id_rol', r.nombre AS 'nombre_rol', contrasenya, id_rol, fecha_creacion, fecha_eliminacion FROM usuario AS u, rol AS r WHERE u.nombre = ? AND u.contrasenya = ?;";
+	private static final String SQL_GET_ALL = "SELECT u.id, u.nombre, r.id AS 'id_rol', r.nombre AS 'nombre_rol', contrasenya, id_rol, fecha_creacion, fecha_eliminacion FROM usuario AS u, rol AS r ORDER BY u.id ASC LIMIT 500;";
+	private static final String SQL_GET_ALL_VISIBLE = "SELECT u.id, u.nombre, r.id AS 'id_rol', r.nombre AS 'nombre_rol', contrasenya, id_rol, fecha_creacion, fecha_eliminacion FROM usuario AS u, rol AS r WHERE fecha_eliminacion IS NULL ORDER BY u.id ASC LIMIT 500;";
+	private static final String SQL_GET_ALL_NOT_VISIBLE = "SELECT u.id, u.nombre, r.id AS 'id_rol', r.nombre AS 'nombre_rol', contrasenya, id_rol, fecha_creacion, fecha_eliminacion FROM usuario AS u, rol AS r WHERE fecha_eliminacion IS NOT NULL ORDER BY u.id ASC LIMIT 500;";
+	private static final String SQL_GET_BY_ID = "SELECT u.id, u.nombre, r.id AS 'id_rol', r.nombre AS 'nombre_rol', contrasenya, id_rol, fecha_creacion, fecha_eliminacion FROM usuario AS u, rol AS r WHERE u.id = ?;";
 	private static final String SQL_UPDATE = "UPDATE usuario SET nombre = ?, contrasenya = ? WHERE  id = ?;";
 	// private static final String SQL_DELETE = "DELETE FROM usuario WHERE id = ?;";
 	private static final String SQL_DELETE_LOGICO = "UPDATE usuario SET fecha_eliminacion = CURRENT_TIMESTAMP WHERE id = ? ";
 	private static final String SQL_INSERT = "INSERT INTO usuario (nombre, contrasenya) VALUES (?,?);";
-	private static final String SQL_GET_BY_NAME = "SELECT id, nombre, contrasenya, id_rol, fecha_creacion, fecha_eliminacion FROM usuario WHERE nombre LIKE ? ORDER BY id ASC LIMIT 500;";
+	private static final String SQL_GET_BY_NAME = "SELECT u.id, u.nombre, r.id AS 'id_rol', r.nombre AS 'nombre_rol', contrasenya, id_rol, fecha_creacion, fecha_eliminacion FROM usuario AS u, rol AS r WHERE u.nombre LIKE ? ORDER BY u.id ASC LIMIT 500;";
 	private static String sql = "";
 
 	private UsuarioDAO() {
@@ -63,9 +64,13 @@ public class UsuarioDAO {
 					usuario.setId(rs.getInt("id"));
 					usuario.setNombre(rs.getString("nombre"));
 					usuario.setContrasenya(rs.getString("contrasenya"));
-					usuario.setRol(rs.getInt("id_rol"));
 					usuario.setFechaCreacion(rs.getDate("fecha_creacion"));
 					usuario.setFechaEliminacion(rs.getDate("fecha_eliminacion"));
+
+					Rol rol = new Rol();
+					rol.setId(rs.getInt("id_rol"));
+					rol.setNombre(rs.getString("nombre_rol"));
+					usuario.setRol(rol);
 				}
 			}
 
@@ -217,9 +222,14 @@ public class UsuarioDAO {
 		u.setId(rs.getInt("id"));
 		u.setNombre(rs.getString("nombre"));
 		u.setContrasenya(rs.getString("contrasenya"));
-		u.setRol(rs.getInt("id_rol"));
 		u.setFechaCreacion(rs.getTimestamp("fecha_creacion"));
 		u.setFechaEliminacion(rs.getTimestamp("fecha_eliminacion"));
+
+		Rol rol = new Rol();
+		rol.setId(rs.getInt("id_rol"));
+		rol.setNombre(rs.getString("nombre_rol"));
+		u.setRol(rol);
+
 		return u;
 	}
 }

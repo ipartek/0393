@@ -6,7 +6,7 @@ public class Usuario {
 	private int id;
 	private String nombre;
 	private String contrasenya;
-	private int rol;
+	private Rol rol;
 	private Date fechaCreacion;
 	private Date fechaEliminacion;
 
@@ -15,7 +15,7 @@ public class Usuario {
 		this.id = -1;
 		this.nombre = "";
 		this.contrasenya = "";
-		this.rol = 2;
+		this.rol = new Rol();
 		this.fechaCreacion = new Date();
 		this.fechaEliminacion = new Date();
 	}
@@ -44,11 +44,11 @@ public class Usuario {
 		this.contrasenya = contrasenya;
 	}
 
-	public int getRol() {
+	public Rol getRol() {
 		return rol;
 	}
 
-	public void setRol(int rol) {
+	public void setRol(Rol rol) {
 		this.rol = rol;
 	}
 

@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import com.ipartek.formacion.controller.pojo.Alert;
 import com.ipartek.formacion.model.dao.UsuarioDAO;
+import com.ipartek.formacion.model.pojo.Rol;
 import com.ipartek.formacion.model.pojo.Usuario;
 
 /**
@@ -77,8 +78,12 @@ public class LoginController extends HttpServlet {
 				// loguearse
 				String callback = (String) request.getAttribute("callback");
 				if (callback == null) {
-					// Redireccion para cambiar la url de "/login" a "/backoffice/inicio"
-					response.sendRedirect("backoffice/inicio");
+					if (usuario.getRol().getId() == Rol.ROL_ADMINISTRADOR) {
+						// Redireccion para cambiar la url de "/login" a "/backoffice/inicio"
+						response.sendRedirect("backoffice/inicio");
+					} else {
+						response.sendRedirect("frontoffice/index");
+					}
 
 				} else {
 					session.removeAttribute("callback");
