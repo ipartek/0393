@@ -60,7 +60,7 @@ public class UsuarioDAO {
 
 		ArrayList<Usuario> lista = new ArrayList<Usuario>();
 		
-		String sql = "SELECT u.id , u.nombre, u.contrasenya, r.id as id_rol, r.nombre as nombre_rol, fecha_creacion, fecha_eliminacion FROM usuario u, rol r WHERE  r.id = u.id_rol AND ORDER BY `u.id` ASC LIMIT 500";
+		String sql = "SELECT u.id , u.nombre, u.contrasenya, r.id as id_rol, r.nombre as nombre_rol, fecha_creacion, fecha_eliminacion FROM usuario u, rol r WHERE  r.id = u.id_rol AND ORDER BY u.id ASC LIMIT 500";
 
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement pst = con.prepareStatement(sql);
@@ -84,9 +84,9 @@ public class UsuarioDAO {
 	public ArrayList<Usuario> getAllVisible(boolean isVisible) {
 
 		ArrayList<Usuario> lista = new ArrayList<Usuario>();
-		String sql = "SELECT u.id , u.nombre, u.contrasenya, r.id as id_rol, r.nombre as nombre_rol, fecha_creacion, fecha_eliminacion FROM usuario u, rol r WHERE  r.id = u.id_rol AND u.fecha_eliminacion IS NULL  ORDER BY `u.id` ASC LIMIT 500;";
+		String sql = "SELECT u.id , u.nombre, u.contrasenya, r.id as id_rol, r.nombre as nombre_rol, fecha_creacion, fecha_eliminacion FROM usuario u, rol r WHERE  r.id = u.id_rol AND u.fecha_eliminacion IS NULL  ORDER BY u.id ASC LIMIT 500;";
 		if(!isVisible) {
-			sql = "SELECT u.id , u.nombre, u.contrasenya, r.id as id_rol, r.nombre as nombre_rol, fecha_creacion, fecha_eliminacion FROM usuario u, rol r WHERE  r.id = u.id_rol AND u.fecha_eliminacion is not null  ORDER BY `u.id` ASC LIMIT 500";
+			sql = "SELECT u.id , u.nombre, u.contrasenya, r.id as id_rol, r.nombre as nombre_rol, fecha_creacion, fecha_eliminacion FROM usuario u, rol r WHERE  r.id = u.id_rol AND u.fecha_eliminacion is not null  ORDER BY u.id ASC LIMIT 500";
 		}
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement pst = con.prepareStatement(sql);
@@ -129,7 +129,7 @@ public class UsuarioDAO {
 
 	public ArrayList<Usuario> getAllByName(String buscar) {
 		ArrayList<Usuario> lista = new ArrayList<Usuario>();
-		String sql = "SELECT u.id , u.nombre, u.contrasenya, r.id as id_rol, r.nombre as nombre_rol, fecha_creacion, fecha_eliminacion FROM usuario u, rol r WHERE  r.id = u.id_rol AND u.nombre LIKE ? ORDER BY `u.id` ASC LIMIT 500";
+		String sql = "SELECT u.id , u.nombre, u.contrasenya, r.id as id_rol, r.nombre as nombre_rol, fecha_creacion, fecha_eliminacion FROM usuario u, rol r WHERE  r.id = u.id_rol AND u.nombre LIKE ? ORDER BY u.id ASC LIMIT 500";
 
 		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
 			pst.setString(1, '%' + buscar + '%');
