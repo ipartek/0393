@@ -17,13 +17,13 @@ public class VideoDAO {
 	private static VideoDAO INSTANCE = null;
 
 	private static final String SQL_GET_ALL = "SELECT" + 
-												"	v.id as 'video_id', " + 
-												"    v.nombre as 'video_nombre', " + 
+												"	v.id as video_id, " + 
+												"    v.nombre as video_nombre, " + 
 												"    codigo, " + 
-												"    u.id as 'usuario_id', " + 
-												"    u.nombre as 'usuario_nombre', " + 
-												"    c.id as 'categoria_id', " + 
-												"    c.nombre as 'categoria_nombre' " + 
+												"    u.id as usuario_id, " + 
+												"    u.nombre as usuario_nombre, " + 
+												"    c.id as categoria_id, " + 
+												"    c.nombre as categoria_nombre " + 
 												"FROM video as v, " + 
 												"	usuario as u, " + 
 												"    categoria as c " + 
@@ -31,16 +31,16 @@ public class VideoDAO {
 												"	v.usuario_id = u.id AND " + 
 												"    v.categoria_id = c.id " + 
 												"ORDER BY v.id DESC LIMIT 500;";
-	private static final String SQL_GET_ALL_VISIBLE = "SELECT v.id as 'video_id', v.nombre as 'video_nombre', codigo, u.id as 'usuario_id', u.nombre as 'usuario_nombre', c.id as 'categoria_id', c.nombre as 'categoria_nombre'FROM video as v, usuario as u, categoria as c WHERE v.usuario_id = u.id AND v.categoria_id = c.id AND u.fecha_eliminacion is NULL ORDER BY v.id DESC LIMIT 500;";
-	private static final String SQL_GET_ALL_NO_VISIBLE = "SELECT v.id as 'video_id', v.nombre as 'video_nombre', codigo, u.id as 'usuario_id', u.nombre as 'usuario_nombre', c.id as 'categoria_id', c.nombre as 'categoria_nombre'FROM video as v, usuario as u, categoria as c WHERE v.usuario_id = u.id AND v.categoria_id = c.id AND u.fecha_eliminacion is not NULL ORDER BY v.id DESC LIMIT 500;";
+	private static final String SQL_GET_ALL_VISIBLE = "SELECT v.id as video_id, v.nombre as video_nombre, codigo, u.id as usuario_id, u.nombre as usuario_nombre, c.id as categoria_id, c.nombre as categoria_nombre FROM video as v, usuario as u, categoria as c WHERE v.usuario_id = u.id AND v.categoria_id = c.id AND u.fecha_eliminacion is NULL ORDER BY v.id DESC LIMIT 500;";
+	private static final String SQL_GET_ALL_NO_VISIBLE = "SELECT v.id as video_id, v.nombre as video_nombre, codigo, u.id as usuario_id, u.nombre as usuario_nombre, c.id as categoria_id, c.nombre as categoria_nombre FROM video as v, usuario as u, categoria as c WHERE v.usuario_id = u.id AND v.categoria_id = c.id AND u.fecha_eliminacion is not NULL ORDER BY v.id DESC LIMIT 500;";
 	private static final String SQL_GET_BY_ID = "SELECT" + 
-												"	v.id as 'video_id', " + 
-												"    v.nombre as 'video_nombre', " + 
+												"	v.id as video_id, " + 
+												"    v.nombre as video_nombre, " + 
 												"    codigo, " + 
-												"    u.id as 'usuario_id', " + 
-												"    u.nombre as 'usuario_nombre', " + 
-												"    c.id as 'categoria_id', " + 
-												"    c.nombre as 'categoria_nombre' " + 
+												"    u.id as usuario_id, " + 
+												"    u.nombre as usuario_nombre, " + 
+												"    c.id as categoria_id, " + 
+												"    c.nombre as categoria_nombre " + 
 												"FROM video as v, " + 
 												"	usuario as u, " + 
 												"    categoria as c " + 
@@ -49,7 +49,7 @@ public class VideoDAO {
 												"   v.categoria_id = c.id AND " +
 											    "   v.id = ?;";
 	private static final String SQL_INSERT = "INSERT INTO video (nombre, codigo, usuario_id, categoria_id) VALUES (?,?,?,?);";
-	private static final String SQL_UPDATE = "UPDATE video SET `nombre`= ?, `codigo`= ? , `usuario_id`= ? , `categoria_id`= ? WHERE `id` = ?;";
+	private static final String SQL_UPDATE = "UPDATE video SET nombre= ?, codigo= ? , usuario_id= ? , categoria_id= ? WHERE id = ?;";
 	private static final String SQL_DELETE = "DELETE FROM video WHERE id = ?;";
 	private static String SQL = "";
 	
