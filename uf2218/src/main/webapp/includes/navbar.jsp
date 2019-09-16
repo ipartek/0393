@@ -12,7 +12,11 @@
 	      <li class="nav-item">
 	      	<a class="nav-link" href="index.jsp"><fmt:message key="menu.inicio" /></a>
 	      </li>
-	       
+	       <li class="nav-item">
+		      	<a class="nav-link" href="ejemplos/index.jsp">Ejemplos</a>
+		      </li>
+	      	<li class="nav-item">
+	      	
 	      <c:if test="${usuario != null}">
 	      	<li class="nav-item">
 		      	<a class="nav-link" href="backoffice/inicio">Dashboard</a>
