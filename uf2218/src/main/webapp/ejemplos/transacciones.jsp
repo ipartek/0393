@@ -2,9 +2,9 @@
 <%@include file="../includes/navbar.jsp"%>
 
 	<h1>Transacciones</h1>
-	<p>Transacciones
+	<h3>¿Que es un DAO?</h3>
 
-¿Que es un DAO?
+<p>
          Cuando se pretende modelar con objetos de un modelo de datos, es decir las tablas y sus relaciones, es muy común utilizar una propuesta simple que consiste en armar una clase por cada tabla existente.
          Dicha clase tendrá los métodos de acceso a la tabla correspondiente, entre ellos la inserción, modificación y la eliminación. Este tipo de clases suelen conocerse como DAOs, ya que objetos de esta clase se utilizaran para realizar operaciones de datos.
          De esta forma, si existe la tabla autos, es posible construir una clase denominada Auto, que siguiendo la especificación de un DAO, se debería tener los métodos insertar, modificar, eliminar y métodos con las consultas que resulten necesarias.

@@ -7,7 +7,7 @@ public class Usuario {
 	private int id;
 	private String nombre;
 	private String contrasenya;
-	private int rol;
+	private Rol rol;
 	private Date fechaCreacion;
 	private Date fechaEliminacion;
 
@@ -16,7 +16,7 @@ public class Usuario {
 		this.id = -1;
 		this.nombre = "";
 		this.contrasenya = "";
-		this.rol = -1;
+		this.rol = new Rol();
 	}
 
 	public int getId() {
@@ -43,11 +43,11 @@ public class Usuario {
 		this.contrasenya = contrasenya;
 	}
 
-	public int getRol() {
+	public Rol getRol() {
 		return rol;
 	}
 
-	public void setRol(int rol) {
+	public void setRol(Rol rol) {
 		this.rol = rol;
 	}
 
@@ -67,7 +67,7 @@ public class Usuario {
 		this.fechaEliminacion = fechaEliminacion;
 	}
 
-	public Usuario(int id, String nombre, String contrasenya, int rol, Date fechaCreacion, Date fechaEliminacion) {
+	public Usuario(int id, String nombre, String contrasenya, Rol rol, Date fechaCreacion, Date fechaEliminacion) {
 		super();
 		this.id = id;
 		this.nombre = nombre;

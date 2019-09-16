@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import com.ipartek.formacion.model.dao.CategoriaDAO;
 import com.ipartek.formacion.model.dao.UsuarioDAO;
 import com.ipartek.formacion.model.dao.VideoDAO;
+import com.ipartek.formacion.model.pojo.Rol;
 import com.ipartek.formacion.model.pojo.Usuario;
 
 /**
@@ -51,7 +52,7 @@ public class BackOfficeController extends HttpServlet {
 		HttpSession session = request.getSession();
 		Usuario usuario = (Usuario) session.getAttribute("usuario");
 
-		if (usuario.getRol() == 1) {
+		if (usuario.getRol().getId() == Rol.ROL_ADMINISTRADOR) {
 			request.setAttribute("numeroVideosNoVisibles", videoDAO.getAllVisible(false).size());
 			request.setAttribute("usuariosNoVisibles", usuarioDAO.getAllVisible(false).size());
 			request.setAttribute("numeroCategorias", categoriaDAO.getAll().size());
