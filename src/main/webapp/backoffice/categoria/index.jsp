@@ -12,11 +12,17 @@
 </div>
 
 <div class="row">
-	<div class="col-9">
+	<div class="col-5">
 		<a class="btn btn-primary mt-2 mb-2"
 			href="backoffice/categoria?op=<%=CategoriaController.OP_FORM%>"
 			role="button" title="anadir"><i class="fas fa-plus"></i> Añadir</a>
 	</div>
+	<div class="col-4">
+		<a class="btn btn-danger mt-2 mb-2"
+			href="backoffice/transacciones"
+			role="button" title="insertar"><i class="fas fa-plus"></i> Insertar Categorias</a>
+	</div>
+	
 	<div class="col-3">
 		<!-- Search form -->
 		<form action="backoffice/categoria" class="form-inline my-2 my-lg-0 ">

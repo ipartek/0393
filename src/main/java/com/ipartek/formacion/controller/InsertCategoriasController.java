@@ -42,7 +42,7 @@ public class InsertCategoriasController extends HttpServlet {
 			Class.forName("com.mysql.jdbc.Driver");
 
 			// establecer conexion
-			try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/videos", "root", "root")) {
+			try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/videos", "root", "")) {
 				con.setAutoCommit(false);
 				String sql = "INSERT INTO categoria (nombre) VALUES (?)";
 				PreparedStatement pst = null;
