@@ -10,6 +10,7 @@ public class Usuario {
 	private String contrasenya;
 	private Date fechaCreacion;
 	private Date fechaEliminacion;
+	private Rol rol;
 	
 	public Usuario() {
 		super();
@@ -18,6 +19,7 @@ public class Usuario {
 		this.contrasenya = "";
 		this.fechaCreacion = null;
 		this.fechaEliminacion = null;
+		this.rol = new Rol();
 	}
 
 	public int getId() {
@@ -60,10 +62,18 @@ public class Usuario {
 		this.fechaEliminacion = fechaEliminacion;
 	}
 
+	public Rol getRol() {
+		return rol;
+	}
+
+	public void setRol(Rol rol) {
+		this.rol = rol;
+	}
+
 	@Override
 	public String toString() {
 		return "Usuario [id=" + id + ", nombre=" + nombre + ", contrasenya=" + contrasenya + ", fechaCreacion="
-				+ fechaCreacion + ", fechaEliminacion=" + fechaEliminacion + "]";
+				+ fechaCreacion + ", fechaEliminacion=" + fechaEliminacion + ", rol=" + rol + "]";
 	}
 	
 }
