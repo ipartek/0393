@@ -37,7 +37,7 @@
 				<div class="form-group">
 					<label for="rol">Rol:</label>
 					<select class="form-control" name="idRol">
-						<option value="-1">Elige un rol...</option>
+						
 						<c:forEach items="${roles }" var="rol">
 							<option value="${rol.id }" ${(rol.id == usuarioEditar.rol.id)?"selected":"" }>${rol.nombre }</option>
 						</c:forEach>

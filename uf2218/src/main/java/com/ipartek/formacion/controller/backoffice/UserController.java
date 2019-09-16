@@ -123,6 +123,7 @@ public class UserController extends HttpServlet {
 	private void nuevo(HttpServletRequest request, HttpServletResponse response) {
 
 		request.setAttribute("usuarioEditar", new Usuario());
+		request.setAttribute("roles", rolDAO.getAll());
 		view = VIEW_FORM;
 	}
 

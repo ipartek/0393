@@ -36,8 +36,8 @@ public class UsuarioDAO {
 	private static final String SQL_DELETE_LOGICO = "UPDATE usuario SET fecha_eliminacion = CURRENT_TIMESTAMP() WHERE id = ?; ";
 
 	// "DELETE FROM usuario WHERE id = ?;"; YA no se usara
-	private static final String SQL_EXISTE = " SELECT id, nombre, contrasena, fecha_creacion, fecha_eliminacion"
-			+ " FROM usuario" + " WHERE nombre = ? AND contrasena = ? ;";
+	private static final String SQL_EXISTE = " SELECT u.id, u.nombre, u.contrasena, u.fecha_creacion, u.fecha_eliminacion, u.rol as id_rol, r.nombre as rol_nombre"
+			+ " FROM usuario as u, rol as r" + " WHERE u.nombre = ? AND contrasena = ? AND u.rol = r.id ;";
 
 	private static final String SQL_UPDATE = "UPDATE usuario SET nombre = ?, contrasena = ?, rol = ? WHERE id = ?; ";
 
@@ -80,7 +80,12 @@ public class UsuarioDAO {
 					usuario.setFechaCreacion(rs.getTimestamp("fecha_creacion"));
 					usuario.setFechaEliminacion(rs.getTimestamp("fecha_eliminacion"));
 
-					
+					Rol r = new Rol();
+					r.setId(rs.getInt("id_rol"));
+					r.setNombre(rs.getString("rol_nombre"));
+
+					usuario.setRol(r);
+
 				}
 			}
 

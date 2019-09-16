@@ -2,13 +2,16 @@ package com.ipartek.formacion.model.pojo;
 
 public class Rol {
 
+	public static final int ROL_ADMIN = 1;
+	public static final int ROL_USUARIO = 2;
+
 	private int id;
 	private String nombre;
 
 	public Rol() {
 		super();
-		this.id = -1;
-		this.nombre = "";
+		this.id = ROL_USUARIO;
+		this.nombre = "usuario";
 	}
 
 	public Rol(int id, String nombre) {
